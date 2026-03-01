@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research | Adnan Bashir</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <a href="index.html">AADI</a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="projects.html" class="nav-link">Projects</a></li>
+        <li><a href="publications.html" class="nav-link">Publications</a></li>
+        <li><a href="research.html" class="nav-link active">Research</a></li>
+        <li><a href="teaching.html" class="nav-link">Teaching</a></li>
+        <li><a href="journey.html" class="nav-link">Journey</a></li>
+        <li><a href="interests.html" class="nav-link">Interests</a></li>
+        <li class="nav-dropdown">
+          <a href="#" class="nav-link">More <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="memes.html">Memes</a></li>
+            <li><a href="drawings.html">Drawings</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#contact" class="nav-link cta-button">Contact</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>Research Interests</h1>
+    <p class="subtitle">Unsupervised learning, time-series analysis, and production ML systems</p>
+  </header>
+
+  <!-- Research Content -->
+  <main class="container">
+    
+    <!-- Research Statement -->
+    <section class="research-statement">
+      <h2>Research Vision</h2>
+      <p>
+        My research bridges the gap between cutting-edge machine learning theory and enterprise-scale systems. 
+        I focus on developing unsupervised learning methods that can operate on high-dimensional, non-stationary data streams 
+        in production environments. Central to my work is the principle that ML systems must be interpretable, efficient, and 
+        practical for real-world deployment—not just theoretically novel.
+      </p>
+      <p>
+        Key themes: unsupervised learning for streaming data, change point detection, explainable AI, LLM applications, 
+        and production ML system design.
+      </p>
+    </section>
+
+    <!-- Research Areas -->
+    <section class="research-areas">
+      <h2>Core Research Areas</h2>
+      <div class="areas-grid">
+        
+        <!-- Area 1 -->
+        <div class="research-area">
+          <h3>🔄 Unsupervised Learning for Data Streams</h3>
+          <p class="area-subtitle">Change point detection and regime identification in non-stationary time-series</p>
+          <p>
+            Developing algorithms to automatically identify significant changes in streaming data without labeled examples. 
+            This is critical for anomaly detection, fault identification, and decision support in real-time systems. 
+            My work focuses on handling high-dimensional data with computational efficiency suitable for production environments.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">Change Point Detection</span>
+            <span class="keyword">Regime Shift</span>
+            <span class="keyword">Streaming Data</span>
+            <span class="keyword">Unsupervised Learning</span>
+          </div>
+        </div>
+
+        <!-- Area 2 -->
+        <div class="research-area">
+          <h3>📊 Time-Series Explainability</h3>
+          <p class="area-subtitle">Interpretable ML for complex temporal datasets</p>
+          <p>
+            Creating techniques to explain what ML models learn from time-series data. Understanding why a system detected 
+            an anomaly is as important as detecting it. My TSX engine demonstrates how explainability can be integrated 
+            seamlessly into production pipelines, enabling stakeholders to trust and act on model outputs.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">Explainable AI</span>
+            <span class="keyword">Interpretability</span>
+            <span class="keyword">Feature Importance</span>
+            <span class="keyword">Model Transparency</span>
+          </div>
+        </div>
+
+        <!-- Area 3 -->
+        <div class="research-area">
+          <h3>🤖 LLM-Based State Detection</h3>
+          <p class="area-subtitle">Applying large language models to identify states in multivariate data</p>
+          <p>
+            Exploring how foundation models can enhance state identification in data systems. LLMs can reason about complex 
+            patterns and provide natural language interpretations of system behavior. This represents a new frontier in 
+            bridging symbolic reasoning with modern deep learning for data systems.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">LLMs</span>
+            <span class="keyword">Foundation Models</span>
+            <span class="keyword">State Detection</span>
+            <span class="keyword">Natural Language</span>
+          </div>
+        </div>
+
+        <!-- Area 4 -->
+        <div class="research-area">
+          <h3>🏗️ Production ML Systems</h3>
+          <p class="area-subtitle">Designing scalable architectures for enterprise analytics</p>
+          <p>
+            Real-world ML systems face challenges beyond algorithms: data governance, compliance, monitoring, and operational 
+            reliability. My DRIFT system demonstrates how to build enterprise-grade platforms that handle sensitive data at scale 
+            while maintaining security, governance, and real-time performance.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">System Design</span>
+            <span class="keyword">Data Governance</span>
+            <span class="keyword">MLOps</span>
+            <span class="keyword">Compliance</span>
+          </div>
+        </div>
+
+        <!-- Area 5 -->
+        <div class="research-area">
+          <h3>🔐 Security & Anomaly Detection</h3>
+          <p class="area-subtitle">ML for cybersecurity threats and behavioral anomalies</p>
+          <p>
+            Applying ML to detect malware, insider threats, and adversarial behavior. My background in cybersecurity informs 
+            research on how unsupervised techniques can identify zero-day threats and advanced persistent threats that evade 
+            signature-based detection.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">Malware Detection</span>
+            <span class="keyword">Threat Intelligence</span>
+            <span class="keyword">Anomaly Detection</span>
+            <span class="keyword">Security</span>
+          </div>
+        </div>
+
+        <!-- Area 6 -->
+        <div class="research-area">
+          <h3>📈 Election Integrity & Bot Detection</h3>
+          <p class="area-subtitle">Large-scale social network analysis for authentic engagement</p>
+          <p>
+            Continuing research on identifying coordinated inauthentic behavior in social networks. This work has policy 
+            implications for election security and information integrity. Developing scalable algorithms that can process 
+            millions of interactions while maintaining interpretability for policy makers.
+          </p>
+          <div class="area-keywords">
+            <span class="keyword">Bot Detection</span>
+            <span class="keyword">Social Networks</span>
+            <span class="keyword">Election Integrity</span>
+            <span class="keyword">Anomaly Detection</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Active Projects -->
+    <section class="active-projects">
+      <h2>Active Research Projects</h2>
+      
+      <div class="projects-list">
+        
+        <!-- Project 1 -->
+        <div class="active-project">
+          <div class="project-header-active">
+            <h3>Regime Shift Detection in Multivariate Streams</h3>
+            <span class="status ongoing">Ongoing</span>
+          </div>
+          <p class="project-lead"><strong>Lead Researcher</strong> | Data Science Lab, UNM</p>
+          <p class="project-description">
+            Advancing algorithms for detecting regime shifts in high-dimensional, non-stationary data streams. 
+            Current focus: efficient computation for real-time systems and handling concept drift.
+          </p>
+          <p class="project-outcomes">
+            <strong>Outcomes:</strong> DRUM system deployed in healthcare analytics; DAWAK 2023 publication; 
+            ongoing applications in state data systems
+          </p>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="active-project">
+          <div class="project-header-active">
+            <h3>Explainability in Time-Series ML</h3>
+            <span class="status ongoing">Ongoing</span>
+          </div>
+          <p class="project-lead"><strong>Lead Researcher</strong> | Data Science Lab, UNM</p>
+          <p class="project-description">
+            Developing TSX engine for interpretable time-series analysis. Current work: 
+            integrating explainability with deep learning models and creating explanations suitable for domain experts.
+          </p>
+          <p class="project-outcomes">
+            <strong>Outcomes:</strong> TSX production system; healthcare deployment; research toward publication
+          </p>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="active-project">
+          <div class="project-header-active">
+            <h3>Enterprise Data Orchestration with DRIFT</h3>
+            <span class="status ongoing">Ongoing</span>
+          </div>
+          <p class="project-lead"><strong>Lead Data Steward</strong> | Department of Workforce Solutions</p>
+          <p class="project-description">
+            Building DRIFT platform for secure, scalable data access and governance across state agencies. 
+            Current phase: expanding compliance automation and real-time anomaly detection capabilities.
+          </p>
+          <p class="project-outcomes">
+            <strong>Outcomes:</strong> 10+ agency deployments; 40% reduction in data request turnaround; 
+            established data governance framework
+          </p>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="active-project">
+          <div class="project-header-active">
+            <h3>LLM Integration for State Detection</h3>
+            <span class="status ongoing">Ongoing</span>
+          </div>
+          <p class="project-lead"><strong>Lead Researcher</strong> | Data Science Lab, UNM</p>
+          <p class="project-description">
+            Exploring foundation models for identifying and interpreting states in multivariate data. 
+            Current work: DSX framework development for multi-modal LLM integration.
+          </p>
+          <p class="project-outcomes">
+            <strong>Outcomes:</strong> DSX prototype system; framework for LLM application; direction for future research
+          </p>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="active-project">
+          <div class="project-header-active">
+            <h3>PhD Research on Unsupervised Learning for Data Streams</h3>
+            <span class="status completion">Completing Dec 2025</span>
+          </div>
+          <p class="project-lead"><strong>PhD Candidate</strong> | University of New Mexico</p>
+          <p class="project-description">
+            Comprehensive research program on unsupervised learning techniques for streaming data. 
+            Advisor: Dr. Trilce Estrada. Focus: theory, algorithms, and production deployment.
+          </p>
+          <p class="project-outcomes">
+            <strong>Outcomes:</strong> Dissertation; multiple publications; foundational techniques for future research
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Collaboration & Mentorship -->
+    <section class="collaboration">
+      <h2>Collaboration & Mentorship</h2>
+      <p>
+        I actively collaborate with researchers and practitioners in machine learning, data systems, and cybersecurity. 
+        I'm interested in working with researchers on problems at the intersection of unsupervised learning, production systems, 
+        and explainable AI. I'm also committed to mentoring students in research methodology, system design, and career development.
+      </p>
+      <div class="collaboration-areas">
+        <div class="collab-card">
+          <h4>Research Collaborations</h4>
+          <p>Time-series analysis, unsupervised learning, production ML systems, explainable AI</p>
+        </div>
+        <div class="collab-card">
+          <h4>Student Mentoring</h4>
+          <p>Graduate research, capstone projects, career guidance in ML and cybersecurity</p>
+        </div>
+        <div class="collab-card">
+          <h4>Industry Partnerships</h4>
+          <p>Applied research, system deployment, data governance in enterprise environments</p>
+        </div>
+        <div class="collab-card">
+          <h4>Open Science</h4>
+          <p>Public datasets, reproducible research, community tools and frameworks</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="journey.html">My Journey</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Social</h4>
+          <ul>
+            <li><a href="https://www.linkedin.com/in/adnaanbashir" target="_blank">LinkedIn</a></li>
+            <li><a href="https://github.com/adnaanbashir" target="_blank">GitHub</a></li>
+            <li><a href="https://scholar.google.com/citations?user=HGkM1JkAAAAJ&hl=en" target="_blank">Google Scholar</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:adnan@example.com">Email</a></li>
+            <li><a href="https://calendly.com/adnanbashir" target="_blank">Calendly</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Adnan Bashir. Advancing unsupervised learning for real-world systems.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Adnan Bashir</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <a href="index.html">AADI</a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="projects.html" class="nav-link active">Projects</a></li>
+        <li><a href="publications.html" class="nav-link">Publications</a></li>
+        <li><a href="research.html" class="nav-link">Research</a></li>
+        <li><a href="teaching.html" class="nav-link">Teaching</a></li>
+        <li><a href="journey.html" class="nav-link">Journey</a></li>
+        <li><a href="interests.html" class="nav-link">Interests</a></li>
+        <li class="nav-dropdown">
+          <a href="#" class="nav-link">More <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="memes.html">Memes</a></li>
+            <li><a href="drawings.html">Drawings</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#contact" class="nav-link cta-button">Contact</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>ML Systems & Projects</h1>
+    <p class="subtitle">4 shipped production-grade systems for data streams and enterprise analytics</p>
+  </header>
+
+  <!-- Projects Content -->
+  <main class="container">
+    <section class="projects-grid">
+      
+      <!-- DRIFT -->
+      <div class="project-card">
+        <div class="project-header">
+          <h2>DRIFT</h2>
+          <span class="project-badge badge-enterprise">Enterprise System</span>
+        </div>
+        <div class="project-status">Production | 2024-Present</div>
+        <p class="project-description">
+          <strong>Distributed Real-time Inference Framework for Time-series</strong>
+        </p>
+        <p class="project-details">
+          A secure, enterprise-scale data access and orchestration platform embedding real-time anomaly detection, 
+          data governance, and automated compliance enforcement to support high-volume, high-sensitivity data streams 
+          for state operations. Led cross-team implementation, standardizing access and monitoring across 10+ business units.
+        </p>
+        <div class="project-metrics">
+          <div class="metric">
+            <span class="metric-label">Business Units</span>
+            <span class="metric-value">10+</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Response Time Reduction</span>
+            <span class="metric-value">40%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Anomaly Detection</span>
+            <span class="metric-value">Real-time</span>
+          </div>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Apache Kafka</span>
+          <span class="tech-tag">AWS</span>
+          <span class="tech-tag">Snowflake</span>
+          <span class="tech-tag">ML Ops</span>
+        </div>
+        <div class="project-highlights">
+          <p>✓ Compliance automation and data governance</p>
+          <p>✓ Real-time streaming analytics pipeline</p>
+          <p>✓ Standardized access control framework</p>
+          <p>✓ Production monitoring and alerting</p>
+        </div>
+      </div>
+
+      <!-- DRUM -->
+      <div class="project-card">
+        <div class="project-header">
+          <h2>DRUM</h2>
+          <span class="project-badge badge-research">Research System</span>
+        </div>
+        <div class="project-status">Production | 2023-Present</div>
+        <p class="project-description">
+          <strong>Distributed Real-time Unsupervised Modeling</strong>
+        </p>
+        <p class="project-details">
+          A robust unsupervised learning platform for change point detection and real-time inference in streaming data. 
+          Architected and operationalized to improve regime shift detection and reduce anomaly response latency significantly.
+          Published results at DAWAK 2023 with ongoing references by peer researchers worldwide.
+        </p>
+        <div class="project-metrics">
+          <div class="metric">
+            <span class="metric-label">Anomaly Response</span>
+            <span class="metric-value">-30%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Conference</span>
+            <span class="metric-value">DAWAK 2023</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Status</span>
+            <span class="metric-value">Peer Validated</span>
+          </div>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">TensorFlow</span>
+          <span class="tech-tag">PyTorch</span>
+          <span class="tech-tag">Unsupervised ML</span>
+          <span class="tech-tag">Time-Series</span>
+        </div>
+        <div class="project-highlights">
+          <p>✓ Change point detection in streaming data</p>
+          <p>✓ Unsupervised regime identification</p>
+          <p>✓ Low-latency inference pipeline</p>
+          <p>✓ Peer-reviewed publication</p>
+        </div>
+      </div>
+
+      <!-- TSX -->
+      <div class="project-card">
+        <div class="project-header">
+          <h2>TSX</h2>
+          <span class="project-badge badge-analytics">Analytics Engine</span>
+        </div>
+        <div class="project-status">Production | 2023-Present</div>
+        <p class="project-description">
+          <strong>Time-Series eXplainability Engine</strong>
+        </p>
+        <p class="project-details">
+          A production-ready healthcare data analytics solution leveraging deep learning and predictive analytics 
+          for automated anomaly detection, patient outcome forecasting, and real-time data visualization. 
+          Enhanced data-driven decision making and improved care quality for healthcare stakeholders.
+        </p>
+        <div class="project-metrics">
+          <div class="metric">
+            <span class="metric-label">Detection Accuracy</span>
+            <span class="metric-value">94%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Prediction Horizon</span>
+            <span class="metric-value">72h</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Stakeholders</span>
+            <span class="metric-value">Healthcare</span>
+          </div>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Deep Learning</span>
+          <span class="tech-tag">LSTM</span>
+          <span class="tech-tag">Explainable AI</span>
+          <span class="tech-tag">D3.js</span>
+          <span class="tech-tag">Healthcare</span>
+        </div>
+        <div class="project-highlights">
+          <p>✓ Interpretable time-series analysis</p>
+          <p>✓ Change point detection with explanations</p>
+          <p>✓ Patient outcome predictions</p>
+          <p>✓ Real-time visualization dashboards</p>
+        </div>
+      </div>
+
+      <!-- DSX -->
+      <div class="project-card">
+        <div class="project-header">
+          <h2>DSX</h2>
+          <span class="project-badge badge-architecture">Architecture</span>
+        </div>
+        <div class="project-status">Production | 2022-Present</div>
+        <p class="project-description">
+          <strong>Data Systems eXperience Framework</strong>
+        </p>
+        <p class="project-details">
+          An extensible architecture for multi-modal data stream processing with real-time feature engineering. 
+          Designed and led development of an LLM-based state detection framework, integrating foundation models, 
+          representation learning, and explainable AI to identify latent states and generate insights in multivariate data.
+        </p>
+        <div class="project-metrics">
+          <div class="metric">
+            <span class="metric-label">Data Modalities</span>
+            <span class="metric-value">10+</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Feature Gen</span>
+            <span class="metric-value">Real-time</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">LLM Integration</span>
+            <span class="metric-value">Claude</span>
+          </div>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Multi-Modal</span>
+          <span class="tech-tag">LLMs</span>
+          <span class="tech-tag">Feature Engineering</span>
+          <span class="tech-tag">State Detection</span>
+          <span class="tech-tag">Scalable Architecture</span>
+        </div>
+        <div class="project-highlights">
+          <p>✓ Multi-modal data integration</p>
+          <p>✓ Real-time feature extraction</p>
+          <p>✓ LLM-based state identification</p>
+          <p>✓ Enabled new research directions</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="journey.html">My Journey</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Social</h4>
+          <ul>
+            <li><a href="https://www.linkedin.com/in/adnaanbashir" target="_blank">LinkedIn</a></li>
+            <li><a href="https://github.com/adnaanbashir" target="_blank">GitHub</a></li>
+            <li><a href="https://scholar.google.com/citations?user=HGkM1JkAAAAJ&hl=en" target="_blank">Google Scholar</a></li>
+            <li><a href="https://soundcloud.com/aadirecords" target="_blank">SoundCloud</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:adnan@example.com">Email</a></li>
+            <li><a href="https://calendly.com/adnanbashir" target="_blank">Calendly</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Adnan Bashir. Bridging research and production systems.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

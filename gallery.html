@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Adnan Bashir</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .gallery-auth {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      padding: 3rem 2rem;
+    }
+
+    .auth-form {
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+      border: 1px solid var(--border-color-strong);
+      border-radius: 12px;
+      padding: 3rem;
+      max-width: 400px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-form h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .auth-form p {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      transition: all var(--transition-normal);
+    }
+
+    .auth-form input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .auth-form input:focus {
+      outline: none;
+      border-color: var(--border-color-strong);
+      box-shadow: var(--glow);
+    }
+
+    .auth-form button {
+      width: 100%;
+    }
+
+    .auth-hint {
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding: 3rem 2rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-item:hover {
+      border-color: var(--border-color-strong);
+      box-shadow: var(--glow);
+      transform: translateY(-5px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item.empty {
+      opacity: 0.3;
+    }
+
+    .gallery-item.empty::after {
+      content: '📷';
+      font-size: 2rem;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 8, 16, 0.95);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .lightbox-image {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -2rem;
+      right: 0;
+      font-size: 2rem;
+      color: var(--accent-cyan);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: var(--accent-cyan);
+      cursor: pointer;
+      background: rgba(0, 217, 255, 0.1);
+      border: 1px solid var(--accent-cyan);
+      padding: 1rem;
+      border-radius: 4px;
+      transition: all var(--transition-normal);
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(0, 217, 255, 0.2);
+    }
+
+    .lightbox-prev {
+      left: -4rem;
+    }
+
+    .lightbox-next {
+      right: -4rem;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      .lightbox-prev,
+      .lightbox-next {
+        position: static;
+        margin: 0 1rem;
+      }
+
+      .lightbox-close {
+        top: auto;
+        bottom: -2rem;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <a href="index.html">AADI</a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="projects.html" class="nav-link">Projects</a></li>
+        <li><a href="publications.html" class="nav-link">Publications</a></li>
+        <li><a href="research.html" class="nav-link">Research</a></li>
+        <li><a href="teaching.html" class="nav-link">Teaching</a></li>
+        <li><a href="journey.html" class="nav-link">Journey</a></li>
+        <li><a href="interests.html" class="nav-link">Interests</a></li>
+        <li class="nav-dropdown">
+          <a href="#" class="nav-link active-dropdown">More <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="memes.html">Memes</a></li>
+            <li><a href="drawings.html">Drawings</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#contact" class="nav-link cta-button">Contact</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>📸 Personal Gallery</h1>
+    <p class="subtitle">A private collection of personal photographs</p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- Authentication Form (shown initially) -->
+    <div id="authSection" class="gallery-auth">
+      <div class="auth-form">
+        <h2>Gallery Access</h2>
+        <p>This is a private gallery. Please enter your access code.</p>
+        <input 
+          type="password" 
+          id="passwordInput" 
+          placeholder="Enter access code"
+          autocomplete="off"
+        >
+        <button type="button" id="authButton" class="btn btn-primary" onclick="authenticateGallery()">
+          Unlock Gallery
+        </button>
+        <div class="auth-hint">
+          💡 Hint: Combine your zodiac sign + your mother's first name (lowercase, no spaces)
+        </div>
+        <div id="authError" style="color: var(--accent-magenta); text-align: center; margin-top: 1rem; display: none;"></div>
+      </div>
+    </div>
+
+    <!-- Gallery Grid (shown after authentication) -->
+    <div id="gallerySection" style="display: none;">
+      <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+        <p>Click any image to view larger. Use arrow keys or buttons to navigate.</p>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Images will be generated here by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Lightbox / Image Viewer -->
+    <div class="lightbox" id="lightbox">
+      <div class="lightbox-content">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <div style="text-align: center;">
+          <button class="lightbox-nav lightbox-prev" onclick="previousImage()">‹</button>
+          <img id="lightboxImage" class="lightbox-image" src="" alt="Gallery image">
+          <button class="lightbox-nav lightbox-next" onclick="nextImage()">›</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="journey.html">My Journey</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Social</h4>
+          <ul>
+            <li><a href="https://www.linkedin.com/in/adnaanbashir" target="_blank">LinkedIn</a></li>
+            <li><a href="https://github.com/adnaanbashir" target="_blank">GitHub</a></li>
+            <li><a href="https://scholar.google.com/citations?user=HGkM1JkAAAAJ&hl=en" target="_blank">Google Scholar</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:adnan@example.com">Email</a></li>
+            <li><a href="https://calendly.com/adnanbashir" target="_blank">Calendly</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Adnan Bashir. Memories preserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Gallery state
+    let isAuthenticated = false;
+    let currentImageIndex = 0;
+    let uploadedImages = [];
+    const TOTAL_SLOTS = 100;
+
+    // Authentication function
+    function authenticateGallery() {
+      const password = document.getElementById('passwordInput').value.toLowerCase().trim();
+      // You should replace these with actual values
+      const correctPassword = 'sagittariusfattima'; // Example: zodiac + mother's name
+      
+      if (password === correctPassword) {
+        isAuthenticated = true;
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('gallerySection').style.display = 'block';
+        initializeGallery();
+      } else {
+        document.getElementById('authError').textContent = 'Incorrect access code. Try again.';
+        document.getElementById('authError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+      }
+    }
+
+    // Initialize gallery with placeholder structure
+    function initializeGallery() {
+      const gallery = document.getElementById('galleryGrid');
+      gallery.innerHTML = '';
+      
+      // Create 100 image slots
+      for (let i = 1; i <= TOTAL_SLOTS; i++) {
+        const item = document.createElement('div');
+        item.className = 'gallery-item empty';
+        item.id = `gallery-item-${i}`;
+        
+        // Check if image exists
+        const img = document.createElement('img');
+        img.src = `images/image${i}.jpg`;
+        img.alt = `Gallery image ${i}`;
+        img.style.display = 'none';
+        img.onload = function() {
+          item.classList.remove('empty');
+          img.style.display = 'block';
+          uploadedImages.push(i);
+        };
+        img.onerror = function() {
+          // Image doesn't exist, keep placeholder
+        };
+        
+        item.appendChild(img);
+        item.addEventListener('click', function() {
+          if (uploadedImages.includes(i)) {
+            openLightbox(i);
+          }
+        });
+        
+        gallery.appendChild(item);
+      }
+    }
+
+    // Lightbox functions
+    function openLightbox(imageNumber) {
+      currentImageIndex = imageNumber;
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImage');
+      img.src = `images/image${imageNumber}.jpg`;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function previousImage() {
+      let prev = currentImageIndex - 1;
+      while (prev > 0 && !uploadedImages.includes(prev)) {
+        prev--;
+      }
+      if (prev > 0) openLightbox(prev);
+    }
+
+    function nextImage() {
+      let next = currentImageIndex + 1;
+      while (next <= TOTAL_SLOTS && !uploadedImages.includes(next)) {
+        next++;
+      }
+      if (next <= TOTAL_SLOTS) openLightbox(next);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!isAuthenticated) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') previousImage();
+      if (e.key === 'ArrowRight') nextImage();
+    });
+
+    // Allow password submission with Enter key
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        authenticateGallery();
+      }
+    });
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
