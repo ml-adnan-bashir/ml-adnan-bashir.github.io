@@ -322,6 +322,50 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
+// HERO CARD QUOTE GENERATOR
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const lines = [
+    "THE A IN ML IS<br>THE SAME AS<br>THE D IN AI",
+    "THE S IN CODE<br>STANDS FOR<br>SPEED",
+    "THE F IN IT<br>IS FOR<br>FINISHED",
+    "THE P IN DATA<br>IS FOR<br>PRIVACY",
+    "THE C IN BUG<br>STANDS FOR<br>CORRECT",
+    "THE R IN DEVOPS<br>STANDS FOR<br>RELAX",
+    "THE E IN CSS<br>IS FOR<br>EASY",
+    "THE Q IN SQL<br>IS FOR<br>QUICK",
+    "THE U IN BASH<br>STANDS FOR<br>UNDO",
+    "THE T IN CLOUD<br>IS FOR<br>TANGIBLE"
+  ];
+
+  const card = document.getElementById('quoteCard');
+  const quoteText = document.getElementById('quoteText');
+  const diceOverlay = document.getElementById('diceOverlay');
+
+  if (card && quoteText && diceOverlay) {
+    card.addEventListener('click', () => {
+      // Hide text, show spinning dice
+      quoteText.style.opacity = '0';
+      diceOverlay.style.display = 'block';
+
+      setTimeout(() => {
+        // Pick a random line that isn't the current one
+        let randomLine;
+        do {
+          randomLine = lines[Math.floor(Math.random() * lines.length)];
+        } while (randomLine === quoteText.innerHTML);
+
+        // Swap text, hide dice, show text
+        quoteText.innerHTML = randomLine;
+        diceOverlay.style.display = 'none';
+        quoteText.style.opacity = '1';
+      }, 400); // 400 milliseconds of dice rolling
+    });
+  }
+});
+
+// ============================================
 // EXPORT FOR REUSE
 // ============================================
 

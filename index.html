@@ -9,14 +9,12 @@
   <link rel="stylesheet" href="advanced-animations.css">
 </head>
 <body>
-  <!-- Animated Background -->
   <div class="bg-animation">
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
     <div class="glow-orb orb-3"></div>
   </div>
 
-  <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-logo">
@@ -49,7 +47,6 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
       <div class="hero-text">
@@ -63,17 +60,22 @@
           <a href="journey.html" class="btn btn-secondary">Explore My Work</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="profile-card">
+<div class="hero-visual">
+        <img src="images/dp.png" alt="Adnan Bashir" class="profile-image">
+
+        
+        <div class="profile-card stack-effect" id="quoteCard">
+          <div class="dice-overlay" id="diceOverlay" style="display: none;">🎲</div>
           <div class="card-inner">
-            <div class="glitch-text">A in ML is for AADI</div>
+            <div class="glitch-text" id="quoteText" style="text-align: center; font-size: 25px; transition: opacity 0.2s;">
+              THE A IN ML IS<br>THE SAME AS<br>THE D IN AI
+            </div>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Featured Work Section -->
   <section class="featured-section">
     <div class="container">
       <h2 class="section-title">Featured Projects</h2>
@@ -100,7 +102,6 @@
     </div>
   </section>
 
-  <!-- Stats Section -->
   <section class="stats-section">
     <div class="container">
       <div class="stats-grid">
@@ -124,7 +125,27 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
+
+  <section class="my-work-section">
+    <div class="container">
+      <h2 class="section-title">My Work in Words</h2>
+      <div class="image-container">
+        <img src="images/myworkinwords.png" alt="My Work in Words summary">
+      </div>
+    </div>
+  </section>
+
+  <section class="my-work-section">
+    <div class="container">
+      <h2 class="section-title">Me with alot of Mes</h2>
+      <div class="image-container">
+        <img src="images/me.png" alt="Me with alot of Mes">
+      </div>
+    </div>
+  </section>
+
+
+
   <section id="contact" class="contact-section">
     <div class="container">
       <h2 class="section-title">Get in Touch</h2>
@@ -154,7 +175,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
@@ -185,5 +205,10 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Adnan Bashir. Crafted with precision and curiosity.</p>
-      </d
+        <p>&copy; <span data-year></span> Adnan Bashir. Crafted with precision and curiosity.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
