@@ -9,6 +9,20 @@
   <link rel="stylesheet" href="advanced-animations.css">
 </head>
 <body>
+  <!-- Blurred Background Image -->
+  <div class="bg-image-layer" id="bgImageLayer"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Blur Control Slider -->
+  <div class="blur-control" id="blurControl">
+    <button class="blur-toggle" id="blurToggle" title="Adjust Background Blur">◎</button>
+    <div class="blur-slider-container" id="blurSliderContainer">
+      <label class="blur-label">Blur</label>
+      <input type="range" id="blurSlider" min="0" max="30" value="10" class="blur-slider">
+      <span class="blur-value" id="blurValue">10px</span>
+    </div>
+  </div>
+
   <div class="bg-animation">
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
@@ -61,7 +75,7 @@
         </div>
       </div>
 <div class="hero-visual">
-        <img src="images/dp.png" alt="Adnan Bashir" class="profile-image">
+        <img src="images/dp1.png" alt="Adnan Bashir" class="profile-image dp-cycler" id="profileDp" title="Click to change photo">
 
         
         <div class="profile-card stack-effect" id="quoteCard">
@@ -121,6 +135,59 @@
           <div class="stat-number">∞</div>
           <div class="stat-label">Continuous Learning</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Favorite Math Equations Section -->
+  <section class="equations-section">
+    <div class="container">
+      <h2 class="section-title">Equations I Live By</h2>
+      <p class="equations-subtitle">The mathematical foundations that power modern machine learning</p>
+      <div class="equations-grid">
+
+        <div class="equation-card" data-category="optimization">
+          <div class="eq-icon">∇</div>
+          <h3>Gradient Descent Update</h3>
+          <div class="eq-formula">θ<sub>t+1</sub> = θ<sub>t</sub> − α · ∇<sub>θ</sub> J(θ)</div>
+          <p class="eq-note">The workhorse of deep learning — iteratively stepping toward minima in loss landscapes.</p>
+        </div>
+
+        <div class="equation-card" data-category="probability">
+          <div class="eq-icon">𝒫</div>
+          <h3>Bayes' Theorem</h3>
+          <div class="eq-formula">P(A|B) = P(B|A) · P(A) / P(B)</div>
+          <p class="eq-note">The bridge between prior beliefs and observed evidence. The foundation of probabilistic ML.</p>
+        </div>
+
+        <div class="equation-card" data-category="information">
+          <div class="eq-icon">𝐻</div>
+          <h3>Cross-Entropy Loss</h3>
+          <div class="eq-formula">ℒ = −Σ y<sub>i</sub> log(ŷ<sub>i</sub>)</div>
+          <p class="eq-note">Measures the gap between predicted distributions and truth — the loss function behind classification.</p>
+        </div>
+
+        <div class="equation-card" data-category="information">
+          <div class="eq-icon">D</div>
+          <h3>KL Divergence</h3>
+          <div class="eq-formula">D<sub>KL</sub>(P‖Q) = Σ P(x) log(P(x)/Q(x))</div>
+          <p class="eq-note">Quantifies how one distribution diverges from another. Central to VAEs and information theory.</p>
+        </div>
+
+        <div class="equation-card" data-category="attention">
+          <div class="eq-icon">𝑄𝐾</div>
+          <h3>Scaled Dot-Product Attention</h3>
+          <div class="eq-formula">Attention(Q,K,V) = softmax(QK<sup>T</sup>/√d<sub>k</sub>)V</div>
+          <p class="eq-note">The equation that sparked the Transformer revolution. "Attention is all you need."</p>
+        </div>
+
+        <div class="equation-card" data-category="optimization">
+          <div class="eq-icon">ℰ</div>
+          <h3>ELBO (VAE Objective)</h3>
+          <div class="eq-formula">ℒ = 𝔼<sub>q</sub>[log p(x|z)] − D<sub>KL</sub>(q(z|x)‖p(z))</div>
+          <p class="eq-note">Balances reconstruction fidelity with latent-space regularity in variational autoencoders.</p>
+        </div>
+
       </div>
     </div>
   </section>

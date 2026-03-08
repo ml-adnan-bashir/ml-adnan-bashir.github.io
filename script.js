@@ -375,3 +375,87 @@ window.portfolioUtils = {
   updateYear,
   highlightActiveNavLink
 };
+
+// ============================================
+// BACKGROUND BLUR SLIDER CONTROL
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const bgLayer = document.getElementById('bgImageLayer');
+  const slider = document.getElementById('blurSlider');
+  const blurValue = document.getElementById('blurValue');
+  const blurToggle = document.getElementById('blurToggle');
+  const sliderContainer = document.getElementById('blurSliderContainer');
+
+  if (slider && bgLayer) {
+    slider.addEventListener('input', () => {
+      const val = slider.value;
+      bgLayer.style.filter = `blur(${val}px)`;
+      blurValue.textContent = `${val}px`;
+    });
+  }
+
+  if (blurToggle && sliderContainer) {
+    blurToggle.addEventListener('click', () => {
+      sliderContainer.classList.toggle('visible');
+    });
+
+    // Close slider when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.blur-control')) {
+        sliderContainer.classList.remove('visible');
+      }
+    });
+  }
+});
+
+// ============================================
+// DP IMAGE CYCLER (Click to change profile pic)
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dpImage = document.getElementById('profileDp');
+  if (!dpImage) return;
+
+  const dpSources = ['images/dp1.png', 'images/dp2.png', 'images/dp3.png'];
+  let currentDpIndex = 0;
+
+  dpImage.addEventListener('click', () => {
+    if (dpImage.classList.contains('switching')) return; // prevent spam
+
+    dpImage.classList.add('switching');
+
+    setTimeout(() => {
+      currentDpIndex = (currentDpIndex + 1) % dpSources.length;
+      dpImage.src = dpSources[currentDpIndex];
+    }, 180); // swap at midpoint of animation
+
+    setTimeout(() => {
+      dpImage.classList.remove('switching');
+    }, 450);
+  });
+});
+
+// ============================================
+// EQUATION CARDS FADE-IN ON SCROLL
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const eqCards = document.querySelectorAll('.equation-card');
+  eqCards.forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(25px)';
+    card.style.transition = `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`;
+  });
+
+  const eqObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  eqCards.forEach(card => eqObserver.observe(card));
+});

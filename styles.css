@@ -53,7 +53,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(135deg, var(--darker-bg) 0%, #1a1f3a 100%);
+  background: var(--darker-bg);
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
@@ -2122,7 +2122,7 @@ body {
 
 /* Hover effect */
 .profile-image:hover {
-  transform: scale(20);
+  transform: scale(1.05);
   box-shadow: var(--glow-strong);
 }
 
@@ -2130,4 +2130,265 @@ body {
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
+}
+
+/* ============================================
+   BLURRED BACKGROUND IMAGE
+   ============================================ */
+
+.bg-image-layer {
+  position: fixed;
+  top: -20px;
+  left: -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  background: url('bg.jpg') center/cover no-repeat;
+  filter: blur(10px);
+  z-index: -3;
+  transition: filter 0.3s ease;
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 8, 16, 0.75);
+  z-index: -2;
+}
+
+/* ============================================
+   BLUR CONTROL SLIDER
+   ============================================ */
+
+.blur-control {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.blur-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color-strong);
+  background: rgba(10, 14, 39, 0.85);
+  color: var(--accent-cyan);
+  font-size: 1.3rem;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--glow);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blur-toggle:hover {
+  box-shadow: var(--glow-strong);
+  transform: scale(1.1);
+}
+
+.blur-slider-container {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 14, 39, 0.9);
+  border: 1px solid var(--border-color-strong);
+  border-radius: 30px;
+  padding: 8px 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--glow);
+}
+
+.blur-slider-container.visible {
+  display: flex;
+}
+
+.blur-label {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.blur-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.blur-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.blur-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.blur-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  border: none;
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+  cursor: pointer;
+}
+
+.blur-value {
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* ============================================
+   DP CYCLER (CLICK TO CHANGE PHOTO)
+   ============================================ */
+
+.dp-cycler {
+  cursor: pointer;
+  position: relative;
+}
+
+.dp-cycler::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dp-cycler.switching {
+  animation: dpSwitch 0.45s ease;
+}
+
+@keyframes dpSwitch {
+  0%   { transform: scale(1) rotateY(0deg); opacity: 1; }
+  40%  { transform: scale(0.85) rotateY(90deg); opacity: 0.3; }
+  60%  { transform: scale(0.85) rotateY(-90deg); opacity: 0.3; }
+  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+}
+
+/* ============================================
+   MATH EQUATIONS SECTION
+   ============================================ */
+
+.equations-section {
+  padding: 5rem 2rem;
+  position: relative;
+  border-top: 1px solid var(--border-color);
+}
+
+.equations-subtitle {
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 1.05rem;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+.equations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.equation-card {
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(0, 217, 255, 0.04), rgba(131, 56, 236, 0.06));
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.equation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-magenta));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.equation-card:hover {
+  border-color: var(--border-color-strong);
+  box-shadow: var(--glow);
+  transform: translateY(-4px);
+}
+
+.equation-card:hover::before {
+  opacity: 1;
+}
+
+.eq-icon {
+  font-size: 1.6rem;
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+
+.equation-card h3 {
+  font-size: 1.1rem;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.eq-formula {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 217, 255, 0.06);
+  border: 1px solid rgba(0, 217, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.eq-note {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+  .equations-grid {
+    grid-template-columns: 1fr;
+  }
 }
