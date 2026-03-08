@@ -39,12 +39,12 @@
 
 .orb-2 {
   animation-delay: 5s, 1s;
-  box-shadow: 0 0 100px rgba(255, 0, 110, 0.4);
+  box-shadow: 0 0 100px rgba(0, 217, 255, 0.15);
 }
 
 .orb-3 {
   animation-delay: 10s, 2s;
-  box-shadow: 0 0 100px rgba(131, 56, 236, 0.4);
+  box-shadow: 0 0 100px rgba(0, 217, 255, 0.08);
 }
 
 /* ============================================
@@ -95,7 +95,7 @@
 /* Enhanced profile card with rotation and glow */
 .profile-card {
   animation: profileFloat 6s ease-in-out infinite;
-  box-shadow: 0 0 50px rgba(0, 217, 255, 0.4), 0 0 100px rgba(131, 56, 236, 0.2);
+  box-shadow: 0 0 50px rgba(0, 217, 255, 0.4), 0 0 100px rgba(0, 217, 255, 0.08);
 }
 
 @keyframes profileFloat {
@@ -130,12 +130,12 @@
 
 @keyframes cardGradient {
   0%, 100% { 
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(131, 56, 236, 0.15));
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(0, 217, 255, 0.08));
     box-shadow: 0 0 60px rgba(0, 217, 255, 0.2);
   }
   50% { 
-    background: linear-gradient(135deg, rgba(131, 56, 236, 0.15), rgba(255, 0, 110, 0.1));
-    box-shadow: 0 0 80px rgba(131, 56, 236, 0.3);
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(0, 217, 255, 0.15));
+    box-shadow: 0 0 80px rgba(0, 217, 255, 0.08);
   }
 }
 
@@ -243,7 +243,7 @@
 /* Stat cards with counter animation */
 .stat-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(131, 56, 236, 0.08));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(0, 217, 255, 0.08));
   overflow: hidden;
 }
 
@@ -400,7 +400,7 @@
 }
 
 .dropdown-menu a:hover {
-  background: linear-gradient(90deg, rgba(0, 217, 255, 0.1), rgba(131, 56, 236, 0.1));
+  background: linear-gradient(90deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.08));
   border-left-color: var(--accent-magenta);
   transform: translateX(5px);
 }
@@ -427,13 +427,13 @@
 
 .timeline-item:hover .timeline-dot {
   animation: none;
-  box-shadow: 0 0 40px rgba(0, 217, 255, 0.8), 0 0 80px rgba(131, 56, 236, 0.4);
+  box-shadow: 0 0 40px rgba(0, 217, 255, 0.8), 0 0 80px rgba(0, 217, 255, 0.08);
 }
 
 .timeline-content {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(131, 56, 236, 0.08));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(0, 217, 255, 0.08));
   backdrop-filter: blur(15px);
 }
 
@@ -548,7 +548,7 @@
 .contact-link {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(131, 56, 236, 0.08));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(0, 217, 255, 0.08));
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 217, 255, 0.2);
 }
@@ -764,7 +764,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(131, 56, 236, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.08), transparent);
   transition: left 0.5s ease;
 }
 
@@ -774,7 +774,7 @@ body {
 
 .tech-tag:hover {
   transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 5px 15px rgba(131, 56, 236, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 217, 255, 0.08);
 }
 
 .highlight {
@@ -794,7 +794,7 @@ body {
    ============================================ */
 
 .game-card {
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(131, 56, 236, 0.08));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(0, 217, 255, 0.08));
   backdrop-filter: blur(15px);
   border: 1px solid rgba(0, 217, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -827,7 +827,7 @@ body {
 }
 
 .game-difficulty {
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(131, 56, 236, 0.1));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 217, 255, 0.08));
   backdrop-filter: blur(10px);
   border: 1px solid var(--accent-cyan);
 }

@@ -9,8 +9,8 @@
   --card-bg: rgba(15, 23, 42, 0.8);
   --accent-cyan: #00d9ff;
   --accent-cyan-dark: #00a8cc;
-  --accent-magenta: #ff006e;
-  --accent-purple: #8338ec;
+  --accent-magenta: #00d9ff;
+  --accent-purple: #00b8d4;
   --text-primary: #f0f9ff;
   --text-secondary: #94a3b8;
   --text-tertiary: #64748b;
@@ -20,8 +20,8 @@
   /* Effects */
   --glow: 0 0 20px rgba(0, 217, 255, 0.3);
   --glow-strong: 0 0 40px rgba(0, 217, 255, 0.5);
-  --glow-magenta: 0 0 30px rgba(255, 0, 110, 0.3);
-  --glow-magenta-strong: 0 0 50px rgba(255, 0, 110, 0.6);
+  --glow-magenta: 0 0 30px rgba(0, 217, 255, 0.3);
+  --glow-magenta-strong: 0 0 50px rgba(0, 217, 255, 0.6);
   
   /* Spacing */
   --spacing-xs: 0.5rem;
@@ -350,7 +350,7 @@ body {
   left: -10%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(131, 56, 236, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 217, 255, 0.06) 0%, transparent 70%);
   animation: float 20s ease-in-out infinite 5s;
   z-index: 0;
 }
@@ -475,7 +475,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(131, 56, 236, 0.15));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(0, 217, 255, 0.1));
   border: 2px solid var(--border-color-strong);
   display: flex;
   align-items: center;
@@ -490,7 +490,7 @@ body {
   font-family: var(--font-mono);
   font-size: 3.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-cyan), #00e5ff, var(--accent-cyan-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -528,7 +528,7 @@ body {
 
 .featured-card {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   backdrop-filter: blur(10px);
@@ -596,7 +596,7 @@ body {
 .stat-card {
   text-align: center;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   transition: all var(--transition-normal);
@@ -842,7 +842,7 @@ body {
 .project-card,
 .publication-card {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   backdrop-filter: blur(10px);
@@ -882,8 +882,8 @@ body {
 }
 
 .badge-enterprise { border-color: #00d9ff; background: rgba(0, 217, 255, 0.15); }
-.badge-research { border-color: var(--accent-purple); background: rgba(131, 56, 236, 0.1); }
-.badge-analytics { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.1); }
+.badge-research { border-color: var(--accent-purple); background: rgba(0, 217, 255, 0.08); }
+.badge-analytics { border-color: var(--accent-magenta); background: rgba(0, 217, 255, 0.08); }
 .badge-architecture { border-color: #00d9ff; background: rgba(0, 217, 255, 0.1); }
 
 .project-status {
@@ -945,7 +945,7 @@ body {
 .tech-tag {
   display: inline-block;
   padding: 0.4rem 0.8rem;
-  background: rgba(131, 56, 236, 0.1);
+  background: rgba(0, 217, 255, 0.08);
   border: 1px solid var(--accent-purple);
   border-radius: 4px;
   font-size: 0.8rem;
@@ -1029,7 +1029,7 @@ body {
 
 .teaching-philosophy {
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   margin-bottom: 3rem;
@@ -1050,7 +1050,7 @@ body {
 
 .course-card {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   transition: all var(--transition-normal);
@@ -1134,7 +1134,7 @@ body {
 
 .outcome-card {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 8px;
   text-align: center;
@@ -1154,7 +1154,7 @@ body {
 
 .course-materials {
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border-top: 1px solid var(--border-color);
 }
 
@@ -1238,7 +1238,7 @@ body {
 }
 
 .timeline-content {
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 2rem;
@@ -1289,7 +1289,7 @@ body {
 
 .research-statement {
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   margin-bottom: 3rem;
@@ -1313,7 +1313,7 @@ body {
 
 .research-area {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   transition: all var(--transition-normal);
@@ -1353,7 +1353,7 @@ body {
 .keyword {
   display: inline-block;
   padding: 0.3rem 0.7rem;
-  background: rgba(131, 56, 236, 0.1);
+  background: rgba(0, 217, 255, 0.08);
   border: 1px solid var(--accent-purple);
   border-radius: 4px;
   font-size: 0.8rem;
@@ -1372,7 +1372,7 @@ body {
 
 .active-project {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
 }
@@ -1441,7 +1441,7 @@ body {
 
 .collab-card {
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 8px;
 }
@@ -1478,7 +1478,7 @@ body {
 
 .interest-card {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   text-align: center;
@@ -1509,7 +1509,7 @@ body {
 
 .values-section {
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
 }
 
 .values-content {
@@ -1549,7 +1549,7 @@ body {
 
 .facts-list p {
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: var(--text-secondary);
@@ -1585,7 +1585,7 @@ body {
 .game-card,
 .meme-category {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   transition: all var(--transition-normal);
@@ -1671,7 +1671,7 @@ body {
 
 .step {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   position: relative;
@@ -1749,7 +1749,7 @@ body {
 
 .guidelines-content {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 12px;
   color: var(--text-secondary);
@@ -1765,7 +1765,7 @@ body {
 
 .reason {
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 8px;
   text-align: center;
@@ -1840,7 +1840,7 @@ body {
 
 .skill-phase {
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
   border: 1px solid var(--border-color);
   border-radius: 8px;
 }
@@ -1858,7 +1858,7 @@ body {
 
 .milestones {
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 217, 255, 0.04));
 }
 
 .milestones-grid {
@@ -2048,12 +2048,12 @@ body {
   cursor: pointer;
   position: relative;
   transition: transform 0.2s;
-  box-shadow: 5px 5px 0px rgba(0, 217, 255, 0.2), 10px 10px 0px rgba(131, 56, 236, 0.1);
+  box-shadow: 5px 5px 0px rgba(0, 217, 255, 0.2), 10px 10px 0px rgba(0, 217, 255, 0.08);
 }
 
 .stack-effect:active {
   transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0px rgba(0, 217, 255, 0.2), 5px 5px 0px rgba(131, 56, 236, 0.1);
+  box-shadow: 2px 2px 0px rgba(0, 217, 255, 0.2), 5px 5px 0px rgba(0, 217, 255, 0.08);
 }
 
 .dice-overlay {
@@ -2320,7 +2320,7 @@ body {
 
 .equation-card {
   padding: 2rem;
-  background: linear-gradient(145deg, rgba(0, 217, 255, 0.04), rgba(131, 56, 236, 0.06));
+  background: linear-gradient(145deg, rgba(0, 217, 255, 0.04), rgba(0, 217, 255, 0.05));
   border: 1px solid var(--border-color);
   border-radius: 14px;
   backdrop-filter: blur(10px);
@@ -2336,7 +2336,7 @@ body {
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-magenta));
+  background: linear-gradient(90deg, var(--accent-cyan-dark), var(--accent-cyan), #00e5ff);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
