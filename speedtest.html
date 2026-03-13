@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>M SpeedTest</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --chrome: #2a2a2a;
+    --chrome-light: #3a3a3a;
+    --needle-red: #ff1a1a;
+    --m-blue: #0066B1;
+    --m-purple: #6E1E8C;
+    --m-red: #EB0A1E;
+    --text-primary: #ffffff;
+    --text-dim: #888888;
+    --text-accent: #ff3333;
+    --green-glow: #00ff66;
+    --amber: #ffaa00;
+    --danger-zone: #ff4400;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px env(safe-area-inset-bottom, 12px);
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(30,30,30,0.6) 0%, transparent 60%),
+      var(--bg-dark);
+  }
+
+  /* === TOP BAR === */
+  .top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0 8px;
+    flex-shrink: 0;
+  }
+  .top-bar .status-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    transition: color 0.3s;
+  }
+  .top-bar .status-label.active { color: var(--green-glow); text-shadow: 0 0 12px rgba(0,255,102,0.4); }
+  .top-bar .status-label.testing { color: var(--amber); text-shadow: 0 0 12px rgba(255,170,0,0.4); }
+
+  .m-badge {
+    display: flex; gap: 2px; align-items: center;
+  }
+  .m-badge span {
+    display: block; width: 5px; height: 16px; border-radius: 1px;
+  }
+  .m-badge span:nth-child(1) { background: var(--m-blue); }
+  .m-badge span:nth-child(2) { background: var(--m-purple); }
+  .m-badge span:nth-child(3) { background: var(--m-red); }
+
+  /* === GAUGE CONTAINER === */
+  .gauge-wrapper {
+    position: relative;
+    width: min(88vw, 380px);
+    height: min(88vw, 380px);
+    flex-shrink: 0;
+  }
+
+  canvas#gaugeCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Digital readout overlay */
+  .digital-readout {
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .digital-readout .speed-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--text-accent);
+    text-shadow: 0 0 20px rgba(255,51,51,0.5), 0 0 40px rgba(255,51,51,0.2);
+    line-height: 1;
+    min-width: 160px;
+    display: block;
+  }
+  .digital-readout .speed-unit {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-top: 2px;
+  }
+
+  /* === STATS ROW === */
+  .stats-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--m-blue), var(--m-purple), var(--m-red));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .stat-card.has-value::before { opacity: 1; }
+  .stat-card .stat-icon { font-size: 16px; margin-bottom: 4px; }
+  .stat-card .stat-label {
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .stat-card .stat-suffix {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* === ACTION BUTTON === */
+  .action-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-bottom: 4px;
+  }
+
+  .btn-start {
+    width: 100%;
+    max-width: 320px;
+    height: 56px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Orbitron', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border: 1px solid #333;
+    transition: all 0.3s;
+  }
+  .btn-start::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--m-blue), var(--m-purple), var(--m-red));
+    opacity: 0.9;
+    transition: opacity 0.3s;
+  }
+  .btn-start span { position: relative; z-index: 1; }
+  .btn-start:active { transform: scale(0.97); }
+  .btn-start.testing {
+    pointer-events: none;
+  }
+  .btn-start.testing::before {
+    opacity: 0.4;
+  }
+  .btn-start.done::before {
+    background: linear-gradient(135deg, #1a4a2a, #0a3a1a);
+    opacity: 0.9;
+  }
+
+  .phase-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    min-height: 14px;
+  }
+
+  /* === PROGRESS BAR === */
+  .progress-track {
+    width: 100%;
+    max-width: 320px;
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .progress-track.visible { opacity: 1; }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--m-blue), var(--m-red));
+    border-radius: 2px;
+    transition: width 0.2s;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="status-label" id="statusLabel">READY</div>
+  <div class="m-badge">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="gauge-wrapper">
+  <canvas id="gaugeCanvas"></canvas>
+  <div class="digital-readout">
+    <span class="speed-value" id="digitalSpeed">0.0</span>
+    <div class="speed-unit">Mbps</div>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card" id="pingCard">
+    <div class="stat-icon">⚡</div>
+    <div class="stat-label">Ping</div>
+    <div class="stat-value" id="pingValue">—</div>
+    <div class="stat-suffix">ms</div>
+  </div>
+  <div class="stat-card" id="downloadCard">
+    <div class="stat-icon">↓</div>
+    <div class="stat-label">Download</div>
+    <div class="stat-value" id="downloadValue">—</div>
+    <div class="stat-suffix">Mbps</div>
+  </div>
+  <div class="stat-card" id="uploadCard">
+    <div class="stat-icon">↑</div>
+    <div class="stat-label">Upload</div>
+    <div class="stat-value" id="uploadValue">—</div>
+    <div class="stat-suffix">Mbps</div>
+  </div>
+</div>
+
+<div class="action-area">
+  <div class="phase-label" id="phaseLabel"></div>
+  <button class="btn-start" id="btnStart" onclick="startTest()">
+    <span>START TEST</span>
+  </button>
+  <div class="progress-track" id="progressTrack">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  BMW M-STYLE GAUGE RENDERER
+// ============================================================
+const canvas = document.getElementById('gaugeCanvas');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+
+let currentNeedle = 0; // 0-200 Mbps range on gauge
+let targetNeedle = 0;
+const MAX_SPEED = 200; // Max on gauge (Mbps)
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function drawGauge(speed) {
+  const w = canvas.width / dpr;
+  const h = canvas.height / dpr;
+  const cx = w / 2;
+  const cy = h / 2;
+  const r = Math.min(cx, cy) * 0.88;
+  ctx.clearRect(0, 0, w, h);
+
+  // === OUTER BEZEL (metallic ring) ===
+  const bezelGrad = ctx.createRadialGradient(cx, cy, r * 0.92, cx, cy, r * 1.06);
+  bezelGrad.addColorStop(0, '#555');
+  bezelGrad.addColorStop(0.3, '#333');
+  bezelGrad.addColorStop(0.5, '#4a4a4a');
+  bezelGrad.addColorStop(0.7, '#222');
+  bezelGrad.addColorStop(1, '#1a1a1a');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 1.04, 0, Math.PI * 2);
+  ctx.fillStyle = bezelGrad;
+  ctx.fill();
+
+  // Inner bezel highlight
+  const innerBezelGrad = ctx.createRadialGradient(cx - r * 0.2, cy - r * 0.3, 0, cx, cy, r * 1.0);
+  innerBezelGrad.addColorStop(0, 'rgba(120,120,120,0.15)');
+  innerBezelGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.98, 0, Math.PI * 2);
+  ctx.fillStyle = innerBezelGrad;
+  ctx.fill();
+
+  // === DIAL FACE ===
+  const faceGrad = ctx.createRadialGradient(cx, cy * 0.85, 0, cx, cy, r * 0.94);
+  faceGrad.addColorStop(0, '#1a1a1a');
+  faceGrad.addColorStop(0.7, '#111');
+  faceGrad.addColorStop(1, '#0a0a0a');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.94, 0, Math.PI * 2);
+  ctx.fillStyle = faceGrad;
+  ctx.fill();
+
+  // Subtle texture rings
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.92, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(60,60,60,0.3)';
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+
+  // === SCALE ARC RANGE ===
+  // Gauge spans from 225deg (bottom-left) to -45deg (bottom-right) = 270deg sweep
+  const startAngle = (225 * Math.PI) / 180;
+  const endAngle = (-45 * Math.PI) / 180;
+  const sweep = (270 * Math.PI) / 180;
+
+  // Major ticks: 0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200
+  const majorValues = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200];
+
+  // === DANGER ZONE ARC (160-200 region) ===
+  const dangerStart = startAngle - (160 / MAX_SPEED) * sweep;
+  const dangerEnd = startAngle - sweep;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.84, dangerStart, dangerEnd, true);
+  ctx.strokeStyle = 'rgba(255,68,0,0.25)';
+  ctx.lineWidth = r * 0.08;
+  ctx.stroke();
+
+  // Orange highlight strip at 180-200
+  const orangeStart = startAngle - (180 / MAX_SPEED) * sweep;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.89, orangeStart, dangerEnd, true);
+  ctx.strokeStyle = 'rgba(255,120,0,0.6)';
+  ctx.lineWidth = r * 0.025;
+  ctx.stroke();
+
+  // Red tip at 190-200
+  const redStart = startAngle - (190 / MAX_SPEED) * sweep;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.89, redStart, dangerEnd, true);
+  ctx.strokeStyle = 'rgba(255,30,0,0.8)';
+  ctx.lineWidth = r * 0.025;
+  ctx.stroke();
+
+  // === TICK MARKS ===
+  majorValues.forEach((val, i) => {
+    const frac = val / MAX_SPEED;
+    const angle = startAngle - frac * sweep;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    // Major tick
+    const outerR = r * 0.88;
+    const innerR = r * 0.76;
+    ctx.beginPath();
+    ctx.moveTo(cx + cos * outerR, cy - sin * outerR);
+    ctx.lineTo(cx + cos * innerR, cy - sin * innerR);
+    ctx.strokeStyle = val >= 180 ? '#ff4400' : '#ffffff';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Minor ticks (4 between each major, except last)
+    if (i < majorValues.length - 1) {
+      for (let m = 1; m <= 4; m++) {
+        const minorVal = val + m * 4; // 4 Mbps per minor tick
+        const mFrac = minorVal / MAX_SPEED;
+        const mAngle = startAngle - mFrac * sweep;
+        const mCos = Math.cos(mAngle);
+        const mSin = Math.sin(mAngle);
+        const mInnerR = r * 0.81;
+        ctx.beginPath();
+        ctx.moveTo(cx + mCos * outerR, cy - mSin * outerR);
+        ctx.lineTo(cx + mCos * mInnerR, cy - mSin * mInnerR);
+        ctx.strokeStyle = minorVal >= 180 ? 'rgba(255,68,0,0.7)' : 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    // Number labels
+    const labelR = r * 0.66;
+    const lx = cx + cos * labelR;
+    const ly = cy - sin * labelR;
+    ctx.fillStyle = val >= 180 ? '#ff4400' : '#cccccc';
+    ctx.font = `bold ${r * 0.085}px 'Orbitron', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(val.toString(), lx, ly);
+  });
+
+  // === INNER LABELS ===
+  // "Mbps" label
+  ctx.fillStyle = '#666';
+  ctx.font = `${r * 0.065}px 'Inter', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('Mbps', cx + r * 0.15, cy + r * 0.12);
+
+  // === BMW M LOGO (tri-stripe) ===
+  const mw = r * 0.06;
+  const mh = r * 0.14;
+  const my = cy - r * 0.08;
+  const mx = cx - mw * 1.8;
+  const colors = ['#0066B1', '#6E1E8C', '#EB0A1E'];
+  colors.forEach((c, i) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(mx + i * (mw + 1.5), my, mw, mh);
+  });
+  // "M" text
+  ctx.fillStyle = '#fff';
+  ctx.font = `bold ${r * 0.11}px 'Orbitron', monospace`;
+  ctx.textAlign = 'center';
+  ctx.fillText('M', cx, cy + r * 0.2);
+
+  // === NEEDLE ===
+  const needleFrac = Math.min(speed, MAX_SPEED) / MAX_SPEED;
+  const needleAngle = startAngle - needleFrac * sweep;
+  const needleCos = Math.cos(needleAngle);
+  const needleSin = Math.sin(needleAngle);
+
+  // Needle shadow
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,20,20,0.4)';
+  ctx.shadowBlur = 15;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+
+  // Needle body
+  const needleLen = r * 0.78;
+  const needleTail = r * 0.15;
+  const needleW = r * 0.025;
+
+  ctx.beginPath();
+  // Tip
+  ctx.moveTo(cx + needleCos * needleLen, cy - needleSin * needleLen);
+  // Left side
+  const perpCos = Math.cos(needleAngle + Math.PI / 2);
+  const perpSin = Math.sin(needleAngle + Math.PI / 2);
+  ctx.lineTo(cx + perpCos * needleW, cy - perpSin * needleW);
+  // Tail
+  ctx.lineTo(cx - needleCos * needleTail, cy + needleSin * needleTail);
+  // Right side
+  ctx.lineTo(cx - perpCos * needleW, cy + perpSin * needleW);
+  ctx.closePath();
+
+  const needleGrad = ctx.createLinearGradient(
+    cx - needleCos * needleTail, cy + needleSin * needleTail,
+    cx + needleCos * needleLen, cy - needleSin * needleLen
+  );
+  needleGrad.addColorStop(0, '#aa0000');
+  needleGrad.addColorStop(0.4, '#ff1a1a');
+  needleGrad.addColorStop(1, '#ff3333');
+  ctx.fillStyle = needleGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // Center cap (layered)
+  const capGrad = ctx.createRadialGradient(cx - 2, cy - 3, 0, cx, cy, r * 0.08);
+  capGrad.addColorStop(0, '#666');
+  capGrad.addColorStop(0.5, '#444');
+  capGrad.addColorStop(1, '#222');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.07, 0, Math.PI * 2);
+  ctx.fillStyle = capGrad;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.04, 0, Math.PI * 2);
+  ctx.fillStyle = '#555';
+  ctx.fill();
+}
+
+// ============================================================
+//  ANIMATION LOOP
+// ============================================================
+function animate() {
+  const diff = targetNeedle - currentNeedle;
+  const easing = Math.abs(diff) > 20 ? 0.08 : 0.05;
+  currentNeedle += diff * easing;
+  if (Math.abs(diff) < 0.1) currentNeedle = targetNeedle;
+
+  drawGauge(currentNeedle);
+
+  // Update digital display
+  const displayVal = currentNeedle;
+  document.getElementById('digitalSpeed').textContent =
+    displayVal < 10 ? displayVal.toFixed(1) : displayVal.toFixed(1);
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ============================================================
+//  SPEED TEST ENGINE
+// ============================================================
+let isTesting = false;
+
+// Test URLs - uses multiple public CDN endpoints for reliable testing
+// We generate random data blobs locally for upload and use well-known CDN files for download
+const TEST_URLS = [
+  'https://speed.cloudflare.com/__down?bytes=10000000',
+  'https://speed.cloudflare.com/__down?bytes=25000000',
+  'https://speed.cloudflare.com/__down?bytes=50000000',
+];
+
+async function measurePing() {
+  const pings = [];
+  for (let i = 0; i < 5; i++) {
+    const start = performance.now();
+    try {
+      await fetch('https://speed.cloudflare.com/__down?bytes=0', {
+        mode: 'cors',
+        cache: 'no-store',
+      });
+      pings.push(performance.now() - start);
+    } catch (e) {
+      // Fallback: measure against any reachable endpoint
+      try {
+        await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
+        pings.push(performance.now() - start);
+      } catch (_) {}
+    }
+    await sleep(100);
+  }
+  if (pings.length === 0) return 0;
+  pings.sort((a, b) => a - b);
+  // Return median
+  return pings[Math.floor(pings.length / 2)];
+}
+
+async function measureDownload(onProgress) {
+  const testDuration = 8000; // 8 seconds
+  const startTime = performance.now();
+  let totalBytes = 0;
+  let speeds = [];
+  let lastCheck = startTime;
+  let lastBytes = 0;
+  const controller = new AbortController();
+
+  // Start multiple parallel downloads
+  const downloadChunk = async (size) => {
+    try {
+      const url = `https://speed.cloudflare.com/__down?bytes=${size}&_=${Date.now()}_${Math.random()}`;
+      const response = await fetch(url, {
+        mode: 'cors',
+        cache: 'no-store',
+        signal: controller.signal,
+      });
+      const reader = response.body.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.length;
+
+        const now = performance.now();
+        if (now - lastCheck >= 250) {
+          const intervalBytes = totalBytes - lastBytes;
+          const intervalSec = (now - lastCheck) / 1000;
+          const speedMbps = (intervalBytes * 8) / (intervalSec * 1000000);
+          speeds.push(speedMbps);
+          onProgress(speedMbps);
+          lastCheck = now;
+          lastBytes = totalBytes;
+        }
+
+        if (now - startTime >= testDuration) {
+          controller.abort();
+          return;
+        }
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') console.warn('Download chunk error:', e);
+    }
+  };
+
+  // Start with smaller chunks, then increase
+  const promises = [];
+  const chunkSizes = [5000000, 10000000, 10000000, 25000000, 25000000, 25000000];
+
+  for (const size of chunkSizes) {
+    if (performance.now() - startTime >= testDuration) break;
+    promises.push(downloadChunk(size));
+    await sleep(200);
+  }
+
+  // Wait for all or timeout
+  await Promise.race([
+    Promise.allSettled(promises),
+    sleep(testDuration + 1000),
+  ]);
+
+  controller.abort();
+
+  // Calculate average speed (trim top/bottom 10%)
+  if (speeds.length === 0) {
+    const elapsed = (performance.now() - startTime) / 1000;
+    return (totalBytes * 8) / (elapsed * 1000000);
+  }
+
+  speeds.sort((a, b) => a - b);
+  const trim = Math.floor(speeds.length * 0.1);
+  const trimmed = speeds.slice(trim, speeds.length - trim || undefined);
+  const avg = trimmed.reduce((a, b) => a + b, 0) / trimmed.length;
+  return avg;
+}
+
+async function measureUpload(onProgress) {
+  const testDuration = 6000;
+  const startTime = performance.now();
+  let totalBytes = 0;
+  let speeds = [];
+  let lastCheck = startTime;
+  let lastBytes = 0;
+
+  const uploadChunk = async (sizeMB) => {
+    try {
+      const data = new ArrayBuffer(sizeMB * 1000000);
+      const blob = new Blob([data]);
+      const url = `https://speed.cloudflare.com/__up?_=${Date.now()}_${Math.random()}`;
+      const start = performance.now();
+      await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-store',
+        body: blob,
+      });
+      const elapsed = performance.now() - start;
+      totalBytes += blob.size;
+      const speedMbps = (blob.size * 8) / ((elapsed / 1000) * 1000000);
+      speeds.push(speedMbps);
+      onProgress(speedMbps);
+    } catch (e) {
+      console.warn('Upload chunk error:', e);
+    }
+  };
+
+  // Sequential uploads of increasing size
+  const sizes = [1, 2, 2, 4, 4, 4, 8, 8];
+  for (const size of sizes) {
+    if (performance.now() - startTime >= testDuration) break;
+    await uploadChunk(size);
+  }
+
+  if (speeds.length === 0) return 0;
+  speeds.sort((a, b) => a - b);
+  const trim = Math.floor(speeds.length * 0.1);
+  const trimmed = speeds.slice(trim, speeds.length - trim || undefined);
+  return trimmed.reduce((a, b) => a + b, 0) / trimmed.length;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function setPhase(text) {
+  document.getElementById('phaseLabel').textContent = text;
+}
+
+function setProgress(pct) {
+  const track = document.getElementById('progressTrack');
+  const fill = document.getElementById('progressFill');
+  track.classList.toggle('visible', pct > 0);
+  fill.style.width = pct + '%';
+}
+
+function setStatus(text, cls) {
+  const el = document.getElementById('statusLabel');
+  el.textContent = text;
+  el.className = 'status-label ' + (cls || '');
+}
+
+async function startTest() {
+  if (isTesting) return;
+  isTesting = true;
+
+  const btn = document.getElementById('btnStart');
+  btn.classList.add('testing');
+  btn.querySelector('span').textContent = 'TESTING...';
+  setStatus('TESTING', 'testing');
+
+  // Reset stats
+  ['pingValue', 'downloadValue', 'uploadValue'].forEach(id => {
+    document.getElementById(id).textContent = '—';
+  });
+  ['pingCard', 'downloadCard', 'uploadCard'].forEach(id => {
+    document.getElementById(id).classList.remove('has-value');
+  });
+  targetNeedle = 0;
+
+  try {
+    // Phase 1: Ping
+    setPhase('MEASURING LATENCY...');
+    setProgress(5);
+    const ping = await measurePing();
+    document.getElementById('pingValue').textContent = Math.round(ping);
+    document.getElementById('pingCard').classList.add('has-value');
+    setProgress(15);
+    await sleep(300);
+
+    // Phase 2: Download
+    setPhase('TESTING DOWNLOAD...');
+    let dlSamples = 0;
+    const downloadSpeed = await measureDownload((instantSpeed) => {
+      targetNeedle = Math.min(instantSpeed, MAX_SPEED);
+      dlSamples++;
+      setProgress(15 + Math.min(dlSamples * 3, 40));
+    });
+    document.getElementById('downloadValue').textContent = downloadSpeed.toFixed(1);
+    document.getElementById('downloadCard').classList.add('has-value');
+    setProgress(60);
+    await sleep(500);
+
+    // Phase 3: Upload
+    setPhase('TESTING UPLOAD...');
+    targetNeedle = 0;
+    await sleep(400);
+    let ulSamples = 0;
+    const uploadSpeed = await measureUpload((instantSpeed) => {
+      targetNeedle = Math.min(instantSpeed, MAX_SPEED);
+      ulSamples++;
+      setProgress(60 + Math.min(ulSamples * 4, 35));
+    });
+    document.getElementById('uploadValue').textContent = uploadSpeed.toFixed(1);
+    document.getElementById('uploadCard').classList.add('has-value');
+    setProgress(100);
+
+    // Settle needle on download speed (main result)
+    targetNeedle = Math.min(downloadSpeed, MAX_SPEED);
+    setPhase('');
+    setStatus('COMPLETE', 'active');
+    btn.classList.remove('testing');
+    btn.classList.add('done');
+    btn.querySelector('span').textContent = 'TEST AGAIN';
+
+  } catch (err) {
+    console.error('Speed test error:', err);
+    setPhase('TEST FAILED — TAP TO RETRY');
+    setStatus('ERROR', '');
+    btn.classList.remove('testing');
+    btn.querySelector('span').textContent = 'RETRY';
+    targetNeedle = 0;
+  }
+
+  await sleep(1500);
+  setProgress(0);
+  isTesting = false;
+  btn.classList.remove('done');
+}
+
+// ============================================================
+//  PWA SERVICE WORKER REGISTRATION
+// ============================================================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
