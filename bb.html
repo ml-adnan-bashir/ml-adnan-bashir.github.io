@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#050505">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BlackBone USMLE">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>BLACK BONE — USMLE STEP 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ THEME SYSTEM ═══ */
+:root, [data-theme="blackbone"] {
+  --bg: #050505; --bg-deep: #0a0a0a; --bg-card: #1a1816; --bg-card-hover: #221f1c;
+  --text: #e8dcc8; --text-strong: #f5f0e8; --text-muted: rgba(232,220,200,0.55);
+  --accent: #c4a882; --accent2: #8b1a1a; --border: rgba(58,54,50,0.25);
+  --border-hover: #c4a882; --correct: #2d6a4f; --correct-glow: rgba(45,106,79,0.15);
+  --wrong: #8b1a1a; --wrong-glow: rgba(139,26,26,0.15);
+  --glass: rgba(5,5,5,0.85); --ghost: rgba(232,220,200,0.06);
+  --grain-opacity: 0.5; --selection-bg: #8b1a1a; --selection-text: #f5f0e8;
+  --input-bg: transparent; --input-border: rgba(58,54,50,0.4);
+  --topbar-border: rgba(58,54,50,0.15);
+}
+[data-theme="surgical"] {
+  --bg: #0b1120; --bg-deep: #070d19; --bg-card: #111b30; --bg-card-hover: #162242;
+  --text: #c5d0e6; --text-strong: #e8edf7; --text-muted: rgba(197,208,230,0.5);
+  --accent: #4a90d9; --accent2: #1b5fa0; --border: rgba(74,144,217,0.15);
+  --border-hover: #4a90d9; --correct: #2d8a5e; --correct-glow: rgba(45,138,94,0.12);
+  --wrong: #c0392b; --wrong-glow: rgba(192,57,43,0.12);
+  --glass: rgba(11,17,32,0.9); --ghost: rgba(74,144,217,0.05);
+  --grain-opacity: 0.25; --selection-bg: #1b5fa0; --selection-text: #e8edf7;
+  --input-bg: rgba(74,144,217,0.06); --input-border: rgba(74,144,217,0.2);
+  --topbar-border: rgba(74,144,217,0.1);
+}
+[data-theme="cadaver"] {
+  --bg: #0a110a; --bg-deep: #060d06; --bg-card: #142014; --bg-card-hover: #1a2c1a;
+  --text: #b8ccb0; --text-strong: #d6e8ce; --text-muted: rgba(184,204,176,0.5);
+  --accent: #5a9e5a; --accent2: #2e5e2e; --border: rgba(90,158,90,0.18);
+  --border-hover: #5a9e5a; --correct: #3a8a3a; --correct-glow: rgba(58,138,58,0.12);
+  --wrong: #a04030; --wrong-glow: rgba(160,64,48,0.12);
+  --glass: rgba(10,17,10,0.9); --ghost: rgba(90,158,90,0.04);
+  --grain-opacity: 0.35; --selection-bg: #2e5e2e; --selection-text: #d6e8ce;
+  --input-bg: rgba(90,158,90,0.06); --input-border: rgba(90,158,90,0.2);
+  --topbar-border: rgba(90,158,90,0.1);
+}
+[data-theme="crimson"] {
+  --bg: #110505; --bg-deep: #0d0303; --bg-card: #201010; --bg-card-hover: #2c1414;
+  --text: #d4b8b0; --text-strong: #f0d8d0; --text-muted: rgba(212,184,176,0.5);
+  --accent: #c0574a; --accent2: #8b1a1a; --border: rgba(192,87,74,0.18);
+  --border-hover: #c0574a; --correct: #3a7a50; --correct-glow: rgba(58,122,80,0.12);
+  --wrong: #d44030; --wrong-glow: rgba(212,64,48,0.15);
+  --glass: rgba(17,5,5,0.9); --ghost: rgba(192,87,74,0.04);
+  --grain-opacity: 0.4; --selection-bg: #8b1a1a; --selection-text: #f0d8d0;
+  --input-bg: rgba(192,87,74,0.06); --input-border: rgba(192,87,74,0.2);
+  --topbar-border: rgba(192,87,74,0.1);
+}
+[data-theme="whitecoat"] {
+  --bg: #f4f2ee; --bg-deep: #eae7e0; --bg-card: #ffffff; --bg-card-hover: #f9f8f5;
+  --text: #3a3632; --text-strong: #1a1714; --text-muted: rgba(58,54,50,0.55);
+  --accent: #2a6b4a; --accent2: #1a4a32; --border: rgba(58,54,50,0.12);
+  --border-hover: #2a6b4a; --correct: #1a7a40; --correct-glow: rgba(26,122,64,0.1);
+  --wrong: #c0392b; --wrong-glow: rgba(192,57,43,0.08);
+  --glass: rgba(244,242,238,0.92); --ghost: rgba(42,107,74,0.04);
+  --grain-opacity: 0.08; --selection-bg: #2a6b4a; --selection-text: #ffffff;
+  --input-bg: #ffffff; --input-border: rgba(58,54,50,0.18);
+  --topbar-border: rgba(58,54,50,0.08);
+}
+
+/* ═══ FONT SIZE SYSTEM ═══ */
+[data-fontsize="small"]  { --fs-body: 0.88rem; --fs-vignette: 0.92rem; --fs-stem: 0.92rem; --fs-option: 0.85rem; --fs-explain: 0.82rem; --fs-ui: 0.5rem; --lh: 1.7; }
+[data-fontsize="medium"] { --fs-body: 1.0rem; --fs-vignette: 1.05rem; --fs-stem: 1.05rem; --fs-option: 0.95rem; --fs-explain: 0.9rem; --fs-ui: 0.55rem; --lh: 1.85; }
+[data-fontsize="large"]  { --fs-body: 1.15rem; --fs-vignette: 1.2rem; --fs-stem: 1.18rem; --fs-option: 1.1rem; --fs-explain: 1.02rem; --fs-ui: 0.62rem; --lh: 2.0; }
+[data-fontsize="xlarge"] { --fs-body: 1.3rem; --fs-vignette: 1.35rem; --fs-stem: 1.32rem; --fs-option: 1.22rem; --fs-explain: 1.15rem; --fs-ui: 0.68rem; --lh: 2.1; }
+
+/* ═══ FONT FAMILY SYSTEM ═══ */
+[data-font="garamond"] { --ff-body: 'Cormorant Garamond', serif; --ff-display: 'Syne', sans-serif; --ff-mono: 'Space Mono', monospace; }
+[data-font="plex"]     { --ff-body: 'IBM Plex Sans', sans-serif; --ff-display: 'Syne', sans-serif; --ff-mono: 'JetBrains Mono', monospace; }
+[data-font="lora"]     { --ff-body: 'Lora', serif; --ff-display: 'Syne', sans-serif; --ff-mono: 'Space Mono', monospace; }
+[data-font="nunito"]   { --ff-body: 'Nunito Sans', sans-serif; --ff-display: 'Nunito Sans', sans-serif; --ff-mono: 'JetBrains Mono', monospace; }
+[data-font="source"]   { --ff-body: 'Source Serif 4', serif; --ff-display: 'Syne', sans-serif; --ff-mono: 'JetBrains Mono', monospace; }
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--border) var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-body);font-size:var(--fs-body);line-height:var(--lh);overflow-x:hidden;min-height:100vh;min-height:100dvh;transition:background 0.4s,color 0.4s}
+::selection{background:var(--selection-bg);color:var(--selection-text)}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:var(--grain-opacity)}
+
+/* ═══ LOADER ═══ */
+.loader{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.8s ease,visibility 0.8s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-bone{width:60px;height:4px;background:var(--text);position:relative;animation:loaderPulse 1.2s ease-in-out infinite}
+.loader-bone::before,.loader-bone::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--text);top:50%;transform:translateY(-50%)}
+.loader-bone::before{left:-7px}.loader-bone::after{right:-7px}
+.loader-text{font-family:var(--ff-mono);font-size:0.55rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--text-muted)}
+@keyframes loaderPulse{0%,100%{opacity:0.3;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.3)}}
+
+/* ═══ SCREENS ═══ */
+.screen{display:none;min-height:100vh;min-height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);animation:fadeIn 0.4s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ AUTH SCREENS ═══ */
+.auth-wrap{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.auth-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(196,168,130,0.04) 0%,transparent 70%)}
+.auth-card{position:relative;z-index:1;width:100%;max-width:380px}
+.auth-brand{text-align:center;margin-bottom:2.5rem}
+.auth-brand h1{font-family:var(--ff-display);font-size:clamp(2rem,6vw,3rem);font-weight:800;color:var(--text-strong);line-height:0.95;letter-spacing:-0.02em}
+.auth-brand h1 .outline{-webkit-text-stroke:1px var(--text);color:transparent}
+.auth-brand p{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.4em;text-transform:uppercase;color:var(--accent);margin-top:0.6rem}
+.auth-form{display:flex;flex-direction:column;gap:1.2rem}
+.auth-field{position:relative}
+.auth-field label{display:block;font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.02rem);letter-spacing:0.25em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem}
+.auth-field input{width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:2px;padding:0.9rem 1rem;font-family:var(--ff-body);font-size:var(--fs-body);color:var(--text-strong);outline:none;transition:border-color 0.3s}
+.auth-field input:focus{border-color:var(--accent)}
+.auth-field input::placeholder{color:var(--text-muted);font-style:italic}
+.auth-error{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.02rem);color:var(--wrong);letter-spacing:0.15em;min-height:1.2rem;text-align:center}
+.auth-divider{display:flex;align-items:center;gap:1rem;margin:0.5rem 0}
+.auth-divider span{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted)}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-switch{text-align:center;font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.15em;color:var(--text-muted)}
+.auth-switch a{color:var(--accent);text-decoration:none;cursor:pointer;border-bottom:1px solid transparent;transition:border-color 0.3s}
+.auth-switch a:hover{border-color:var(--accent)}
+.auth-skip{text-align:center;margin-top:0.8rem}
+.auth-skip a{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;cursor:pointer;opacity:0.6;transition:opacity 0.3s}
+.auth-skip a:hover{opacity:1}
+
+/* ═══ TOP BAR ═══ */
+.topbar{position:sticky;top:0;z-index:100;padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--topbar-border);transition:background 0.4s}
+.topbar-brand{font-family:var(--ff-display);font-weight:800;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-strong)}
+.topbar-brand small{font-family:var(--ff-mono);font-weight:400;font-size:calc(var(--fs-ui) - 0.05rem);letter-spacing:0.18em;color:var(--accent);display:block;margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-stat{text-align:center}
+.topbar-stat .val{font-family:var(--ff-display);font-weight:700;font-size:0.85rem;color:var(--text-strong)}
+.topbar-stat .lbl{font-family:var(--ff-mono);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted)}
+.xp-bar{width:50px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
+.xp-bar-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.6s ease}
+.settings-btn{background:none;border:1px solid var(--border);color:var(--text-muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem;transition:all 0.3s;border-radius:2px}
+.settings-btn:hover,.settings-btn:active{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ HOME SCREEN ═══ */
+.home-hero{padding:2.5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.home-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,var(--ghost) 0%,transparent 70%)}
+.home-hero *{position:relative;z-index:1}
+.home-pre{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.6em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.home-title{font-family:var(--ff-display);font-size:clamp(2.2rem,7vw,4.5rem);font-weight:800;line-height:0.9;letter-spacing:-0.03em;color:var(--text-strong)}
+.home-title .outline{-webkit-text-stroke:1px var(--text);color:transparent}
+.home-sub{font-size:var(--fs-body);font-weight:300;font-style:italic;color:var(--accent);margin-top:0.8rem;letter-spacing:0.05em}
+.user-greeting{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.2em;color:var(--text-muted);margin-top:1rem;text-transform:uppercase}
+
+.streak-banner{margin:1.2rem 1.5rem;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(139,26,26,0.08),rgba(196,168,130,0.05));border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;gap:0.8rem}
+.streak-fire{font-size:1.6rem;line-height:1}
+.streak-info .streak-count{font-family:var(--ff-display);font-weight:700;font-size:1rem;color:var(--text-strong)}
+.streak-info .streak-label{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.03rem);letter-spacing:0.25em;text-transform:uppercase;color:var(--accent)}
+
+.menu-section{padding:0 1.5rem 1.2rem}
+.menu-label{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.45em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.7rem}
+.menu-label::before{content:'';width:18px;height:1px;background:var(--accent)}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem}
+.menu-card{background:var(--bg-card);border:1px solid var(--border);padding:1.3rem 1rem;cursor:pointer;transition:all 0.35s ease;position:relative;overflow:hidden;border-radius:2px}
+.menu-card:active{transform:scale(0.98)}
+.menu-card:hover,.menu-card:active{border-color:var(--border-hover);background:var(--bg-card-hover)}
+.menu-card-icon{font-size:1.4rem;margin-bottom:0.6rem}
+.menu-card-title{font-family:var(--ff-display);font-weight:700;font-size:0.9rem;color:var(--text-strong);margin-bottom:0.2rem}
+.menu-card-desc{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.05rem);letter-spacing:0.12em;color:var(--text-muted);text-transform:uppercase}
+.menu-card.full{grid-column:1/-1}
+.menu-card.blood{border-color:rgba(139,26,26,0.25)}
+.menu-card.blood:hover{border-color:var(--accent2)}
+
+/* ═══ SETTINGS SCREEN ═══ */
+.settings-section{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}
+.settings-section-title{font-family:var(--ff-display);font-weight:700;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-strong);margin-bottom:1rem}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0}
+.settings-row-label{font-family:var(--ff-body);font-size:var(--fs-body);color:var(--text)}
+.settings-row-desc{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.03rem);color:var(--text-muted);margin-top:0.15rem}
+
+/* Theme pills */
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.5rem}
+.theme-pill{padding:0.9rem 0.8rem;border:1px solid var(--border);border-radius:2px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.7rem}
+.theme-pill:active{transform:scale(0.97)}
+.theme-pill.active{border-color:var(--accent);background:var(--ghost)}
+.theme-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,0.1)}
+.theme-pill-name{font-family:var(--ff-display);font-weight:600;font-size:0.78rem;color:var(--text-strong)}
+.theme-pill-sub{font-family:var(--ff-mono);font-size:0.4rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)}
+
+/* Size pills */
+.size-row{display:flex;gap:0.5rem;margin-top:0.5rem}
+.size-pill{flex:1;padding:0.7rem;text-align:center;border:1px solid var(--border);border-radius:2px;cursor:pointer;font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);transition:all 0.3s}
+.size-pill:active{transform:scale(0.95)}
+.size-pill.active{border-color:var(--accent);color:var(--accent);background:var(--ghost)}
+
+/* Font pills */
+.font-list{display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem}
+.font-pill{padding:0.8rem 1rem;border:1px solid var(--border);border-radius:2px;cursor:pointer;transition:all 0.3s;display:flex;justify-content:space-between;align-items:center}
+.font-pill:active{transform:scale(0.98)}
+.font-pill.active{border-color:var(--accent);background:var(--ghost)}
+.font-pill .fp-name{font-size:1rem;color:var(--text-strong)}
+.font-pill .fp-sample{font-size:0.7rem;color:var(--text-muted)}
+
+/* Profile section in settings */
+.profile-card{margin:0 1.5rem 1rem;padding:1.2rem;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;gap:1rem}
+.profile-avatar{width:42px;height:42px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-weight:800;font-size:1rem;color:var(--bg)}
+.profile-info .pi-name{font-family:var(--ff-display);font-weight:600;font-size:0.9rem;color:var(--text-strong)}
+.profile-info .pi-email{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.02rem);color:var(--text-muted);letter-spacing:0.1em}
+
+/* ═══ SUBJECT LIST ═══ */
+.subject-list{padding:0 1.5rem 2rem}
+.subject-item{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.3s}
+.subject-item:active{padding-left:0.5rem;border-color:var(--accent)}
+.subject-item .subj-name{font-family:var(--ff-display);font-weight:600;font-size:var(--fs-body);color:var(--text-strong)}
+.subject-item .subj-count{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.2em;color:var(--text-muted)}
+.subject-item .subj-progress{width:40px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.subject-item .subj-progress-fill{height:100%;background:var(--accent);border-radius:2px}
+
+/* ═══ QUESTION SCREEN ═══ */
+.q-header{padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--topbar-border)}
+.q-counter{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.2em;color:var(--text-muted);text-transform:uppercase}
+.q-timer{font-family:var(--ff-display);font-weight:700;font-size:1rem;color:var(--text-strong)}
+.q-timer.warning{color:var(--wrong);animation:timerPulse 1s ease infinite}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.q-progress{height:2px;background:var(--border)}
+.q-progress-fill{height:100%;background:var(--accent);transition:width 0.4s ease}
+.q-subject-tag{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.02rem);letter-spacing:0.3em;color:var(--accent2);text-transform:uppercase;padding:0.7rem 1.5rem 0}
+.q-vignette{padding:1rem 1.5rem;font-size:var(--fs-vignette);font-weight:400;line-height:var(--lh);color:var(--text)}
+.q-vignette strong{color:var(--text-strong);font-weight:600}
+.q-stem{padding:0 1.5rem 0.8rem;font-family:var(--ff-display);font-weight:600;font-size:var(--fs-stem);color:var(--text-strong);line-height:1.5}
+
+.q-options{padding:0 1.5rem 1.2rem;display:flex;flex-direction:column;gap:0.5rem}
+.q-option{display:flex;align-items:flex-start;gap:0.7rem;padding:0.9rem 1rem;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all 0.3s ease;border-radius:2px}
+.q-option:active{transform:scale(0.99)}
+.q-option.selected{border-color:var(--accent);background:var(--ghost)}
+.q-option.correct{border-color:var(--correct);background:var(--correct-glow)}
+.q-option.wrong{border-color:var(--wrong);background:var(--wrong-glow)}
+.q-option.correct .opt-letter{color:var(--correct);border-color:var(--correct)}
+.q-option.wrong .opt-letter{color:var(--wrong);border-color:var(--wrong)}
+.q-option.dimmed{opacity:0.3}
+.opt-letter{font-family:var(--ff-display);font-weight:700;font-size:0.7rem;color:var(--text-muted);border:1px solid var(--border);width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;border-radius:2px}
+.opt-text{font-size:var(--fs-option);line-height:1.6;color:var(--text);flex:1}
+
+.q-explanation{margin:0 1.5rem 1.2rem;padding:1rem 1.2rem;border-left:3px solid var(--accent);background:var(--ghost);animation:fadeIn 0.4s ease;border-radius:0 2px 2px 0}
+.q-explanation-title{font-family:var(--ff-display);font-weight:700;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.q-explanation-text{font-size:var(--fs-explain);line-height:var(--lh);color:var(--text-muted)}
+.q-explanation-text strong{color:var(--text-strong)}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:block;width:100%;background:transparent;border:1px solid var(--text);color:var(--text);font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.35em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:all 0.35s ease;text-align:center;border-radius:2px}
+.btn:active{transform:scale(0.98)}
+.btn:hover,.btn:active{background:var(--text);color:var(--bg)}
+.btn-primary{background:var(--text);color:var(--bg)}
+.btn-primary:hover,.btn-primary:active{background:var(--accent)}
+.btn-blood{border-color:var(--accent2);color:var(--accent2)}
+.btn-blood:hover,.btn-blood:active{background:var(--accent2);color:var(--text-strong)}
+.btn-row{display:flex;gap:0.5rem;padding:0 1.5rem 1.5rem}
+.btn-row .btn{flex:1}
+.q-nav{padding:0 1.5rem 1.5rem}
+
+/* ═══ RESULTS ═══ */
+.results-hero{padding:2.5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.results-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 50%,var(--ghost) 0%,transparent 70%)}
+.results-score{font-family:var(--ff-display);font-size:4.5rem;font-weight:800;color:var(--text-strong);line-height:1;position:relative;z-index:1}
+.results-label{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.4em;text-transform:uppercase;color:var(--accent);margin-top:0.4rem;position:relative;z-index:1}
+.results-grade{font-family:var(--ff-body);font-size:1.3rem;font-style:italic;color:var(--accent);margin-top:0.4rem;position:relative;z-index:1}
+.results-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;padding:0 1.5rem;margin:1.5rem 0}
+.results-stat{padding:0.8rem;border:1px solid var(--border);text-align:center;border-radius:2px}
+.results-stat .val{font-family:var(--ff-display);font-weight:700;font-size:1.3rem;color:var(--text-strong)}
+.results-stat .lbl{font-family:var(--ff-mono);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.2rem}
+.results-xp-gain{margin:1rem 1.5rem;padding:1rem;border:1px solid rgba(196,168,130,0.15);text-align:center;background:var(--ghost);border-radius:2px}
+.results-xp-gain .xp-val{font-family:var(--ff-display);font-weight:800;font-size:1.6rem;color:var(--accent)}
+.results-xp-gain .xp-lbl{font-family:var(--ff-mono);font-size:calc(var(--fs-ui) - 0.02rem);letter-spacing:0.25em;text-transform:uppercase;color:var(--text-muted)}
+.breakdown{padding:0 1.5rem 1.5rem}
+.breakdown-item{display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+.breakdown-item .bd-name{font-family:var(--ff-display);font-weight:600;font-size:0.82rem;color:var(--text-strong)}
+.breakdown-item .bd-score{font-family:var(--ff-mono);font-size:var(--fs-ui);color:var(--accent)}
+.breakdown-bar{width:55px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.breakdown-bar-fill{height:100%;border-radius:2px;transition:width 0.6s}
+
+/* ═══ REVIEW ═══ */
+.review-item{padding:1rem 1.5rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.3s}
+.review-item:active{background:var(--ghost)}
+.review-item .ri-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem}
+.review-item .ri-num{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.15em;color:var(--text-muted)}
+.review-item .ri-result{font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.12em;text-transform:uppercase}
+.review-item .ri-result.ct{color:var(--correct)}.review-item .ri-result.wt{color:var(--wrong)}
+.review-item .ri-stem{font-size:var(--fs-explain);color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ═══ ACHIEVEMENTS ═══ */
+.achievement-popup{position:fixed;top:0.8rem;left:50%;transform:translateX(-50%);z-index:9998;background:var(--bg-card);border:1px solid var(--accent);padding:0.7rem 1.2rem;display:flex;align-items:center;gap:0.7rem;animation:achieveIn 0.5s ease,achieveOut 0.5s ease 2.5s forwards;pointer-events:none;border-radius:2px}
+@keyframes achieveIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes achieveOut{to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+.achievement-popup .ach-icon{font-size:1.2rem}
+.achievement-popup .ach-text{font-family:var(--ff-display);font-weight:600;font-size:0.72rem;color:var(--text-strong)}
+.achievement-popup .ach-desc{font-family:var(--ff-mono);font-size:0.42rem;color:var(--accent);letter-spacing:0.12em}
+
+.back-btn{background:none;border:none;color:var(--text-muted);font-family:var(--ff-mono);font-size:var(--fs-ui);letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;padding:0.4rem 0;display:flex;align-items:center;gap:0.4rem;transition:color 0.3s}
+.back-btn:active{color:var(--accent)}
+.back-btn::before{content:'←'}
+
+@media(min-width:768px){.menu-grid{grid-template-columns:repeat(3,1fr)}.theme-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){body{display:flex;justify-content:center}.screen{max-width:600px;width:100%;border-left:1px solid var(--border);border-right:1px solid var(--border)}}
+</style>
+</head>
+<body data-theme="blackbone" data-fontsize="medium" data-font="garamond">
+<div class="loader" id="loader"><div class="loader-bone"></div><div class="loader-text">Preparing Examination</div></div>
+
+<!-- ═══ LOGIN SCREEN ═══ -->
+<div class="screen active" id="loginScreen">
+<div class="auth-wrap">
+<div class="auth-bg"></div>
+<div class="auth-card">
+  <div class="auth-brand"><h1>BLACK <span class="outline">BONE</span></h1><p>USMLE Step 1 Prep</p></div>
+  <div class="auth-form">
+    <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+    <div class="auth-field"><label>Password</label><input type="password" id="loginPwd" placeholder="Enter password"></div>
+    <div class="auth-error" id="loginError"></div>
+    <button class="btn btn-primary" onclick="doLogin()">Enter the Lab</button>
+  </div>
+  <div class="auth-divider"><span>or</span></div>
+  <div class="auth-switch">No account? <a onclick="showScreen('signupScreen')">Sign up</a></div>
+  <div class="auth-skip"><a onclick="skipAuth()">Skip for now →</a></div>
+</div></div></div>
+
+<!-- ═══ SIGNUP SCREEN ═══ -->
+<div class="screen" id="signupScreen">
+<div class="auth-wrap">
+<div class="auth-bg"></div>
+<div class="auth-card">
+  <div class="auth-brand"><h1>JOIN THE<br><span class="outline">RANKS</span></h1><p>Create Your Account</p></div>
+  <div class="auth-form">
+    <div class="auth-field"><label>Full Name</label><input type="text" id="signupName" placeholder="Dr. House"></div>
+    <div class="auth-field"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
+    <div class="auth-field"><label>Password</label><input type="password" id="signupPwd" placeholder="Min 4 characters"></div>
+    <div class="auth-field"><label>Confirm Password</label><input type="password" id="signupPwd2" placeholder="Confirm password"></div>
+    <div class="auth-error" id="signupError"></div>
+    <button class="btn btn-primary" onclick="doSignup()">Begin The Dissection</button>
+  </div>
+  <div class="auth-divider"><span>or</span></div>
+  <div class="auth-switch">Already have an account? <a onclick="showScreen('loginScreen')">Log in</a></div>
+</div></div></div>
+
+<!-- ═══ HOME SCREEN ═══ -->
+<div class="screen" id="homeScreen">
+<div class="topbar">
+  <div class="topbar-brand">Black Bone<small>USMLE Step 1</small></div>
+  <div class="topbar-right">
+    <div class="topbar-stat"><div class="val" id="levelDisplay">1</div><div class="lbl">Level</div></div>
+    <div class="topbar-stat"><div class="val" id="xpDisplay">0</div><div class="lbl">XP</div><div class="xp-bar"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div></div>
+    <button class="settings-btn" onclick="showScreen('settingsScreen')">⚙</button>
+  </div>
+</div>
+<div class="home-hero">
+  <div class="home-hero-bg"></div>
+  <div class="home-pre">Medical Board Prep</div>
+  <h1 class="home-title">STEP <span class="outline">ONE</span></h1>
+  <p class="home-sub">Where knowledge meets discipline</p>
+  <div class="user-greeting" id="userGreeting"></div>
+</div>
+<div class="streak-banner"><div class="streak-fire">🔥</div><div class="streak-info"><div class="streak-count" id="streakCount">0 Day Streak</div><div class="streak-label">Keep the flame alive</div></div></div>
+<div class="menu-section">
+  <div class="menu-label">Mode Select</div>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="startQuickPractice()"><div class="menu-card-icon">⚡</div><div class="menu-card-title">Quick Fire</div><div class="menu-card-desc">10 Random Qs</div></div>
+    <div class="menu-card" onclick="showSubjectSelect('practice')"><div class="menu-card-icon">📖</div><div class="menu-card-title">Practice</div><div class="menu-card-desc">By Subject</div></div>
+    <div class="menu-card blood" onclick="startExamMode()"><div class="menu-card-icon">💀</div><div class="menu-card-title">Exam Mode</div><div class="menu-card-desc">40 Q · Timed · No Mercy</div></div>
+    <div class="menu-card" onclick="showSubjectSelect('all')"><div class="menu-card-icon">🦴</div><div class="menu-card-title">All Questions</div><div class="menu-card-desc">Full Bank · 105 Q</div></div>
+  </div>
+</div>
+<div class="menu-section" style="padding-top:0">
+  <div class="menu-label">Performance</div>
+  <div class="menu-grid">
+    <div class="menu-card full" onclick="showStats()"><div class="menu-card-icon">📊</div><div class="menu-card-title">Your Stats</div><div class="menu-card-desc">Track Progress & Weak Areas</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SETTINGS SCREEN ═══ -->
+<div class="screen" id="settingsScreen">
+<div class="topbar"><button class="back-btn" onclick="goHome()">Back</button><div class="topbar-brand" style="font-size:0.6rem">Settings</div></div>
+<div id="profileCardArea"></div>
+<div class="settings-section">
+  <div class="settings-section-title">🎨 Theme</div>
+  <div class="theme-grid" id="themeGrid"></div>
+</div>
+<div class="settings-section">
+  <div class="settings-section-title">🔤 Font Family</div>
+  <div class="font-list" id="fontList"></div>
+</div>
+<div class="settings-section">
+  <div class="settings-section-title">📐 Text Size</div>
+  <div class="size-row" id="sizeRow"></div>
+</div>
+<div class="settings-section">
+  <div class="settings-section-title">📖 Reading Preview</div>
+  <div style="padding:0.8rem;border:1px solid var(--border);border-radius:2px;background:var(--bg-card)">
+    <div style="font-size:var(--fs-vignette);line-height:var(--lh);color:var(--text)">A 45-year-old woman presents with <strong style="color:var(--text-strong)">fatigue, weight gain, and cold intolerance</strong>. Her thyroid is diffusely enlarged.</div>
+    <div style="font-family:var(--ff-display);font-weight:600;font-size:var(--fs-stem);color:var(--text-strong);margin-top:0.5rem">What is the most likely diagnosis?</div>
+  </div>
+</div>
+<div class="btn-row" style="margin-top:1rem">
+  <button class="btn btn-blood" onclick="doLogout()">Log Out</button>
+</div>
+</div>
+
+<!-- ═══ SUBJECT SELECT ═══ -->
+<div class="screen" id="subjectScreen">
+<div class="topbar"><button class="back-btn" onclick="goHome()">Back</button><div class="topbar-brand" style="font-size:0.6rem">Select Subject</div></div>
+<div class="subject-list" id="subjectList"></div>
+</div>
+
+<!-- ═══ QUESTION SCREEN ═══ -->
+<div class="screen" id="questionScreen">
+<div class="q-header"><div class="q-counter" id="qCounter"></div><div class="q-timer" id="qTimer"></div></div>
+<div class="q-progress"><div class="q-progress-fill" id="qProgress" style="width:0%"></div></div>
+<div class="q-subject-tag" id="qSubject"></div>
+<div class="q-vignette" id="qVignette"></div>
+<div class="q-stem" id="qStem"></div>
+<div class="q-options" id="qOptions"></div>
+<div id="qExplanation"></div>
+<div class="q-nav" id="qNav"></div>
+</div>
+
+<!-- ═══ RESULTS SCREEN ═══ -->
+<div class="screen" id="resultsScreen">
+<div class="topbar"><button class="back-btn" onclick="goHome()">Home</button><div class="topbar-brand" style="font-size:0.6rem">Results</div></div>
+<div class="results-hero"><div class="results-hero-bg"></div><div class="results-score" id="resScore">0%</div><div class="results-label" id="resLabel">Final Score</div><div class="results-grade" id="resGrade"></div></div>
+<div class="results-stats" id="resStats"></div>
+<div class="results-xp-gain" id="resXP"></div>
+<div class="menu-section"><div class="menu-label">Subject Breakdown</div></div>
+<div class="breakdown" id="resBreakdown"></div>
+<div class="btn-row"><button class="btn" onclick="showReview()">Review Answers</button><button class="btn btn-primary" onclick="goHome()">Home</button></div>
+</div>
+
+<!-- ═══ REVIEW SCREEN ═══ -->
+<div class="screen" id="reviewScreen">
+<div class="topbar"><button class="back-btn" onclick="showScreen('resultsScreen')">Back</button><div class="topbar-brand" style="font-size:0.6rem">Review</div></div>
+<div id="reviewList"></div>
+<div class="btn-row" style="margin-top:1rem"><button class="btn" onclick="goHome()">Home</button></div>
+</div>
+
+<!-- ═══ STATS SCREEN ═══ -->
+<div class="screen" id="statsScreen">
+<div class="topbar"><button class="back-btn" onclick="goHome()">Back</button><div class="topbar-brand" style="font-size:0.6rem">Performance</div></div>
+<div class="results-hero"><div class="results-hero-bg"></div><div class="results-score" id="statsTotal">0</div><div class="results-label">Questions Answered</div></div>
+<div class="results-stats" id="statsGrid"></div>
+<div class="menu-section"><div class="menu-label">Subject Mastery</div></div>
+<div class="breakdown" id="statsBreakdown"></div>
+<div class="btn-row"><button class="btn btn-blood" onclick="if(confirm('Reset all progress?')){localStorage.removeItem('bb_progress');location.reload()}">Reset Progress</button><button class="btn" onclick="goHome()">Home</button></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// THEMES & SETTINGS CONFIG
+// ═══════════════════════════════════════════
+const THEMES = [
+  {id:'blackbone',name:'Black Bone',sub:'Original dark',dot:'linear-gradient(135deg,#050505,#c4a882)'},
+  {id:'surgical',name:'Surgical Steel',sub:'Cold chrome',dot:'linear-gradient(135deg,#0b1120,#4a90d9)'},
+  {id:'cadaver',name:'Cadaver Lab',sub:'Formaldehyde',dot:'linear-gradient(135deg,#0a110a,#5a9e5a)'},
+  {id:'crimson',name:'Crimson Marrow',sub:'Blood & bone',dot:'linear-gradient(135deg,#110505,#c0574a)'},
+  {id:'whitecoat',name:'White Coat',sub:'Clinical light',dot:'linear-gradient(135deg,#f4f2ee,#2a6b4a)'}
+];
+const FONTS = [
+  {id:'garamond',name:'Cormorant Garamond',family:"'Cormorant Garamond', serif",sample:'Elegant serif'},
+  {id:'plex',name:'IBM Plex Sans',family:"'IBM Plex Sans', sans-serif",sample:'Clean modern'},
+  {id:'lora',name:'Lora',family:"'Lora', serif",sample:'Warm readable'},
+  {id:'nunito',name:'Nunito Sans',family:"'Nunito Sans', sans-serif",sample:'Soft rounded'},
+  {id:'source',name:'Source Serif 4',family:"'Source Serif 4', serif",sample:'Academic clarity'}
+];
+const SIZES = [{id:'small',label:'S'},{id:'medium',label:'M'},{id:'large',label:'L'},{id:'xlarge',label:'XL'}];
+
+// ═══════════════════════════════════════════
+// QUESTION BANK (105 Qs) — same as before
+// ═══════════════════════════════════════════
+const QUESTIONS=[
+{id:1,subject:"Anatomy",vignette:"A 45-year-old man undergoes a thyroidectomy. Postoperatively, he develops hoarseness and difficulty speaking. The surgeon notes that the nerve running in the tracheoesophageal groove was inadvertently damaged.",stem:"Which nerve was most likely injured during this procedure?",options:["External branch of superior laryngeal nerve","Recurrent laryngeal nerve","Glossopharyngeal nerve","Hypoglossal nerve","Phrenic nerve"],answer:1,explanation:"The <strong>recurrent laryngeal nerve</strong> runs in the tracheoesophageal groove and innervates all intrinsic laryngeal muscles except the cricothyroid. Damage causes hoarseness due to vocal cord paralysis."},
+{id:2,subject:"Anatomy",vignette:"A 62-year-old woman presents with difficulty swallowing and a sensation of food getting stuck. A barium swallow reveals a posterior pharyngeal diverticulum.",stem:"This diverticulum herniates through which anatomical landmark?",options:["Thyrohyoid membrane","Killian triangle","Cricothyroid membrane","Buccopharyngeal fascia","Palatopharyngeal arch"],answer:1,explanation:"<strong>Zenker diverticulum</strong> herniates through <strong>Killian triangle</strong>, a weak area between the oblique fibers of the thyropharyngeus and horizontal fibers of the cricopharyngeus."},
+{id:3,subject:"Anatomy",vignette:"A 30-year-old man is stabbed in the posterior triangle of the neck. He cannot shrug his shoulder and has difficulty turning his head to the opposite side.",stem:"Which nerve was most likely damaged?",options:["Long thoracic nerve","Dorsal scapular nerve","Spinal accessory nerve","Suprascapular nerve","Thoracodorsal nerve"],answer:2,explanation:"The <strong>spinal accessory nerve (CN XI)</strong> traverses the posterior triangle superficially. It innervates the SCM and trapezius."},
+{id:4,subject:"Anatomy",vignette:"A 55-year-old man presents with ptosis, miosis, and anhidrosis on the right side. CT reveals a mass at the apex of the right lung.",stem:"Which structure is compressed by this tumor?",options:["Phrenic nerve","Vagus nerve","Sympathetic chain/stellate ganglion","Recurrent laryngeal nerve","Brachial plexus"],answer:2,explanation:"Ptosis, miosis, anhidrosis = <strong>Horner syndrome</strong> from disruption of the sympathetic chain. A Pancoast tumor compresses the <strong>stellate ganglion</strong>."},
+{id:5,subject:"Anatomy",vignette:"A 28-year-old woman has a mastectomy with axillary lymph node dissection. Postoperatively she has a winged scapula.",stem:"Which nerve was most likely injured?",options:["Thoracodorsal nerve","Long thoracic nerve","Subscapular nerve","Axillary nerve","Suprascapular nerve"],answer:1,explanation:"The <strong>long thoracic nerve</strong> (C5-C7) innervates the serratus anterior. Injury causes <strong>winged scapula</strong>."},
+{id:6,subject:"Anatomy",vignette:"A 40-year-old man fractures his humerus at the midshaft. He has wrist drop and loss of sensation over the dorsal hand between thumb and index finger.",stem:"Which nerve is most likely injured?",options:["Median nerve","Ulnar nerve","Radial nerve","Musculocutaneous nerve","Axillary nerve"],answer:2,explanation:"The <strong>radial nerve</strong> runs in the spiral groove. Midshaft fracture causes <strong>wrist drop</strong> and sensory loss over the first dorsal web space."},
+{id:7,subject:"Anatomy",vignette:"A 22-year-old man injures his knee playing football. MRI shows an ACL tear. The tibia can be pulled anteriorly relative to the femur.",stem:"Which clinical test is being described?",options:["McMurray test","Posterior drawer test","Anterior drawer test","Lachman test","Valgus stress test"],answer:2,explanation:"The <strong>anterior drawer test</strong> assesses ACL integrity by pulling the tibia anteriorly with the knee flexed at 90°."},
+{id:8,subject:"Anatomy",vignette:"A newborn has a congenital diaphragmatic hernia on the left side. Abdominal contents have herniated into the thoracic cavity.",stem:"Through which embryological structure did the herniation occur?",options:["Septum transversum","Pleuroperitoneal membrane","Dorsal mesentery","Esophageal hiatus","Body wall musculature"],answer:1,explanation:"<strong>Bochdalek hernia</strong> occurs through a defect in the <strong>pleuroperitoneal membrane</strong>, typically on the left side."},
+{id:9,subject:"Anatomy",vignette:"During cholecystectomy, the surgeon identifies the cystic artery within a triangular area bounded by the cystic duct, common hepatic duct, and inferior liver surface.",stem:"What is this anatomical triangle called?",options:["Hesselbach triangle","Triangle of Calot","Posterior triangle","Suboccipital triangle","Femoral triangle"],answer:1,explanation:"The <strong>Triangle of Calot</strong> is bounded by the cystic duct, common hepatic duct, and inferior liver edge. The cystic artery runs through it."},
+{id:10,subject:"Anatomy",vignette:"A 70-year-old man with atrial fibrillation presents with sudden severe abdominal pain out of proportion to physical exam findings. CT angiography reveals mesenteric vessel occlusion.",stem:"Which artery is most commonly involved in embolic mesenteric ischemia?",options:["Celiac trunk","Superior mesenteric artery","Inferior mesenteric artery","Internal iliac artery","Splenic artery"],answer:1,explanation:"The <strong>SMA</strong> is the most common site of embolic mesenteric occlusion due to its acute angle of takeoff from the aorta."},
+{id:11,subject:"Anatomy",vignette:"A 50-year-old woman undergoes anterior cervical spine surgery. Postoperatively she has difficulty swallowing liquids and her uvula deviates to the right.",stem:"Which nerve was most likely injured?",options:["Right vagus nerve","Left vagus nerve","Right glossopharyngeal nerve","Left glossopharyngeal nerve","Right hypoglossal nerve"],answer:1,explanation:"<strong>Left vagus (CN X)</strong> injury causes the soft palate to droop on the left, and the uvula deviates <strong>away</strong> from the lesion (toward the right)."},
+{id:12,subject:"Anatomy",vignette:"A 25-year-old man is struck on the lateral knee during a tackle. There is increased medial joint space with valgus stress.",stem:"Which structure is most likely damaged?",options:["Lateral collateral ligament","Anterior cruciate ligament","Medial collateral ligament","Posterior cruciate ligament","Medial meniscus"],answer:2,explanation:"A lateral blow causes valgus force, stretching the <strong>MCL</strong>. The 'unhappy triad' includes MCL, ACL, and medial meniscus."},
+{id:13,subject:"Anatomy",vignette:"A 60-year-old man with chronic alcoholism develops esophageal varices. These represent portosystemic anastomoses.",stem:"The left gastric vein drains into which vessel?",options:["Inferior vena cava","Superior mesenteric vein","Portal vein","Splenic vein","Hepatic vein"],answer:2,explanation:"The <strong>left gastric (coronary) vein</strong> drains into the <strong>portal vein</strong>. In portal HTN, blood backs up into esophageal veins."},
+{id:14,subject:"Anatomy",vignette:"A 3-year-old presents with a painless umbilical mass attached to the ileum that transilluminates.",stem:"This is a remnant of which embryological structure?",options:["Allantois","Urachus","Vitelline duct","Umbilical artery","Ductus venosus"],answer:2,explanation:"<strong>Meckel diverticulum</strong> is a remnant of the <strong>vitelline duct</strong>. Rule of 2s: 2% of population, 2 feet from ileocecal valve."},
+{id:15,subject:"Anatomy",vignette:"A 45-year-old woman undergoes a lumbar puncture at L4-L5.",stem:"After the ligamentum flavum, in what order does the needle traverse remaining structures?",options:["Dura → arachnoid → subarachnoid space","Epidural space → dura → arachnoid → subarachnoid space","Arachnoid → dura → subarachnoid space","Epidural → arachnoid → dura → subarachnoid","Dura → subarachnoid → arachnoid"],answer:1,explanation:"After ligamentum flavum: <strong>epidural space → dura mater → arachnoid mater → subarachnoid space</strong> containing CSF."},
+{id:16,subject:"Physiology",vignette:"A 65-year-old man with CHF has Na⁺ 128, decreased serum osmolality, and concentrated urine.",stem:"Which best explains this patient's hyponatremia?",options:["Decreased aldosterone","Increased ANP","Excess ADH (SIADH)","Primary polydipsia","Renal salt wasting"],answer:2,explanation:"Low Na⁺, low serum osmolality, concentrated urine = <strong>SIADH</strong>. Excess ADH causes water retention, diluting serum sodium."},
+{id:17,subject:"Physiology",vignette:"A 30-year-old at 32 weeks gestation has BP 170/110 and 3+ proteinuria.",stem:"Which renal change best explains the proteinuria in preeclampsia?",options:["Increased GFR","Glomerular endotheliosis","Decreased renal blood flow only","Tubular necrosis","Decreased aldosterone"],answer:1,explanation:"Preeclampsia causes <strong>glomerular endotheliosis</strong> — swelling of endothelial cells with loss of the filtration barrier."},
+{id:18,subject:"Physiology",vignette:"A 55-year-old with CKD (GFR 20) has Ca²⁺ 7.2, PO₄ 7.5, and elevated PTH.",stem:"What is the primary mechanism of hypocalcemia?",options:["Decreased dietary absorption","Decreased 1,25-dihydroxyvitamin D production","Increased calcitonin","PTH resistance","Urinary calcium loss"],answer:1,explanation:"Failing kidneys cannot convert 25-OH-vitamin D to <strong>1,25-(OH)₂D (calcitriol)</strong> via 1α-hydroxylase, reducing intestinal Ca²⁺ absorption."},
+{id:19,subject:"Physiology",vignette:"O₂ consumption is 250 mL/min, pulmonary venous O₂ 20 mL/dL, pulmonary arterial O₂ 15 mL/dL.",stem:"What is the cardiac output?",options:["2.5 L/min","5.0 L/min","7.5 L/min","10.0 L/min","12.5 L/min"],answer:1,explanation:"<strong>Fick equation: CO = VO₂/(CaO₂-CvO₂)</strong> = 250/(20-15) = 250/5 = 50 dL/min = <strong>5.0 L/min</strong>."},
+{id:20,subject:"Physiology",vignette:"A medical student hyperventilates for 2 minutes. ABG shows pH 7.55, PaCO₂ 22 mmHg.",stem:"Which change in the O₂-Hb dissociation curve is expected?",options:["Right shift","Left shift — decreased O₂ delivery","No change","Increased P50","Decreased O₂ carrying capacity"],answer:1,explanation:"Alkalosis causes a <strong>left shift</strong> (decreased P50) — Hb binds O₂ more tightly, releasing less to tissues."},
+{id:21,subject:"Physiology",vignette:"A 40-year-old with a pheochromocytoma has BP 210/130 and elevated catecholamines.",stem:"Which receptor mediates norepinephrine's vasoconstrictive effect?",options:["α₁-adrenergic","α₂-adrenergic","β₁-adrenergic","β₂-adrenergic","Muscarinic M₃"],answer:0,explanation:"<strong>α₁ receptors</strong> on vascular smooth muscle mediate vasoconstriction via Gq → PLC → IP₃ → Ca²⁺ release."},
+{id:22,subject:"Physiology",vignette:"ICU patient: CO 8 L/min, MAP 70 mmHg, CVP 2 mmHg.",stem:"What is the systemic vascular resistance?",options:["4.5","6.0","8.5","10.0","12.0"],answer:2,explanation:"<strong>SVR = (MAP-CVP)/CO</strong> = (70-2)/8 = <strong>8.5 Wood units</strong>. Low SVR + high CO suggests distributive shock."},
+{id:23,subject:"Physiology",vignette:"During phase 2 of the cardiac action potential, the membrane potential remains stable at ~0 mV.",stem:"Which ion currents are responsible for the plateau?",options:["Na⁺ in, K⁺ out","Ca²⁺ in, K⁺ out","K⁺ in, Cl⁻ out","Na⁺ in, Ca²⁺ out","Ca²⁺ in, Na⁺ out"],answer:1,explanation:"Phase 2 plateau: inward <strong>Ca²⁺ (L-type channels)</strong> balanced by outward <strong>K⁺</strong>. This prolongs the refractory period."},
+{id:24,subject:"Physiology",vignette:"A marathon runner has dark concentrated urine and elevated ADH.",stem:"ADH acts on which nephron segment?",options:["PCT","Thin descending loop","Thick ascending loop","DCT","Collecting duct"],answer:4,explanation:"<strong>ADH</strong> acts on the <strong>collecting duct</strong> via V₂ receptors → cAMP → aquaporin-2 insertion into apical membrane."},
+{id:25,subject:"Physiology",vignette:"A 50-year-old with lung disease: pH 7.32, PaCO₂ 60, HCO₃⁻ 30.",stem:"Which acid-base disturbance is present?",options:["Acute respiratory acidosis","Chronic respiratory acidosis with compensation","Metabolic acidosis with compensation","Mixed acidosis","Acute respiratory alkalosis"],answer:1,explanation:"Elevated PaCO₂ (respiratory acidosis) with appropriately elevated HCO₃⁻ = <strong>chronic compensation</strong>. Expected: 24 + 3.5×2 = 31 ≈ 30."},
+{id:26,subject:"Physiology",vignette:"A woman on thiazides has Na⁺ 130, K⁺ 2.8 with muscle weakness.",stem:"Thiazides cause hypokalemia primarily by which mechanism?",options:["Direct K⁺ secretion in PCT","Increased Na⁺ delivery to collecting duct promoting K⁺ secretion","Inhibition of K⁺ reabsorption in loop","Direct H⁺/K⁺-ATPase activation","Decreased gut K⁺ absorption"],answer:1,explanation:"Thiazides block Na-Cl in the DCT → more Na⁺ delivered to <strong>collecting duct</strong> → ENaC reabsorbs it → negative lumen → <strong>K⁺ secretion via ROMK</strong>."},
+{id:27,subject:"Physiology",vignette:"Severe diarrhea patient: Na⁺ 140, K⁺ 3.0, Cl⁻ 115, HCO₃⁻ 10. pH 7.25.",stem:"What is the anion gap and type of metabolic acidosis?",options:["AG=15, anion gap","AG=15, non-anion gap","AG=12, non-anion gap","AG=20, anion gap","AG=8, non-anion gap"],answer:1,explanation:"AG = 140-(115+10) = 15. Hyperchloremic with HCO₃⁻ loss = <strong>non-anion gap metabolic acidosis</strong> from diarrhea (HARDASS mnemonic)."},
+{id:28,subject:"Physiology",vignette:"A 70-year-old with heart failure has elevated LVEDP and pulmonary edema on CXR.",stem:"What is the primary force driving fluid into the pulmonary interstitium?",options:["Increased capillary oncotic pressure","Decreased interstitial hydrostatic pressure","Increased pulmonary capillary hydrostatic pressure","Decreased capillary permeability","Increased interstitial oncotic pressure"],answer:2,explanation:"LHF → increased LA pressure → elevated <strong>pulmonary capillary hydrostatic pressure (Pc)</strong> → transudative edema per Starling equation."},
+{id:29,subject:"Physiology",vignette:"Substance X has renal clearance of 625 mL/min. GFR is 125 mL/min, RPF is 625 mL/min.",stem:"What is substance X?",options:["Inulin","Glucose","PAH","Creatinine","Urea"],answer:2,explanation:"<strong>PAH</strong> clearance ≈ RPF because it is filtered AND almost completely secreted. Inulin clearance = GFR. Glucose clearance ≈ 0."},
+{id:30,subject:"Physiology",vignette:"Spirometry shows a characteristic effort-independent portion during forced expiration.",stem:"What determines max flow during the effort-independent portion?",options:["Diaphragm strength","Airway resistance and lung elastic recoil","Intercostal muscle force","Abdominal muscle pressure","Chest wall compliance"],answer:1,explanation:"Effort-independent flow is determined by <strong>airway resistance and lung elastic recoil</strong>. Dynamic compression creates a choke point."},
+{id:31,subject:"Biochemistry",vignette:"A 2-day-old newborn has lethargy, seizures, and markedly elevated ammonia.",stem:"Which enzyme combines ammonia with CO₂ in the first urea cycle step?",options:["OTC","CPS I","Arginase","Argininosuccinate synthetase","NAG synthase"],answer:1,explanation:"<strong>CPS I</strong> catalyzes: NH₃ + CO₂ + 2ATP → carbamoyl phosphate (rate-limiting step, mitochondrial matrix, requires NAG)."},
+{id:32,subject:"Biochemistry",vignette:"A 6-month-old has hepatomegaly and fasting hypoglycemia. Liver biopsy shows glycogen with normal structure.",stem:"Which enzyme is deficient?",options:["Glycogen phosphorylase","Glucose-6-phosphatase","Branching enzyme","Debranching enzyme","Glycogen synthase"],answer:1,explanation:"<strong>Von Gierke (GSD I)</strong>: G6Pase deficiency → can't convert G6P to free glucose → fasting hypoglycemia, hepatomegaly, lactic acidosis."},
+{id:33,subject:"Biochemistry",vignette:"A 25-year-old man has recurrent kidney stones. Urinalysis: hexagonal crystals. Positive cyanide-nitroprusside test.",stem:"Which amino acid transport is defective?",options:["Phenylalanine","Tryptophan","Cystine","Glycine","Proline"],answer:2,explanation:"<strong>Cystinuria</strong>: defective transport of cystine + COLA (ornithine, lysine, arginine). Hexagonal crystals are pathognomonic."},
+{id:34,subject:"Biochemistry",vignette:"An enzyme requires TPP, lipoic acid, CoA, FAD, and NAD⁺.",stem:"Which enzyme needs all five cofactors?",options:["Pyruvate carboxylase","Pyruvate dehydrogenase complex","Isocitrate dehydrogenase","Succinate dehydrogenase","Malate dehydrogenase"],answer:1,explanation:"<strong>PDH complex</strong>: 'Tender Loving Care For Nancy' — Thiamine, Lipoic acid, CoA (B5), FAD (B2), NAD⁺ (B3)."},
+{id:35,subject:"Biochemistry",vignette:"A 10-year-old boy has intellectual disability, self-mutilation, and hyperuricemia with gout.",stem:"Which enzyme is deficient?",options:["Adenosine deaminase","Xanthine oxidase","HGPRT","Purine nucleoside phosphorylase","PRPP synthetase"],answer:2,explanation:"<strong>Lesch-Nyhan syndrome</strong>: X-linked <strong>HGPRT</strong> deficiency → impaired purine salvage → hyperuricemia, self-mutilation, choreoathetosis."},
+{id:36,subject:"Biochemistry",vignette:"A 4-year-old has corneal clouding, hepatosplenomegaly, and dysostosis multiplex. Urine: elevated dermatan/heparan sulfate. Deficient α-L-iduronidase.",stem:"Which condition?",options:["Hunter syndrome","Hurler syndrome","Tay-Sachs","Gaucher disease","Fabry disease"],answer:1,explanation:"<strong>Hurler (MPS I)</strong>: α-L-iduronidase deficiency. Hunter (MPS II, X-linked) is similar but 'Hunters see clearly' — no corneal clouding."},
+{id:37,subject:"Biochemistry",vignette:"Prolonged PT/PTT corrected by vitamin K. Patient has biliary obstruction.",stem:"Which clotting factors are vitamin K-dependent?",options:["I, V, VIII, XIII","II, VII, IX, X, Protein C/S","V, VIII, XI, XII","VIII, IX, XI, XII","I, II, V, X"],answer:1,explanation:"Vitamin K-dependent: <strong>II, VII, IX, X + Protein C & S</strong>. Mnemonic: '1972'. K needed for γ-carboxylation of glutamate residues."},
+{id:38,subject:"Biochemistry",vignette:"A woman on methotrexate for RA develops pancytopenia and mucositis.",stem:"Methotrexate inhibits which enzyme?",options:["Thymidylate synthase","Dihydrofolate reductase","Ribonucleotide reductase","IMP dehydrogenase","Dihydroorotate dehydrogenase"],answer:1,explanation:"<strong>Methotrexate</strong> inhibits <strong>DHFR</strong>, preventing THF regeneration. Leucovorin (folinic acid) bypasses the block for rescue."},
+{id:39,subject:"Biochemistry",vignette:"Newborn screening: elevated phenylalanine. Started on Phe-restricted diet + tyrosine.",stem:"Which enzyme deficiency causes classic PKU?",options:["Tyrosine hydroxylase","Homogentisic acid oxidase","Phenylalanine hydroxylase","Cystathionine synthase","BCKD"],answer:2,explanation:"Classic <strong>PKU</strong>: <strong>phenylalanine hydroxylase</strong> deficiency → can't convert Phe to Tyr → intellectual disability, musty odor, fair skin."},
+{id:40,subject:"Biochemistry",vignette:"A chronic alcoholic has peripheral neuropathy, confusion, ataxia. Elevated pyruvate, decreased RBC transketolase.",stem:"Which vitamin deficiency?",options:["B₂","B₃","B₁ (thiamine)","B₆","B₁₂"],answer:2,explanation:"<strong>Thiamine (B₁)</strong> deficiency → Wernicke encephalopathy. TPP is a cofactor for PDH, α-KGDH, and <strong>transketolase</strong>. Always give B₁ BEFORE glucose."},
+{id:41,subject:"Biochemistry",vignette:"Mediterranean man develops hemolytic anemia after primaquine. Smear: bite cells and Heinz bodies.",stem:"Which enzyme is deficient?",options:["Pyruvate kinase","G6PD","Hexokinase","Aldolase B","PFK"],answer:1,explanation:"<strong>G6PD deficiency</strong>: X-linked, impairs NADPH/glutathione → oxidative stress → Heinz bodies (denatured Hb) → bite cells."},
+{id:42,subject:"Biochemistry",vignette:"A 3-year-old with SCID. Low T and B cells. Deficient purine metabolism enzyme causes deoxyadenosine toxicity.",stem:"Which enzyme is deficient?",options:["HGPRT","PNP","Adenosine deaminase","Xanthine oxidase","Thymidine kinase"],answer:2,explanation:"<strong>ADA deficiency</strong> → accumulation of deoxyadenosine/dATP → toxic to lymphocytes → autosomal recessive SCID."},
+{id:43,subject:"Biochemistry",vignette:"Patient with Achilles tendon xanthomas and LDL 350 mg/dL at age 35.",stem:"Which receptor is dysfunctional?",options:["Scavenger receptor","SR-B1","LDL receptor","VLDL receptor","LPL"],answer:2,explanation:"<strong>Familial hypercholesterolemia</strong>: defective <strong>LDL receptors</strong> → impaired LDL clearance → xanthomas, premature CAD."},
+{id:44,subject:"Biochemistry",vignette:"A researcher studies a collagen post-translational modification requiring vitamin C, before triple helix formation.",stem:"Which step requires vitamin C?",options:["Glycosylation","Hydroxylation of proline and lysine","Signal peptide cleavage","Lysyl oxidase cross-linking","Triple helix formation"],answer:1,explanation:"<strong>Vitamin C</strong> is cofactor for <strong>prolyl hydroxylase and lysyl hydroxylase</strong>. Deficiency (scurvy) → defective collagen."},
+{id:45,subject:"Biochemistry",vignette:"A 1-year-old has developmental regression and a cherry-red spot. Hexosaminidase A deficient.",stem:"What accumulates in neurons?",options:["Glucocerebroside","Sphingomyelin","GM2 ganglioside","Galactocerebroside","Ceramide trihexoside"],answer:2,explanation:"<strong>Tay-Sachs</strong>: Hex A deficiency → <strong>GM2 ganglioside</strong> accumulation in neurons. No hepatosplenomegaly (unlike Niemann-Pick)."},
+{id:46,subject:"Microbiology",vignette:"A 22-year-old with fever, pharyngitis, posterior cervical LAD, splenomegaly. Monospot positive. Atypical lymphocytes.",stem:"Which virus?",options:["CMV","EBV","HHV-6","Adenovirus","Coxsackievirus"],answer:1,explanation:"<strong>EBV (HHV-4)</strong> causes infectious mono. Monospot detects heterophile IgM. Atypical lymphocytes = reactive CD8+ T cells."},
+{id:47,subject:"Microbiology",vignette:"HIV+ man, CD4=50. Headache, fever, confusion. India ink: encapsulated yeast. CrAg positive.",stem:"Which organism?",options:["Candida","Cryptococcus neoformans","Histoplasma","Aspergillus","Pneumocystis"],answer:1,explanation:"<strong>Cryptococcus neoformans</strong>: meningoencephalitis in CD4<100. India ink shows capsule halo. Found in pigeon droppings."},
+{id:48,subject:"Microbiology",vignette:"Watery diarrhea 10 days after clindamycin. Stool toxin positive.",stem:"Which organism?",options:["S. aureus","C. perfringens","C. difficile","E. coli O157:H7","B. cereus"],answer:2,explanation:"<strong>C. difficile</strong>: pseudomembranous colitis. Toxin A (enterotoxin) + Toxin B (cytotoxin). Treat with oral vancomycin or fidaxomicin."},
+{id:49,subject:"Microbiology",vignette:"Ohio River Valley resident with cough, fever, hilar LAD. Biopsy: granulomas with oval yeast inside macrophages.",stem:"Which organism?",options:["Blastomyces","Coccidioides","Histoplasma capsulatum","Aspergillus","Cryptococcus"],answer:2,explanation:"<strong>Histoplasma</strong>: Ohio/Mississippi valleys, bat/bird droppings. Small (2-4μm) oval yeast <strong>within macrophages</strong>."},
+{id:50,subject:"Microbiology",vignette:"A 5-year-old with honey-crusted facial lesion. Gram stain: gram-positive cocci in chains.",stem:"Which organism?",options:["S. aureus","Streptococcus pyogenes","S. pneumoniae","Pseudomonas","C. diphtheriae"],answer:1,explanation:"<strong>S. pyogenes (GAS)</strong>: chains = Strep. Classic honey-crusted nonbullous impetigo. Risk of post-strep glomerulonephritis."},
+{id:51,subject:"Microbiology",vignette:"A painless genital chancre. Dark-field microscopy: spirochetes. RPR+, FTA-ABS+.",stem:"Which organism?",options:["N. gonorrhoeae","H. ducreyi","Treponema pallidum","Chlamydia L1-L3","K. granulomatis"],answer:2,explanation:"<strong>T. pallidum</strong>: painless chancre = primary syphilis. Too thin for Gram stain; use dark-field microscopy."},
+{id:52,subject:"Microbiology",vignette:"HIV+, CD4=80. Ring-enhancing brain lesion on MRI. Biopsy: tachyzoites.",stem:"Which organism?",options:["Cryptococcus","Toxoplasma gondii","JC virus","M. tuberculosis","CNS lymphoma"],answer:1,explanation:"<strong>Toxoplasma</strong>: ring-enhancing lesions in AIDS (CD4<100). Tachyzoites = active infection. Treat with pyrimethamine + sulfadiazine."},
+{id:53,subject:"Microbiology",vignette:"A 3-year-old with bloody diarrhea after undercooked hamburger. Sorbitol-negative on MacConkey. Develops HUS.",stem:"Which E. coli strain?",options:["ETEC","EIEC","EHEC O157:H7","EPEC","EAEC"],answer:2,explanation:"<strong>EHEC O157:H7</strong>: Shiga-like toxin → bloody diarrhea + HUS. Sorbitol-negative. Antibiotics contraindicated."},
+{id:54,subject:"Microbiology",vignette:"Cyclical fevers q48h from India trip. Blood smear: ring trophozoites + crescent gametocytes.",stem:"Which Plasmodium species?",options:["P. vivax","P. ovale","P. falciparum","P. malariae","P. knowlesi"],answer:2,explanation:"<strong>P. falciparum</strong>: pathognomonic <strong>crescent/banana gametocytes</strong>. Most severe. Infects all RBC ages."},
+{id:55,subject:"Microbiology",vignette:"An 8-year-old develops periorbital edema, dark urine, HTN two weeks after sore throat. RBC casts. Low C3.",stem:"Which immunologic mechanism?",options:["Type I","Type II","Type III (immune complex)","Type IV","Direct invasion"],answer:2,explanation:"<strong>PSGN = Type III hypersensitivity</strong>. Immune complexes deposit in GBM → complement activation (low C3) → nephritic syndrome."},
+{id:56,subject:"Microbiology",vignette:"Renal transplant recipient with hemorrhagic cystitis. Urine cytology: 'decoy cells.'",stem:"Which virus?",options:["Adenovirus","BK virus","JC virus","CMV","HSV"],answer:1,explanation:"<strong>BK virus</strong>: polyomavirus causing hemorrhagic cystitis/nephropathy in transplant recipients. Decoy cells mimic malignancy."},
+{id:57,subject:"Microbiology",vignette:"Prosthetic valve endocarditis. Blood cultures: catalase+, coagulase-negative, novobiocin-sensitive gram+ cocci.",stem:"Which organism?",options:["S. aureus","S. epidermidis","S. saprophyticus","E. faecalis","S. bovis"],answer:1,explanation:"<strong>S. epidermidis</strong>: coag-negative, novobiocin-sensitive. #1 cause of prosthetic valve endocarditis via biofilm."},
+{id:58,subject:"Microbiology",vignette:"Wool worker with a painless papule → black eschar. Gram stain: large gram+ rods in chains, 'boxcar' appearance.",stem:"Which organism?",options:["C. perfringens","Bacillus anthracis","B. cereus","Listeria","C. diphtheriae"],answer:1,explanation:"<strong>B. anthracis</strong>: cutaneous anthrax (black eschar). Non-hemolytic, non-motile, poly-D-glutamate capsule. 'Boxcar' chains."},
+{id:59,subject:"Microbiology",vignette:"Respiratory specimen cultured on charcoal yeast extract agar with iron and cysteine. Patient near contaminated cooling tower.",stem:"Which organism?",options:["Mycoplasma","Legionella pneumophila","Chlamydophila","H. influenzae","Bordetella"],answer:1,explanation:"<strong>Legionella</strong>: requires <strong>charcoal yeast extract + iron + cysteine</strong>. Found in water systems. Detect via urine antigen."},
+{id:60,subject:"Microbiology",vignette:"A 7-year-old with paroxysmal cough ending in inspiratory 'whoop.' WBC 60,000 with lymphocytosis.",stem:"Which toxin causes the marked lymphocytosis?",options:["Pertussis toxin","Adenylate cyclase toxin","Tracheal cytotoxin","Filamentous hemagglutinin","Dermonecrotic toxin"],answer:0,explanation:"<strong>Pertussis toxin</strong>: ADP-ribosylates Gᵢ → prevents lymphocytes from entering lymph nodes → <strong>extreme lymphocytosis</strong>."},
+{id:61,subject:"Pathology",vignette:"A 55-year-old smoker has hemoptysis. Central lung mass biopsy: keratin pearls and intercellular bridges.",stem:"Histological diagnosis?",options:["Adenocarcinoma","Squamous cell carcinoma","Small cell","Large cell","Carcinoid"],answer:1,explanation:"<strong>Squamous cell carcinoma</strong>: central, keratin pearls, intercellular bridges. Can produce PTHrP → hypercalcemia."},
+{id:62,subject:"Pathology",vignette:"A 45-year-old with fatigue, weight gain, cold intolerance. Diffusely enlarged thyroid. Biopsy: lymphocytic infiltrate with germinal centers and Hürthle cells.",stem:"Diagnosis?",options:["Graves","Hashimoto thyroiditis","de Quervain","Riedel thyroiditis","Papillary CA"],answer:1,explanation:"<strong>Hashimoto</strong>: most common cause of hypothyroidism. Anti-TPO antibodies. Hürthle cells + germinal centers. Increases lymphoma risk."},
+{id:63,subject:"Pathology",vignette:"A 25-year-old with a mobile breast lump. Biopsy: biphasic tumor, stroma compresses epithelium into slit-like spaces.",stem:"Diagnosis?",options:["Fibroadenoma","Phyllodes tumor","Invasive ductal CA","Intraductal papilloma","Fat necrosis"],answer:0,explanation:"<strong>Fibroadenoma</strong>: most common breast tumor <35. Biphasic. Intracanalicular pattern: stroma compresses epithelium into slits."},
+{id:64,subject:"Pathology",vignette:"A 2-year-old with an abdominal mass crossing midline. Elevated HVA/VMA. Biopsy: Homer-Wright pseudorosettes.",stem:"Diagnosis?",options:["Wilms tumor","Neuroblastoma","Pheochromocytoma","Hepatoblastoma","Rhabdomyosarcoma"],answer:1,explanation:"<strong>Neuroblastoma</strong>: neural crest origin, crosses midline (unlike Wilms), elevated HVA/VMA, Homer-Wright rosettes. N-myc = poor prognosis."},
+{id:65,subject:"Pathology",vignette:"A 70-year-old with back pain, anemia, M-spike on SPEP, lytic bone lesions, Bence Jones proteinuria.",stem:"Diagnosis?",options:["Waldenström","Multiple myeloma","MGUS","CLL","Amyloidosis"],answer:1,explanation:"<strong>Multiple myeloma</strong>: CRAB (Calcium, Renal, Anemia, Bone). M-spike, Bence Jones proteins, rouleaux formation, lytic lesions."},
+{id:66,subject:"Pathology",vignette:"A 30-year-old with episodic headaches, palpitations, diaphoresis, BP 240/140. Elevated metanephrines. 4cm adrenal mass.",stem:"Diagnosis?",options:["Conn syndrome","Pheochromocytoma","Adrenocortical CA","Neuroblastoma","Cushing"],answer:1,explanation:"<strong>Pheochromocytoma</strong>: rule of 10s. Classic triad: headache, palpitations, diaphoresis. Alpha-blockade BEFORE beta-blockade."},
+{id:67,subject:"Pathology",vignette:"Painless jaundice + palpable nontender gallbladder. CT: pancreatic head mass.",stem:"Which clinical sign is this?",options:["Murphy sign","Charcot triad","Courvoisier sign","Grey Turner sign","Cullen sign"],answer:2,explanation:"<strong>Courvoisier sign</strong>: painless jaundice + palpable GB → malignant obstruction (not gallstones, which cause chronic fibrosis)."},
+{id:68,subject:"Pathology",vignette:"A 40-year-old with fatigue, joint pain, butterfly rash, ANA+, anti-dsDNA+, low complement. Renal biopsy: wire-loop lesions.",stem:"Diagnosis?",options:["RA","SLE","Dermatomyositis","Scleroderma","MCTD"],answer:1,explanation:"<strong>SLE</strong>: anti-dsDNA (specific, tracks with nephritis). Wire-loop = Class IV diffuse proliferative GN with subendothelial deposits."},
+{id:69,subject:"Pathology",vignette:"Testicular mass. AFP markedly elevated, β-hCG normal. Histology: Schiller-Duval bodies.",stem:"Diagnosis?",options:["Seminoma","Embryonal CA","Yolk sac tumor","Choriocarcinoma","Teratoma"],answer:2,explanation:"<strong>Yolk sac tumor</strong>: produces AFP. Schiller-Duval bodies (glomeruloid). Most common testicular tumor in children <3."},
+{id:70,subject:"Pathology",vignette:"A 65-year-old with crescendo-decrescendo systolic murmur at RUSB radiating to carotids. Calcified aortic valve.",stem:"Most likely cause of aortic stenosis at this age?",options:["Rheumatic","Bicuspid valve","Calcific/degenerative","Infective endocarditis","Libman-Sacks"],answer:2,explanation:"Age >60: <strong>calcific (degenerative) AS</strong>. Age 40-60: bicuspid valve. Rheumatic heart disease → mitral > aortic."},
+{id:71,subject:"Pathology",vignette:"A 35-year-old African woman with rapidly enlarging jaw mass. 'Starry sky' pattern. t(8;14).",stem:"Diagnosis?",options:["Hodgkin","DLBCL","Burkitt lymphoma","Follicular lymphoma","Mantle cell"],answer:2,explanation:"<strong>Burkitt</strong>: t(8;14) c-myc→IgH. Starry sky = macrophages clearing debris. Endemic (jaw, EBV+). Sporadic (ileocecal)."},
+{id:72,subject:"Pathology",vignette:"A 50-year-old with chronic HBV has a large hepatic mass. AFP elevated.",stem:"Diagnosis?",options:["Hemangioma","FNH","HCC","Cholangiocarcinoma","Metastatic colon CA"],answer:2,explanation:"<strong>HCC</strong>: associated with HBV (DNA integrates), HCV, alcohol, aflatoxin B1. AFP >400 is highly suggestive."},
+{id:73,subject:"Pathology",vignette:"A 55-year-old with progressive dysphagia, weight loss, long GERD history. GEJ mass: malignant glandular epithelium.",stem:"Diagnosis and precursor lesion?",options:["SCC from web","Adenocarcinoma from Barrett esophagus","SCC from achalasia","Adeno from H. pylori","Leiomyosarcoma"],answer:1,explanation:"<strong>Esophageal adenocarcinoma</strong> from <strong>Barrett esophagus</strong> (intestinal metaplasia with goblet cells from chronic GERD)."},
+{id:74,subject:"Pathology",vignette:"Thyroid FNA: 'Orphan Annie eye' nuclei, nuclear grooves, psammoma bodies.",stem:"Diagnosis?",options:["Follicular CA","Papillary thyroid CA","Medullary CA","Anaplastic CA","Thyroid lymphoma"],answer:1,explanation:"<strong>Papillary thyroid CA</strong> (80% of thyroid cancers): Orphan Annie nuclei + grooves + psammoma bodies. Spreads via lymphatics."},
+{id:75,subject:"Pathology",vignette:"Refractory peptic ulcers in unusual locations. Gastrin >1000. 2cm pancreatic mass.",stem:"Diagnosis?",options:["Carcinoid","Zollinger-Ellison","Insulinoma","VIPoma","Glucagonoma"],answer:1,explanation:"<strong>ZE syndrome</strong>: gastrinoma → massive acid → refractory ulcers. 60% malignant. Associated with <strong>MEN 1</strong>."},
+{id:76,subject:"Pharmacology",vignette:"A 58-year-old with T2DM and CKD (eGFR 35). Physician wants cardiovascular and renal protective benefits.",stem:"Which medication class?",options:["Sulfonylureas","DPP-4 inhibitors","SGLT2 inhibitors","TZDs","α-glucosidase inhibitors"],answer:2,explanation:"<strong>SGLT2 inhibitors</strong> (-gliflozins): proven CV and renal protection via reduced intraglomerular pressure and natriuresis."},
+{id:77,subject:"Pharmacology",vignette:"A woman on PTU for Graves disease returns with sore throat and fever. WBC 1200, ANC 100.",stem:"Most serious adverse effect?",options:["Hepatotoxicity","Agranulocytosis","Aplastic anemia","Lupus-like syndrome","Hypothyroidism"],answer:1,explanation:"<strong>Agranulocytosis</strong>: most dangerous thionamide side effect. Patients must report fever/sore throat immediately."},
+{id:78,subject:"Pharmacology",vignette:"A man on warfarin for AFib develops INR 8.5 after starting a new antibiotic. No bleeding.",stem:"Which antibiotic caused this?",options:["Amoxicillin","Azithromycin","TMP-SMX","Doxycycline","Cephalexin"],answer:2,explanation:"<strong>TMP-SMX</strong>: sulfamethoxazole inhibits CYP2C9 (metabolizes S-warfarin) + TMP displaces warfarin from albumin."},
+{id:79,subject:"Pharmacology",vignette:"A man on statin + gemfibrozil develops severe muscle pain and dark urine. CK 15,000.",stem:"Diagnosis and cause?",options:["Drug-induced lupus","Rhabdomyolysis from statin-fibrate interaction","Hemolytic anemia","ATN from contrast","Polymyositis"],answer:1,explanation:"<strong>Rhabdomyolysis</strong>: gemfibrozil inhibits statin glucuronidation → increased statin levels → muscle breakdown. Fenofibrate is safer."},
+{id:80,subject:"Pharmacology",vignette:"A woman on 4-drug TB regimen develops peripheral neuropathy.",stem:"Which drug caused this, and what prevents it?",options:["Rifampin — vitamin K","INH — vitamin B₆","Ethambutol — vitamin A","PZA — folate","Streptomycin — calcium"],answer:1,explanation:"<strong>INH</strong> depletes <strong>pyridoxine (B₆)</strong> → peripheral neuropathy. Always supplement B₆ (25-50 mg/day) with INH."},
+{id:81,subject:"Pharmacology",vignette:"A man on allopurinol for gout is also on 6-mercaptopurine for leukemia.",stem:"Why is this combination dangerous?",options:["Increased renal clearance of 6-MP","Allopurinol inhibits 6-MP metabolism → toxicity","6-MP reduces allopurinol efficacy","Same renal transporter","Allopurinol activates 6-MP"],answer:1,explanation:"<strong>Allopurinol inhibits xanthine oxidase</strong>, which also metabolizes 6-MP. Concurrent use → severe myelosuppression. Reduce 6-MP dose by 75%."},
+{id:82,subject:"Pharmacology",vignette:"Methanol poisoning treated with IV ethanol plus another enzyme inhibitor.",stem:"Which medication inhibits alcohol dehydrogenase?",options:["Disulfiram","Fomepizole","Naloxone","Flumazenil","NAC"],answer:1,explanation:"<strong>Fomepizole</strong>: competitive inhibitor of <strong>alcohol dehydrogenase</strong>. Prevents methanol → formaldehyde → formic acid (blindness)."},
+{id:83,subject:"Pharmacology",vignette:"A woman on lithium for bipolar develops polyuria, polydipsia, and elevated creatinine.",stem:"Mechanism of lithium-induced nephrogenic DI?",options:["Stimulates excess ADH","Blocks ADH receptors","Inhibits aquaporin-2 insertion in collecting duct","Increases GFR","Direct tubular necrosis"],answer:2,explanation:"Lithium enters principal cells via ENaC and <strong>inhibits AQP2 expression/insertion</strong> → nephrogenic DI. Treat with amiloride or thiazides."},
+{id:84,subject:"Pharmacology",vignette:"A man on digoxin + thiazide presents with nausea, yellow halos, HR 40.",stem:"Which electrolyte abnormality precipitated digoxin toxicity?",options:["Hyperkalemia","Hypokalemia","Hypernatremia","Hypercalcemia","Hypomagnesemia"],answer:1,explanation:"<strong>Hypokalemia</strong> (from thiazides): K⁺ and digoxin compete for Na⁺/K⁺-ATPase binding site. Low K⁺ → more digoxin binding → toxicity."},
+{id:85,subject:"Pharmacology",vignette:"A woman on an MAOI eats aged cheese and develops hypertensive crisis.",stem:"What substance caused this?",options:["Histamine","Tyramine","Tryptophan","Phenylalanine","Glutamate"],answer:1,explanation:"<strong>Tyramine</strong>: indirect sympathomimetic. Normally degraded by gut MAO. With MAOI → enters circulation → displaces stored NE → HTN crisis."},
+{id:86,subject:"Pharmacology",vignette:"Succinylcholine given for intubation causes prolonged paralysis lasting hours instead of 5-10 min.",stem:"Most likely cause?",options:["Malignant hyperthermia","Myasthenia gravis","Pseudocholinesterase deficiency","Hyperkalemia","Allergy"],answer:2,explanation:"<strong>Pseudocholinesterase (butyrylcholinesterase) deficiency</strong>: can't metabolize succinylcholine → prolonged block. Dibucaine number test."},
+{id:87,subject:"Pharmacology",vignette:"A 5-year-old ingests iron tablets. Vomiting, bloody diarrhea, lethargy. Radiopaque pills on X-ray.",stem:"Specific antidote?",options:["NAC","Deferoxamine","Dimercaprol","EDTA","Penicillamine"],answer:1,explanation:"<strong>Deferoxamine</strong>: chelates free iron → ferrioxamine (excreted renally, 'vin rosé' urine). Iron pills are radiopaque."},
+{id:88,subject:"Pharmacology",vignette:"A man on haloperidol develops fever 40°C, lead-pipe rigidity, AMS, CK 20,000.",stem:"Diagnosis and treatment?",options:["Serotonin syndrome — cyproheptadine","NMS — dantrolene + bromocriptine","Malignant hyperthermia — dantrolene","Anticholinergic toxicity — physostigmine","TD — valbenazine"],answer:1,explanation:"<strong>NMS</strong>: FEVER (Fever, Encephalopathy, Vitals, Elevated CK, Rigidity). Stop antipsychotic + <strong>dantrolene + bromocriptine</strong>."},
+{id:89,subject:"Pharmacology",vignette:"Acetaminophen OD 4 hours ago. Level above treatment line on Rumack-Matthew nomogram.",stem:"Mechanism of the antidote?",options:["Binds acetaminophen","Induces enzymes","Replenishes glutathione to detoxify NAPQI","Inhibits CYP2E1","Enhances renal excretion"],answer:2,explanation:"<strong>NAC</strong>: replenishes <strong>glutathione</strong> to conjugate toxic NAPQI metabolite. Most effective within 8h but beneficial up to 72h."},
+{id:90,subject:"Pharmacology",vignette:"A man on 5-FU for colon cancer develops mucositis, diarrhea, myelosuppression.",stem:"Mechanism of 5-fluorouracil?",options:["DNA alkylation","Topo II inhibition","Thymidylate synthase inhibition","DHFR inhibition","DNA intercalation"],answer:2,explanation:"<strong>5-FU</strong> → 5-FdUMP → inhibits <strong>thymidylate synthase</strong> (blocks dUMP→dTMP). Leucovorin enhances its effect (opposite of MTX rescue)."},
+{id:91,subject:"Behavioral Science",vignette:"Screening test: 1000 tested, 90 have cancer. 80 test positive. Of 910 without cancer, 860 test negative.",stem:"What is the sensitivity?",options:["80/90 = 88.9%","80/130 = 61.5%","860/910 = 94.5%","860/880 = 97.7%","80/940 = 8.5%"],answer:0,explanation:"<strong>Sensitivity = TP/(TP+FN)</strong> = 80/90 = 88.9%. 'SnNOut': Sensitive test, Negative result rules out disease."},
+{id:92,subject:"Behavioral Science",vignette:"Trial: treatment group 5% stroke rate vs placebo 20% over 5 years.",stem:"What is the ARR and NNT?",options:["ARR=15%, NNT=6.7","ARR=15%, NNT=20","ARR=75%, NNT=1.3","ARR=25%, NNT=4","ARR=5%, NNT=20"],answer:0,explanation:"<strong>ARR = 20%-5% = 15%. NNT = 1/0.15 = 6.7</strong>. Treat 7 patients for 5 years to prevent one stroke."},
+{id:93,subject:"Behavioral Science",vignette:"Coffee drinkers appear to have more pancreatic cancer, but they also smoke more.",stem:"Smoking is an example of?",options:["Selection bias","Recall bias","Lead-time bias","Confounding variable","Hawthorne effect"],answer:3,explanation:"<strong>Confounding variable</strong>: associated with both exposure (coffee) and outcome (cancer) independently. Control via randomization."},
+{id:94,subject:"Behavioral Science",vignette:"A man told he has 6 months to live says: 'There must be a mistake. My labs were mixed up.'",stem:"Which Kübler-Ross stage?",options:["Anger","Bargaining","Denial","Depression","Acceptance"],answer:2,explanation:"<strong>Denial</strong>: DABDA (Denial, Anger, Bargaining, Depression, Acceptance). Refusing to accept diagnosis."},
+{id:95,subject:"Behavioral Science",vignette:"Clinical trial: p=0.03, 95% CI for difference: (2.5, 8.7).",stem:"Which statement is correct?",options:["3% chance null is true","Statistically significant at α=0.05, CI excludes 0","Proves clinical superiority","97% chance drug works","CI = probability true mean is in range"],answer:1,explanation:"p<0.05 → reject H₀. <strong>CI excludes 0</strong> → consistent with significance. Statistical ≠ clinical significance."},
+{id:96,subject:"Behavioral Science",vignette:"10,000 healthy people followed for 20 years tracking diet and cardiovascular disease.",stem:"Study design?",options:["Case-control","Cross-sectional","Prospective cohort","RCT","Ecological"],answer:2,explanation:"<strong>Prospective cohort</strong>: follows disease-free people forward from exposure to outcome. Can calculate <strong>relative risk</strong>."},
+{id:97,subject:"Behavioral Science",vignette:"A cancer trial analyzes only patients who survived to the analysis point, who were healthier at baseline.",stem:"This is an example of?",options:["Selection bias","Survivorship bias","Lead-time bias","Berkson bias","Attrition bias"],answer:1,explanation:"<strong>Survivorship bias</strong>: analyzing only 'survivors' over-represents healthier patients. ITT analysis helps mitigate this."},
+{id:98,subject:"Behavioral Science",vignette:"A competent 70-year-old with terminal cancer wants DNR. His children disagree and want everything done.",stem:"Most appropriate action?",options:["Follow children's wishes","Follow patient's wishes, document DNR","Ethics committee first","Wait for capacity loss","Court order"],answer:1,explanation:"<strong>Competent patient autonomy prevails</strong> over family preferences. Document DNR per patient's informed refusal."},
+{id:99,subject:"Behavioral Science",vignette:"Disease prevalence 1%. Test sensitivity 99%, specificity 95%. Patient tests positive.",stem:"Approximate PPV?",options:["99%","95%","50%","17%","83%"],answer:3,explanation:"PPV = TP/(TP+FP) = 99/(99+495) ≈ <strong>17%</strong>. Low prevalence → many FPs despite excellent sensitivity/specificity."},
+{id:100,subject:"Behavioral Science",vignette:"A 16-year-old JW and her parents refuse life-saving blood transfusion after MVA on religious grounds.",stem:"Most appropriate action?",options:["Respect family wishes","Administer transfusion — minors can't refuse life-saving Tx","Wait for court order","Ethics committee","Discharge AMA"],answer:1,explanation:"<strong>Minors: life-saving treatment overrides parental religious objections</strong> (parens patriae). Adults can refuse any treatment."},
+{id:101,subject:"Behavioral Science",vignette:"Normal distribution: mean=500, SD=100.",stem:"What percentage of scores fall between 300 and 700?",options:["68%","95%","99.7%","34%","50%"],answer:1,explanation:"300-700 = mean ± 2 SD. <strong>95%</strong> of values fall within ±2 SD (68-95-99.7 empirical rule)."},
+{id:102,subject:"Behavioral Science",vignette:"Neither patients nor researchers know treatment assignment.",stem:"What type of blinding?",options:["Single-blind","Double-blind","Triple-blind","Open-label","Crossover"],answer:1,explanation:"<strong>Double-blind</strong>: participants AND researchers/assessors blinded. Minimizes placebo effect and observer bias."},
+{id:103,subject:"Behavioral Science",vignette:"A man drinks nightly, tried to Cut down, is Annoyed by criticism, feels Guilty, needs an Eye-opener.",stem:"Which screening tool?",options:["PHQ-9","GAD-7","CAGE","AUDIT","MAST"],answer:2,explanation:"<strong>CAGE</strong>: Cut down, Annoyed, Guilty, Eye-opener. ≥2 positive = concerning for alcohol use disorder."},
+{id:104,subject:"Behavioral Science",vignette:"New screening mammography detects cancers 2 years earlier but 10-year mortality is the same.",stem:"This apparent improvement without mortality change is?",options:["Length-time bias","Lead-time bias","Selection bias","Measurement bias","Volunteer bias"],answer:1,explanation:"<strong>Lead-time bias</strong>: earlier detection inflates apparent survival without changing actual outcome."},
+{id:105,subject:"Behavioral Science",vignette:"Correlation coefficient r=0.85 between exercise and HDL in 200 adults.",stem:"What is r² and what does it mean?",options:["r²=0.72, 72% variance explained by exercise","r²=0.85, 85% explained","r²=0.42, 42% explained","r²=0.72, 72% chance exercise causes higher HDL","r²=0.92, 92% explained"],answer:0,explanation:"<strong>r² = 0.85² = 0.72</strong>. 72% of HDL variance explained by exercise in this model. Correlation ≠ causation."}
+];
+
+const SUBJECTS=[...new Set(QUESTIONS.map(q=>q.subject))];
+let state={currentQuestions:[],currentIndex:0,answers:{},mode:'practice',timerInterval:null,timeLeft:0,totalTime:0};
+
+// ═══ PERSISTENT STORAGE ═══
+function loadProgress(){try{return JSON.parse(localStorage.getItem('bb_progress'))||{xp:0,level:1,streak:0,lastDate:null,totalAnswered:0,totalCorrect:0,subjectStats:{},achievements:[]};}catch(e){return{xp:0,level:1,streak:0,lastDate:null,totalAnswered:0,totalCorrect:0,subjectStats:{},achievements:[]};}}
+function saveProgress(p){try{localStorage.setItem('bb_progress',JSON.stringify(p));}catch(e){}}
+function loadSettings(){try{return JSON.parse(localStorage.getItem('bb_settings'))||{theme:'blackbone',font:'garamond',size:'medium'};}catch(e){return{theme:'blackbone',font:'garamond',size:'medium'};}}
+function saveSettings(s){try{localStorage.setItem('bb_settings',JSON.stringify(s));}catch(e){}}
+function loadUsers(){try{return JSON.parse(localStorage.getItem('bb_users'))||[];}catch(e){return[];}}
+function saveUsers(u){try{localStorage.setItem('bb_users',JSON.stringify(u));}catch(e){}}
+function loadCurrentUser(){try{return JSON.parse(localStorage.getItem('bb_currentUser'))||null;}catch(e){return null;}}
+function saveCurrentUser(u){try{localStorage.setItem('bb_currentUser',JSON.stringify(u));}catch(e){}}
+
+// ═══ AUTH ═══
+function doSignup(){
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const pwd=document.getElementById('signupPwd').value;
+  const pwd2=document.getElementById('signupPwd2').value;
+  const err=document.getElementById('signupError');
+  if(!name||!email||!pwd){err.textContent='All fields required';return;}
+  if(pwd.length<4){err.textContent='Password: min 4 characters';return;}
+  if(pwd!==pwd2){err.textContent='Passwords do not match';return;}
+  const users=loadUsers();
+  if(users.find(u=>u.email===email)){err.textContent='Email already registered';return;}
+  users.push({name,email,pwd});
+  saveUsers(users);
+  saveCurrentUser({name,email});
+  enterApp();
+}
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pwd=document.getElementById('loginPwd').value;
+  const err=document.getElementById('loginError');
+  if(!email||!pwd){err.textContent='Email and password required';return;}
+  const users=loadUsers();
+  const user=users.find(u=>u.email===email&&u.pwd===pwd);
+  if(!user){err.textContent='Invalid email or password';return;}
+  saveCurrentUser({name:user.name,email:user.email});
+  enterApp();
+}
+function skipAuth(){saveCurrentUser({name:'Guest',email:'guest'});enterApp();}
+function doLogout(){localStorage.removeItem('bb_currentUser');location.reload();}
+function enterApp(){updateTopBar();updateGreeting();showScreen('homeScreen');}
+
+// ═══ SETTINGS UI ═══
+function renderSettings(){
+  const s=loadSettings();
+  // Themes
+  let tHtml='';
+  THEMES.forEach(t=>{tHtml+=`<div class="theme-pill ${s.theme===t.id?'active':''}" onclick="setTheme('${t.id}')"><div class="theme-dot" style="background:${t.dot}"></div><div><div class="theme-pill-name">${t.name}</div><div class="theme-pill-sub">${t.sub}</div></div></div>`;});
+  document.getElementById('themeGrid').innerHTML=tHtml;
+  // Fonts
+  let fHtml='';
+  FONTS.forEach(f=>{fHtml+=`<div class="font-pill ${s.font===f.id?'active':''}" onclick="setFont('${f.id}')"><div class="fp-name" style="font-family:${f.family}">${f.name}</div><div class="fp-sample">${f.sample}</div></div>`;});
+  document.getElementById('fontList').innerHTML=fHtml;
+  // Sizes
+  let sHtml='';
+  SIZES.forEach(sz=>{sHtml+=`<div class="size-pill ${s.size===sz.id?'active':''}" onclick="setSize('${sz.id}')">${sz.label}</div>`;});
+  document.getElementById('sizeRow').innerHTML=sHtml;
+  // Profile
+  const user=loadCurrentUser();
+  if(user&&user.email!=='guest'){
+    const initials=user.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('profileCardArea').innerHTML=`<div class="profile-card"><div class="profile-avatar">${initials}</div><div class="profile-info"><div class="pi-name">${user.name}</div><div class="pi-email">${user.email}</div></div></div>`;
+  }else{document.getElementById('profileCardArea').innerHTML='';}
+}
+function setTheme(id){const s=loadSettings();s.theme=id;saveSettings(s);applySettings();renderSettings();}
+function setFont(id){const s=loadSettings();s.font=id;saveSettings(s);applySettings();renderSettings();}
+function setSize(id){const s=loadSettings();s.size=id;saveSettings(s);applySettings();renderSettings();}
+function applySettings(){const s=loadSettings();document.body.setAttribute('data-theme',s.theme);document.body.setAttribute('data-font',s.font);document.body.setAttribute('data-fontsize',s.size);document.querySelector('meta[name="theme-color"]').content=getComputedStyle(document.body).getPropertyValue('--bg').trim();}
+
+// ═══ UI HELPERS ═══
+function updateTopBar(){
+  const p=loadProgress();const xpForLevel=p.level*100;const xpInLevel=p.xp%xpForLevel;
+  document.getElementById('levelDisplay').textContent=p.level;
+  document.getElementById('xpDisplay').textContent=p.xp;
+  document.getElementById('xpBar').style.width=(xpInLevel/xpForLevel*100)+'%';
+  const today=new Date().toDateString();
+  const streak=p.lastDate===today?p.streak:(p.lastDate===new Date(Date.now()-86400000).toDateString()?p.streak:0);
+  document.getElementById('streakCount').textContent=streak+' Day Streak';
+}
+function updateGreeting(){
+  const user=loadCurrentUser();
+  const el=document.getElementById('userGreeting');
+  if(user&&user.name!=='Guest')el.textContent='Welcome back, '+user.name.split(' ')[0];
+  else el.textContent='';
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='settingsScreen')renderSettings();
+}
+function goHome(){clearInterval(state.timerInterval);updateTopBar();showScreen('homeScreen');}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ═══ GAME MODES ═══
+function showSubjectSelect(mode){
+  const list=document.getElementById('subjectList');const p=loadProgress();let html='';
+  if(mode==='all')html+=`<div class="subject-item" onclick="startSession(null,'practice')"><div><div class="subj-name">All Subjects</div></div><div class="subj-count">${QUESTIONS.length} Q</div></div>`;
+  SUBJECTS.forEach(s=>{const qs=QUESTIONS.filter(q=>q.subject===s);const st=p.subjectStats[s]||{answered:0,correct:0};const pct=st.answered>0?Math.round(st.correct/st.answered*100):0;
+    html+=`<div class="subject-item" onclick="startSession('${s}','practice')"><div><div class="subj-name">${s}</div></div><div style="display:flex;align-items:center;gap:1rem"><div class="subj-progress"><div class="subj-progress-fill" style="width:${pct}%"></div></div><div class="subj-count">${qs.length} Q</div></div></div>`;});
+  list.innerHTML=html;showScreen('subjectScreen');
+}
+function startQuickPractice(){state.currentQuestions=shuffle([...QUESTIONS]).slice(0,10);state.currentIndex=0;state.answers={};state.mode='practice';showQuestion();showScreen('questionScreen');}
+function startSession(subject,mode){let pool=subject?QUESTIONS.filter(q=>q.subject===subject):[...QUESTIONS];state.currentQuestions=shuffle(pool);state.currentIndex=0;state.answers={};state.mode=mode;showQuestion();showScreen('questionScreen');}
+function startExamMode(){state.currentQuestions=shuffle([...QUESTIONS]).slice(0,40);state.currentIndex=0;state.answers={};state.mode='exam';state.timeLeft=40*75;state.totalTime=state.timeLeft;startTimer();showQuestion();showScreen('questionScreen');}
+function startTimer(){clearInterval(state.timerInterval);state.timerInterval=setInterval(()=>{state.timeLeft--;const m=Math.floor(state.timeLeft/60),s=state.timeLeft%60;const el=document.getElementById('qTimer');el.textContent=`${m}:${s.toString().padStart(2,'0')}`;el.className=state.timeLeft<120?'q-timer warning':'q-timer';if(state.timeLeft<=0){clearInterval(state.timerInterval);finishSession();}},1000);}
+
+// ═══ QUESTION DISPLAY ═══
+function showQuestion(){
+  const q=state.currentQuestions[state.currentIndex],total=state.currentQuestions.length;
+  document.getElementById('qCounter').textContent=`Q ${state.currentIndex+1} / ${total}`;
+  document.getElementById('qProgress').style.width=((state.currentIndex+1)/total*100)+'%';
+  document.getElementById('qSubject').textContent=q.subject;
+  document.getElementById('qVignette').innerHTML=q.vignette;
+  document.getElementById('qStem').textContent=q.stem;
+  if(state.mode!=='exam')document.getElementById('qTimer').textContent='';
+  const L='ABCDE';let oH='';
+  q.options.forEach((opt,i)=>{const answered=state.answers[q.id]!==undefined&&state.mode!=='exam';let c='q-option';
+    if(answered){if(i===q.answer)c+=' correct';else if(i===state.answers[q.id])c+=' wrong';else c+=' dimmed';}
+    else if(state.answers[q.id]===i)c+=' selected';
+    oH+=`<div class="${c}" onclick="selectAnswer(${q.id},${i})"><div class="opt-letter">${L[i]}</div><div class="opt-text">${opt}</div></div>`;});
+  document.getElementById('qOptions').innerHTML=oH;
+  const eD=document.getElementById('qExplanation');
+  if(state.answers[q.id]!==undefined&&state.mode!=='exam')eD.innerHTML=`<div class="q-explanation"><div class="q-explanation-title">Explanation</div><div class="q-explanation-text">${q.explanation}</div></div>`;
+  else eD.innerHTML='';
+  let nH='<div class="btn-row">';
+  if(state.currentIndex>0)nH+=`<button class="btn" onclick="prevQ()">Previous</button>`;
+  nH+=state.currentIndex<total-1?`<button class="btn btn-primary" onclick="nextQ()">Next</button>`:`<button class="btn btn-primary" onclick="finishSession()">Finish</button>`;
+  nH+='</div>';
+  if(state.mode==='exam')nH+=`<div style="padding:0 1.5rem 1rem"><button class="btn btn-blood" onclick="if(confirm('End exam early?'))finishSession()">End Exam</button></div>`;
+  document.getElementById('qNav').innerHTML=nH;
+}
+function selectAnswer(qId,idx){
+  if(state.answers[qId]!==undefined&&state.mode!=='exam')return;
+  state.answers[qId]=idx;
+  if(state.mode==='exam'){document.querySelectorAll('.q-option').forEach((el,i)=>{el.classList.remove('selected');if(i===idx)el.classList.add('selected');});return;}
+  showQuestion();
+}
+function nextQ(){if(state.currentIndex<state.currentQuestions.length-1){state.currentIndex++;showQuestion();window.scrollTo(0,0);}}
+function prevQ(){if(state.currentIndex>0){state.currentIndex--;showQuestion();window.scrollTo(0,0);}}
+
+// ═══ RESULTS ═══
+function finishSession(){
+  clearInterval(state.timerInterval);const qs=state.currentQuestions;let correct=0,attempted=0;const sbd={};
+  qs.forEach(q=>{if(!sbd[q.subject])sbd[q.subject]={total:0,correct:0};sbd[q.subject].total++;if(state.answers[q.id]!==undefined){attempted++;if(state.answers[q.id]===q.answer){correct++;sbd[q.subject].correct++;}}});
+  const pct=qs.length>0?Math.round(correct/qs.length*100):0;
+  const grade=pct>=90?'Exceptional':pct>=75?'Passing':pct>=60?'Borderline':'Needs Improvement';
+  const baseXP=correct*10,bonusXP=state.mode==='exam'?Math.round(baseXP*0.5):0,totalXP=baseXP+bonusXP;
+  const p=loadProgress();p.xp+=totalXP;p.level=Math.floor(p.xp/100)+1;p.totalAnswered+=attempted;p.totalCorrect+=correct;
+  const today=new Date().toDateString(),yesterday=new Date(Date.now()-86400000).toDateString();
+  if(p.lastDate===today){}else if(p.lastDate===yesterday)p.streak++;else p.streak=1;p.lastDate=today;
+  Object.keys(sbd).forEach(s=>{if(!p.subjectStats[s])p.subjectStats[s]={answered:0,correct:0};p.subjectStats[s].answered+=sbd[s].total;p.subjectStats[s].correct+=sbd[s].correct;});
+  saveProgress(p);
+  document.getElementById('resScore').textContent=pct+'%';document.getElementById('resGrade').textContent=grade;
+  document.getElementById('resLabel').textContent=state.mode==='exam'?'Exam Score':'Practice Score';
+  let stH=`<div class="results-stat"><div class="val">${correct}</div><div class="lbl">Correct</div></div><div class="results-stat"><div class="val">${qs.length-correct}</div><div class="lbl">Wrong</div></div><div class="results-stat"><div class="val">${qs.length}</div><div class="lbl">Total</div></div>`;
+  if(state.mode==='exam'){const el=state.totalTime-state.timeLeft;stH+=`<div class="results-stat"><div class="val">${Math.floor(el/60)}m</div><div class="lbl">Time</div></div>`;}
+  document.getElementById('resStats').innerHTML=stH;
+  document.getElementById('resXP').innerHTML=`<div class="xp-val">+${totalXP} XP</div><div class="xp-lbl">${bonusXP>0?'Exam bonus +'+bonusXP:'Practice Mode'}</div>`;
+  let bH='';Object.keys(sbd).sort().forEach(s=>{const d=sbd[s],sp=d.total>0?Math.round(d.correct/d.total*100):0,clr=sp>=75?'var(--correct)':sp>=50?'var(--accent)':'var(--wrong)';
+    bH+=`<div class="breakdown-item"><div class="bd-name">${s}</div><div style="display:flex;align-items:center;gap:0.8rem"><div class="breakdown-bar"><div class="breakdown-bar-fill" style="width:${sp}%;background:${clr}"></div></div><div class="bd-score">${d.correct}/${d.total}</div></div></div>`;});
+  document.getElementById('resBreakdown').innerHTML=bH;
+  checkAchievements(p,pct,correct);showScreen('resultsScreen');
+}
+function showReview(){let html='';const L='ABCDE';
+  state.currentQuestions.forEach((q,i)=>{const a=state.answers[q.id],ok=a===q.answer;
+    html+=`<div class="review-item" onclick="reviewQ(${i})"><div class="ri-top"><div class="ri-num">Q${i+1} · ${q.subject}</div><div class="ri-result ${ok?'ct':'wt'}">${a!==undefined?(ok?'✓ Correct':'✗ '+L[q.answer]):'Skipped'}</div></div><div class="ri-stem">${q.stem}</div></div>`;});
+  document.getElementById('reviewList').innerHTML=html;showScreen('reviewScreen');
+}
+function reviewQ(idx){state.currentIndex=idx;state.mode='review';const q=state.currentQuestions[idx];if(state.answers[q.id]===undefined)state.answers[q.id]=-1;showQuestion();showScreen('questionScreen');}
+function showStats(){
+  const p=loadProgress();document.getElementById('statsTotal').textContent=p.totalAnswered;
+  const op=p.totalAnswered>0?Math.round(p.totalCorrect/p.totalAnswered*100):0;
+  document.getElementById('statsGrid').innerHTML=`<div class="results-stat"><div class="val">${p.totalCorrect}</div><div class="lbl">Correct</div></div><div class="results-stat"><div class="val">${op}%</div><div class="lbl">Accuracy</div></div><div class="results-stat"><div class="val">${p.streak}</div><div class="lbl">Streak</div></div><div class="results-stat"><div class="val">${p.level}</div><div class="lbl">Level</div></div>`;
+  let bH='';SUBJECTS.forEach(s=>{const d=p.subjectStats[s]||{answered:0,correct:0};const sp=d.answered>0?Math.round(d.correct/d.answered*100):0;const clr=sp>=75?'var(--correct)':sp>=50?'var(--accent)':'var(--wrong)';
+    bH+=`<div class="breakdown-item"><div class="bd-name">${s}</div><div style="display:flex;align-items:center;gap:0.8rem"><div class="breakdown-bar"><div class="breakdown-bar-fill" style="width:${sp}%;background:${clr}"></div></div><div class="bd-score">${d.correct}/${d.answered}</div></div></div>`;});
+  document.getElementById('statsBreakdown').innerHTML=bH;showScreen('statsScreen');
+}
+
+// ═══ ACHIEVEMENTS ═══
+function checkAchievements(p,pct,correct){
+  const earned=[];
+  if(p.totalAnswered>=1&&!p.achievements.includes('first_blood'))earned.push({id:'first_blood',icon:'🩸',title:'First Blood',desc:'Answer your first question'});
+  if(pct===100&&state.currentQuestions.length>=10&&!p.achievements.includes('perfect'))earned.push({id:'perfect',icon:'💀',title:'Flawless Victory',desc:'100% on 10+ questions'});
+  if(p.totalAnswered>=100&&!p.achievements.includes('centurion'))earned.push({id:'centurion',icon:'🦴',title:'Centurion',desc:'Answer 100 questions'});
+  if(p.streak>=7&&!p.achievements.includes('week_streak'))earned.push({id:'week_streak',icon:'🔥',title:'On Fire',desc:'7-day streak'});
+  if(state.mode==='exam'&&pct>=75&&!p.achievements.includes('exam_pass'))earned.push({id:'exam_pass',icon:'🎓',title:'Board Certified',desc:'Pass exam with ≥75%'});
+  earned.forEach((a,i)=>{p.achievements.push(a.id);setTimeout(()=>showAchievement(a),i*3500);});saveProgress(p);
+}
+function showAchievement(a){const d=document.createElement('div');d.className='achievement-popup';d.innerHTML=`<div class="ach-icon">${a.icon}</div><div><div class="ach-text">${a.title}</div><div class="ach-desc">${a.desc}</div></div>`;document.body.appendChild(d);setTimeout(()=>d.remove(),3200);}
+
+// ═══ INIT ═══
+window.addEventListener('load',()=>{
+  applySettings();
+  setTimeout(()=>document.getElementById('loader').classList.add('hidden'),600);
+  const user=loadCurrentUser();
+  if(user){enterApp();}
+  // else stays on loginScreen
+});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
