@@ -138,14 +138,21 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ms{padding:0 1.5rem 1rem}
 .ml{font-family:var(--fm);font-size:var(--aui);letter-spacing:.4em;text-transform:uppercase;color:var(--ac);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
 .ml::before{content:'';width:16px;height:1px;background:var(--ac)}
-.mg{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-.mc{background:var(--card);border:1px solid var(--bd);padding:1.1rem .9rem;cursor:pointer;transition:all .3s;border-radius:2px}
+.mg{display:grid;grid-template-columns:repeat(var(--tilecols,2),1fr);gap:calc(.6rem * var(--tilegap,1));transition:all .35s ease}
+.mc{background:var(--card);border:1px solid var(--bd);padding:calc(var(--tilepad,1.1rem));cursor:pointer;transition:all .3s;border-radius:2px;overflow:hidden}
 .mc:active{transform:scale(.98);border-color:var(--bdh)}
-.mci{font-size:calc(1.3rem * var(--as));margin-bottom:.5rem}
-.mct{font-family:var(--fd);font-weight:700;font-size:calc(.85rem * var(--as));color:var(--txs);margin-bottom:.15rem}
-.mcd{font-family:var(--fm);font-size:calc(var(--aui) - .05rem);letter-spacing:.1em;color:var(--txm);text-transform:uppercase}
+.mci{font-size:calc(var(--tileicon,1.3rem) * var(--as));margin-bottom:calc(var(--tilepad,1.1rem) * .4);transition:font-size .3s}
+.mct{font-family:var(--fd);font-weight:700;font-size:calc(var(--tiletitle,.85rem) * var(--as));color:var(--txs);margin-bottom:.1rem;transition:font-size .3s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mcd{font-family:var(--fm);font-size:calc(var(--tiledesc,.42rem) * var(--as));letter-spacing:.08em;color:var(--txm);text-transform:uppercase;transition:font-size .3s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mc.full{grid-column:1/-1}
 .mc.bl{border-color:rgba(139,26,26,.25)}
+/* TILE SLIDER SIZES */
+[data-tiles="1"]{--tilecols:1;--tilepad:1.5rem;--tileicon:2rem;--tiletitle:1rem;--tiledesc:.5rem;--tilegap:1.2}
+[data-tiles="2"]{--tilecols:2;--tilepad:1.1rem;--tileicon:1.3rem;--tiletitle:.85rem;--tiledesc:.42rem;--tilegap:1}
+[data-tiles="3"]{--tilecols:3;--tilepad:.8rem;--tileicon:1.1rem;--tiletitle:.72rem;--tiledesc:.36rem;--tilegap:.85}
+[data-tiles="4"]{--tilecols:4;--tilepad:.55rem;--tileicon:.9rem;--tiletitle:.6rem;--tiledesc:.3rem;--tilegap:.7}
+[data-tiles="5"]{--tilecols:5;--tilepad:.4rem;--tileicon:.75rem;--tiletitle:.52rem;--tiledesc:.26rem;--tilegap:.6}
+[data-tiles="6"]{--tilecols:6;--tilepad:.3rem;--tileicon:.65rem;--tiletitle:.45rem;--tiledesc:.22rem;--tilegap:.5}
 
 /* SETTINGS */
 .ss{padding:1rem 1.5rem;border-bottom:1px solid var(--bd)}
@@ -282,11 +289,24 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .bk:active{color:var(--ac)}
 .bk::before{content:'←'}
 
-@media(min-width:768px){.mg{grid-template-columns:repeat(3,1fr)}.tgr,.igr{grid-template-columns:repeat(3,1fr)}.cgr{grid-template-columns:repeat(12,1fr)}}
+/* RANGE SLIDER */
+.slider-wrap{margin-top:.5rem}
+.slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.slider-val{font-family:var(--fd);font-weight:700;font-size:calc(1rem * var(--as));color:var(--txs);min-width:3rem;text-align:center;padding:.2rem .6rem;border:1px solid var(--bd);border-radius:2px;background:var(--card)}
+.slider-labels{display:flex;justify-content:space-between;margin-top:.3rem}
+.slider-labels span{font-family:var(--fm);font-size:calc(var(--aui) - .06rem);color:var(--txm);letter-spacing:.1em}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:var(--bd);border-radius:3px;outline:none;transition:background .3s}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--ac);cursor:pointer;border:2px solid var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.3);transition:transform .2s}
+input[type="range"]::-webkit-slider-thumb:active{transform:scale(1.2)}
+input[type="range"]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--ac);cursor:pointer;border:2px solid var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tile-preview{margin-top:.6rem;padding:.6rem;border:1px solid var(--bd);border-radius:2px;background:var(--card);overflow:hidden}
+.tile-preview .mg{padding:0}
+
+@media(min-width:768px){.tgr,.igr{grid-template-columns:repeat(3,1fr)}.cgr{grid-template-columns:repeat(12,1fr)}}
 @media(min-width:1024px){body{display:flex;justify-content:center}.screen{max-width:600px;width:100%;border-left:1px solid var(--bd);border-right:1px solid var(--bd)}}
 </style>
 </head>
-<body data-theme="blackbone" data-color="bone" data-font="garamond" data-appsize="m" data-qsize="m">
+<body data-theme="blackbone" data-color="bone" data-font="garamond" data-appsize="m" data-qsize="m" data-tiles="2">
 <div class="loader" id="loader"><div class="loader-bone"></div><div class="loader-text">Preparing Examination</div></div>
 <!-- LOGIN -->
 <div class="screen active" id="loginScreen"><div class="aw"><div class="abg"></div><div class="ac">
@@ -360,6 +380,17 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <div class="ss"><div class="sst">😀 Icon Style</div><div class="igr" id="icG"></div></div>
 <div class="ss"><div class="sst">🖼 Profile Picture</div><div class="dp-grid" id="dpSet"></div></div>
 <div class="ss"><div class="sst">🔤 Font Family</div><div class="fl" id="fnL"></div></div>
+<div class="ss"><div class="sst">🧩 Tile Layout</div>
+<div class="slider-wrap">
+<div class="slider-header">
+<span style="font-family:var(--fm);font-size:var(--aui);color:var(--txm);letter-spacing:.15em;text-transform:uppercase">Grid Columns</span>
+<div class="slider-val" id="tileVal">2×2</div>
+</div>
+<input type="range" min="1" max="6" step="1" id="tileSlider" oninput="onTileSlide(this.value)">
+<div class="slider-labels"><span>1 col</span><span>3</span><span>6 col</span></div>
+</div>
+<div class="tile-preview" id="tilePrev"></div>
+</div>
 <div class="ss"><div class="sst">📐 App Text Size</div><div class="sr" id="asR"></div></div>
 <div class="ss"><div class="sst">📖 Question Text Size</div><div class="sr" id="qsR"></div></div>
 <div class="ss"><div class="sst">👀 Reading Preview</div>
@@ -626,7 +657,7 @@ const QBANKS={usmle:Q_USMLE,nbde:Q_NBDE,nbeo:Q_NBEO};
 let st={qs:[],ci:0,ans:{},mode:'practice',ti:null,tl:0,tt:0};
 function lP(){try{return JSON.parse(localStorage.getItem('bb_p'))||{xp:0,level:1,streak:0,ld:null,ta:0,tc:0,ss:{},ach:[]};}catch(e){return{xp:0,level:1,streak:0,ld:null,ta:0,tc:0,ss:{},ach:[]};}}
 function sP(p){try{localStorage.setItem('bb_p',JSON.stringify(p));}catch(e){}}
-function lS(){try{return JSON.parse(localStorage.getItem('bb_s'))||{theme:'blackbone',color:'bone',font:'garamond',appsize:'m',qsize:'m',icons:'classic',dp:'🩺'};}catch(e){return{theme:'blackbone',color:'bone',font:'garamond',appsize:'m',qsize:'m',icons:'classic',dp:'🩺'};}}
+function lS(){try{return JSON.parse(localStorage.getItem('bb_s'))||{theme:'blackbone',color:'bone',font:'garamond',appsize:'m',qsize:'m',icons:'classic',dp:'🩺',tiles:'2'};}catch(e){return{theme:'blackbone',color:'bone',font:'garamond',appsize:'m',qsize:'m',icons:'classic',dp:'🩺',tiles:'2'};}}
 function sS(s){try{localStorage.setItem('bb_s',JSON.stringify(s));}catch(e){}}
 function lU(){try{return JSON.parse(localStorage.getItem('bb_u'))||[];}catch(e){return[];}}
 function sU(u){try{localStorage.setItem('bb_u',JSON.stringify(u));}catch(e){}}
@@ -666,6 +697,11 @@ function renderSettings(){
   document.getElementById('fnL').innerHTML=FONTS.map(f=>`<div class="fp ${s.font===f.id?'a':''}" onclick="setF('${f.id}')"><div class="fpn" style="font-family:${f.f}">${f.n}</div><div class="fps">${f.s}</div></div>`).join('');
   document.getElementById('asR').innerHTML=SIZES.map((z,i)=>`<div class="sp ${s.appsize===z?'a':''}" onclick="setAS('${z}')">${SIZE_LABELS[i]}</div>`).join('');
   document.getElementById('qsR').innerHTML=SIZES.map((z,i)=>`<div class="sp ${s.qsize===z?'a':''}" onclick="setQS('${z}')">${SIZE_LABELS[i]}</div>`).join('');
+  // Tile slider
+  const tv=s.tiles||'2';
+  document.getElementById('tileSlider').value=tv;
+  document.getElementById('tileVal').textContent=tv+'×'+tv;
+  renderTilePreview(tv);
   initDPGrid('dpSet');
   const c=lC();
   if(c&&c.email!=='guest'){document.getElementById('pcArea').innerHTML=`<div class="pcard"><div class="pav">${c.dp||'🩺'}</div><div><div class="pname">${c.name}</div><div class="pemail">${c.email}</div></div></div>`;}
@@ -677,7 +713,17 @@ function setI(id){const s=lS();s.icons=id;sS(s);applyS();renderSettings();update
 function setF(id){const s=lS();s.font=id;sS(s);applyS();renderSettings();}
 function setAS(id){const s=lS();s.appsize=id;sS(s);applyS();renderSettings();}
 function setQS(id){const s=lS();s.qsize=id;sS(s);applyS();renderSettings();}
-function applyS(){const s=lS();const b=document.body;b.setAttribute('data-theme',s.theme);b.setAttribute('data-color',s.color);b.setAttribute('data-font',s.font);b.setAttribute('data-appsize',s.appsize);b.setAttribute('data-qsize',s.qsize);try{document.querySelector('meta[name="theme-color"]').content=getComputedStyle(b).getPropertyValue('--bg').trim();}catch(e){}}
+function onTileSlide(v){const s=lS();s.tiles=v;sS(s);applyS();renderTilePreview(v);document.getElementById('tileVal').textContent=v+'×'+v;}
+function renderTilePreview(v){
+  const ic=(ICONS.find(i=>i.id===lS().icons)||ICONS[1]).icons;
+  const items=['Quick Fire','Practice','Exam','All Qs','Stats','Track'];
+  let h='<div class="mg" style="margin:0">';
+  const count=Math.min(parseInt(v)*2,6);
+  for(let i=0;i<count;i++){h+=`<div class="mc" style="pointer-events:none"><div class="mci">${ic[i%5]}</div><div class="mct">${items[i%6]}</div><div class="mcd">Preview</div></div>`;}
+  h+='</div>';
+  document.getElementById('tilePrev').innerHTML=h;
+}
+function applyS(){const s=lS();const b=document.body;b.setAttribute('data-theme',s.theme);b.setAttribute('data-color',s.color);b.setAttribute('data-font',s.font);b.setAttribute('data-appsize',s.appsize);b.setAttribute('data-qsize',s.qsize);b.setAttribute('data-tiles',s.tiles||'2');try{document.querySelector('meta[name="theme-color"]').content=getComputedStyle(b).getPropertyValue('--bg').trim();}catch(e){}}
 function updateIcons(){const s=lS();const ic=ICONS.find(i=>i.id===s.icons)||ICONS[1];for(let i=0;i<5;i++){const el=document.getElementById('ic'+i);if(el)el.textContent=ic.icons[i];}}
 
 // ═══ UI ═══
