@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tilt Scale</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #12151c;
+    --surface2: #1a1e28;
+    --border: #252a36;
+    --text: #e8eaf0;
+    --text-dim: #6b7280;
+    --accent: #34d399;
+    --accent-glow: rgba(52, 211, 153, 0.15);
+    --accent-dim: #059669;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 24px 0 20px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent), #a7f3d0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Weight Display */
+  .weight-display {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .weight-display::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .weight-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .weight-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 72px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .weight-value.uncalibrated { color: var(--text-dim); }
+  .weight-unit {
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--accent-dim);
+    margin-left: 4px;
+  }
+
+  /* Tilt Gauge */
+  .gauge-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .gauge-item {
+    text-align: center;
+  }
+  .gauge-item .label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .gauge-item .val {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .gauge-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  /* Stability Indicator */
+  .stability-bar {
+    margin-top: 16px;
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .stability-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s, background 0.4s;
+    width: 0%;
+    background: var(--danger);
+  }
+  .stability-text {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Status Chip */
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 16px;
+    transition: all 0.3s;
+  }
+  .status-chip.waiting { background: rgba(107,114,128,0.15); color: #9ca3af; }
+  .status-chip.zeroed { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .status-chip.ready { background: rgba(52,211,153,0.15); color: var(--accent); }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Buttons */
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .btn-primary:disabled {
+    background: var(--surface2);
+    color: var(--text-dim);
+  }
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-row .btn { flex: 1; }
+
+  /* Calibration Input */
+  .cal-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+  }
+  .cal-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .input-row input {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 100px;
+    text-align: center;
+    outline: none;
+  }
+  .input-row input:focus { border-color: var(--accent); }
+  .input-row span {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  /* Setup Guide */
+  .guide {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+  }
+  .guide h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .guide-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .guide-step:last-child { margin-bottom: 0; }
+  .step-num {
+    min-width: 24px; height: 24px;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .step-num.done { background: var(--accent); color: var(--bg); }
+  .guide-step p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Diagram */
+  .diagram {
+    margin-top: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+  }
+  .diagram svg { width: 100%; max-width: 300px; }
+
+  /* Permission overlay */
+  .permission-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .permission-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 340px;
+  }
+  .permission-card h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .permission-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .hidden { display: none !important; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* History log */
+  .history {
+    margin-top: 16px;
+  }
+  .history h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+  }
+  .history-item .hw { color: var(--accent); }
+  .history-item .ht { font-size: 11px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Permission Overlay -->
+  <div class="permission-overlay" id="permOverlay">
+    <div class="permission-card">
+      <h2>📐 Sensor Access</h2>
+      <p>This app uses your phone's gyroscope to measure tilt and estimate weight. Tap below to enable motion sensors.</p>
+      <button class="btn btn-primary" style="width:100%" onclick="requestPermission()">Enable Sensors</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <div class="header">
+    <h1>Tilt Scale</h1>
+    <p>Accelerometer Balance</p>
+  </div>
+
+  <!-- Weight Display -->
+  <div class="weight-display">
+    <div class="weight-label">Measured Weight</div>
+    <div>
+      <span class="weight-value uncalibrated" id="weightVal">0.0</span><span class="weight-unit">g</span>
+    </div>
+    <div class="gauge-row">
+      <div class="gauge-item">
+        <div class="label">Tilt</div>
+        <div class="val" id="tiltVal">0.00°</div>
+      </div>
+      <div class="gauge-divider"></div>
+      <div class="gauge-item">
+        <div class="label">Δ from zero</div>
+        <div class="val" id="deltaVal">0.00°</div>
+      </div>
+      <div class="gauge-divider"></div>
+      <div class="gauge-item">
+        <div class="label">Samples</div>
+        <div class="val" id="sampleVal">0</div>
+      </div>
+    </div>
+    <div class="stability-bar"><div class="stability-fill" id="stabilityFill"></div></div>
+    <div class="stability-text" id="stabilityText">Waiting for sensor…</div>
+    <div style="text-align:center">
+      <span class="status-chip waiting" id="statusChip">
+        <span class="status-dot"></span>
+        <span id="statusLabel">Not Zeroed</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn btn-primary" id="btnZero" onclick="zeroScale()">Zero Scale</button>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btnCalibrate" onclick="calibrate()" disabled>Calibrate</button>
+      <button class="btn btn-secondary" id="btnSave" onclick="saveReading()" disabled>Save Reading</button>
+    </div>
+  </div>
+
+  <!-- Calibration -->
+  <div class="cal-section">
+    <h3>Known calibration weight</h3>
+    <div class="input-row">
+      <input type="number" id="knownWeight" value="5" inputmode="decimal">
+      <span>grams (e.g. a coin)</span>
+    </div>
+  </div>
+
+  <!-- Setup Diagram -->
+  <div class="diagram">
+    <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- string -->
+      <line x1="150" y1="10" x2="150" y2="50" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+      <circle cx="150" cy="10" r="4" fill="#34d399" opacity="0.5"/>
+      <!-- beam -->
+      <rect x="30" y="48" width="240" height="6" rx="3" fill="#252a36"/>
+      <!-- phone -->
+      <rect x="40" y="58" width="70" height="40" rx="6" fill="#1a1e28" stroke="#34d399" stroke-width="1.5"/>
+      <text x="75" y="82" font-size="10" fill="#34d399" text-anchor="middle" font-family="DM Mono, monospace">📱</text>
+      <!-- cup -->
+      <path d="M200 58 L210 98 L230 98 L240 58 Z" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linejoin="round"/>
+      <text x="220" y="85" font-size="8" fill="#6b7280" text-anchor="middle" font-family="DM Mono, monospace">item</text>
+      <!-- labels -->
+      <text x="75" y="115" font-size="9" fill="#6b7280" text-anchor="middle" font-family="Outfit, sans-serif">Phone taped here</text>
+      <text x="220" y="115" font-size="9" fill="#6b7280" text-anchor="middle" font-family="Outfit, sans-serif">Weigh here</text>
+      <text x="150" y="140" font-size="9" fill="#34d399" text-anchor="middle" font-family="Outfit, sans-serif">↑ Hang from string at center</text>
+    </svg>
+  </div>
+
+  <!-- Guide -->
+  <div class="guide">
+    <h3>⚖️ Setup Guide</h3>
+    <div class="guide-step">
+      <div class="step-num" id="s1">1</div>
+      <p>Hang a ruler/stick from a string at its center point. Tape your phone to one end and a small cup to the other.</p>
+    </div>
+    <div class="guide-step">
+      <div class="step-num" id="s2">2</div>
+      <p>Let it settle until the stability bar turns green. Tap <b>Zero Scale</b>.</p>
+    </div>
+    <div class="guide-step">
+      <div class="step-num" id="s3">3</div>
+      <p>Place a known weight (coin) in the cup. Enter its weight above and tap <b>Calibrate</b>.</p>
+    </div>
+    <div class="guide-step">
+      <div class="step-num" id="s4">4</div>
+      <p>Remove the coin. Place any small item in the cup to measure it!</p>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history hidden" id="historySection">
+    <h3>Saved Readings</h3>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<script>
+  // --- State ---
+  let currentTilt = null;
+  let zeroTilt = null;
+  let tiltPerGram = 0;
+  let calibrated = false;
+  let sensorActive = false;
+  let readings = [];
+
+  // Smoothing buffer (moving average)
+  const BUFFER_SIZE = 20;
+  let buffer = [];
+  let smoothedTilt = 0;
+
+  // Stability tracking
+  let stabilityBuffer = [];
+  const STABILITY_WINDOW = 30;
+
+  // --- Permission ---
+  function requestPermission() {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+        .then(state => {
+          if (state === 'granted') startSensor();
+          else showToast('Permission denied');
+        }).catch(() => showToast('Permission error'));
+    } else {
+      startSensor();
+    }
+  }
+
+  function startSensor() {
+    document.getElementById('permOverlay').classList.add('hidden');
+    window.addEventListener('deviceorientation', onOrientation);
+    sensorActive = true;
+  }
+
+  // Auto-start if no permission API needed
+  if (typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    // Check if events fire
+    let testHandler = (e) => {
+      if (e.beta !== null) {
+        document.getElementById('permOverlay').classList.add('hidden');
+        sensorActive = true;
+      }
+      window.removeEventListener('deviceorientation', testHandler);
+    };
+    window.addEventListener('deviceorientation', testHandler);
+    window.addEventListener('deviceorientation', onOrientation);
+  }
+
+  // --- Sensor Handler ---
+  function onOrientation(event) {
+    if (event.beta === null) return;
+    currentTilt = event.beta;
+
+    // Moving average
+    buffer.push(currentTilt);
+    if (buffer.length > BUFFER_SIZE) buffer.shift();
+    smoothedTilt = buffer.reduce((a, b) => a + b, 0) / buffer.length;
+
+    // Stability calc
+    stabilityBuffer.push(smoothedTilt);
+    if (stabilityBuffer.length > STABILITY_WINDOW) stabilityBuffer.shift();
+    let stdDev = 0;
+    if (stabilityBuffer.length > 2) {
+      let mean = stabilityBuffer.reduce((a, b) => a + b, 0) / stabilityBuffer.length;
+      let variance = stabilityBuffer.reduce((sum, v) => sum + (v - mean) ** 2, 0) / stabilityBuffer.length;
+      stdDev = Math.sqrt(variance);
+    }
+
+    // Update UI
+    document.getElementById('tiltVal').textContent = smoothedTilt.toFixed(2) + '°';
+    document.getElementById('sampleVal').textContent = buffer.length;
+
+    if (zeroTilt !== null) {
+      let delta = smoothedTilt - zeroTilt;
+      document.getElementById('deltaVal').textContent = delta.toFixed(2) + '°';
+    }
+
+    // Stability bar
+    let stability = Math.max(0, Math.min(100, (1 - stdDev / 0.5) * 100));
+    let fill = document.getElementById('stabilityFill');
+    fill.style.width = stability + '%';
+    if (stability > 80) {
+      fill.style.background = 'var(--accent)';
+      document.getElementById('stabilityText').textContent = 'Stable';
+    } else if (stability > 40) {
+      fill.style.background = 'var(--warn)';
+      document.getElementById('stabilityText').textContent = 'Settling…';
+    } else {
+      fill.style.background = 'var(--danger)';
+      document.getElementById('stabilityText').textContent = 'Unstable — hold still';
+    }
+
+    // Weight calc
+    if (calibrated && tiltPerGram !== 0) {
+      let weight = (smoothedTilt - zeroTilt) / tiltPerGram;
+      let display = Math.abs(weight);
+      document.getElementById('weightVal').textContent = display.toFixed(1);
+    }
+  }
+
+  // --- Actions ---
+  function zeroScale() {
+    if (buffer.length < 5) {
+      showToast('Waiting for sensor data…');
+      return;
+    }
+    zeroTilt = smoothedTilt;
+    tiltPerGram = 0;
+    calibrated = false;
+
+    document.getElementById('weightVal').textContent = '0.0';
+    document.getElementById('weightVal').classList.add('uncalibrated');
+    document.getElementById('deltaVal').textContent = '0.00°';
+    document.getElementById('btnCalibrate').disabled = false;
+    document.getElementById('btnSave').disabled = true;
+
+    setStatus('zeroed', 'Zeroed');
+    markStep(1);
+    showToast('Scale zeroed — place known weight now');
+  }
+
+  function calibrate() {
+    if (zeroTilt === null) {
+      showToast('Zero the scale first');
+      return;
+    }
+    let knownGrams = parseFloat(document.getElementById('knownWeight').value);
+    if (!knownGrams || knownGrams <= 0) {
+      showToast('Enter a valid weight');
+      return;
+    }
+    let delta = smoothedTilt - zeroTilt;
+    if (Math.abs(delta) < 0.05) {
+      showToast('No tilt detected — check setup');
+      return;
+    }
+    tiltPerGram = delta / knownGrams;
+    calibrated = true;
+
+    document.getElementById('weightVal').classList.remove('uncalibrated');
+    document.getElementById('btnSave').disabled = false;
+
+    setStatus('ready', 'Calibrated');
+    markStep(2);
+    markStep(3);
+    showToast('Calibrated! ' + (1 / Math.abs(tiltPerGram)).toFixed(2) + '°/g sensitivity');
+  }
+
+  function saveReading() {
+    if (!calibrated) return;
+    let weight = Math.abs((smoothedTilt - zeroTilt) / tiltPerGram);
+    readings.push({ weight: weight.toFixed(1), time: new Date().toLocaleTimeString() });
+    renderHistory();
+    showToast('Saved: ' + weight.toFixed(1) + 'g');
+  }
+
+  // --- UI Helpers ---
+  function setStatus(cls, label) {
+    let chip = document.getElementById('statusChip');
+    chip.className = 'status-chip ' + cls;
+    document.getElementById('statusLabel').textContent = label;
+  }
+
+  function markStep(n) {
+    document.getElementById('s' + n).classList.add('done');
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function renderHistory() {
+    let sec = document.getElementById('historySection');
+    let list = document.getElementById('historyList');
+    sec.classList.remove('hidden');
+    list.innerHTML = readings.map(r =>
+      `<div class="history-item"><span class="hw">${r.weight} g</span><span class="ht">${r.time}</span></div>`
+    ).reverse().join('');
+  }
+</script>
+</body>
+</html>
