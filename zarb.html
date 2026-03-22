@@ -45,8 +45,8 @@ body.wm .bn{color:#1a1a1a;text-shadow:none}
 .sl{font-family:'Share Tech Mono',monospace;font-size:var(--fs-xs);letter-spacing:2px;color:var(--txtd);transition:color .3s}
 .sl.hot{color:var(--red)}.sl.chill{color:var(--grn)}
 
-/* Gauge area with overlaid TAP */
-.ga{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:180px;position:relative}
+/* Gauge area - dial on top */
+.ga{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:0;gap:clamp(8px,calc(var(--su)*2),14px)}
 .gw{position:relative;width:var(--gauge);height:var(--gauge);flex-shrink:0;transition:transform .15s}
 @keyframes tp{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}.gw.tpd{animation:tp .15s ease-out}
 canvas#gC{width:100%;height:100%;display:block}
@@ -57,13 +57,30 @@ body.wm .bv{color:#1a1a1a;text-shadow:none}
 .bu{font-family:'Share Tech Mono',monospace;font-size:var(--fs-xs);color:var(--txtd);letter-spacing:4px;margin-top:1px}
 .gn{font-family:'Michroma',sans-serif;font-size:clamp(7px,calc(var(--su)*2),11px);letter-spacing:3px;color:var(--txtd);margin-top:1px}
 
-/* TAP button overlaid on gauge */
-.tapO{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:80%;border-radius:50%;cursor:pointer;background:transparent;border:none;z-index:5;-webkit-tap-highlight-color:transparent}
-.tapO:active~#gC{filter:brightness(1.2)}
+/* Button row below gauge: TAP 70%, RST 30% */
+.btnRow{display:flex;gap:clamp(6px,calc(var(--su)*1.5),10px);width:var(--gauge);flex-shrink:0}
+.btnTap{
+  flex:7;height:clamp(52px,calc(var(--su)*14),80px);
+  border:1px solid var(--cdim);border-radius:clamp(10px,calc(var(--su)*3),18px);
+  font-family:'Michroma',sans-serif;font-size:clamp(16px,calc(var(--su)*5),28px);letter-spacing:6px;
+  cursor:pointer;color:var(--cyan);background:var(--glass);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:all .1s;position:relative;overflow:hidden;
+}
+.btnTap:active{transform:scale(.96);background:rgba(0,229,255,.1);box-shadow:0 0 30px var(--cglow),inset 0 0 30px rgba(0,229,255,.08);border-color:var(--cyan)}
+body.wm .btnTap{color:#1a1a1a;border-color:rgba(0,0,0,.15);background:rgba(255,255,255,.9)}
+.btnTap span{position:relative;z-index:1}
+.btnTap .ripple{position:absolute;border-radius:50%;background:rgba(0,229,255,.3);transform:scale(0);animation:rip .5s ease-out}@keyframes rip{to{transform:scale(3);opacity:0}}
 
-/* Reset button - small, beside gauge */
-.rstB{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:clamp(28px,calc(var(--su)*7),40px);height:clamp(60px,calc(var(--su)*16),90px);border-radius:0 12px 12px 0;border:1px solid rgba(255,26,60,.3);background:rgba(255,26,60,.06);color:var(--red);font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;cursor:pointer;writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;justify-content:center;z-index:6;backdrop-filter:blur(8px);transition:all .15s}
-.rstB:active{background:rgba(255,26,60,.2);transform:translateY(-50%) scale(.95)}
+.btnRst{
+  flex:3;height:clamp(52px,calc(var(--su)*14),80px);
+  border:1px solid rgba(255,26,60,.3);border-radius:clamp(10px,calc(var(--su)*3),18px);
+  font-family:'Michroma',sans-serif;font-size:clamp(10px,calc(var(--su)*3),16px);letter-spacing:3px;
+  cursor:pointer;color:var(--red);background:rgba(255,26,60,.04);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:all .15s;
+}
+.btnRst:active{transform:scale(.95);background:rgba(255,26,60,.15)}
 
 /* Digital meter */
 .dm{display:none;flex-direction:column;align-items:center;justify-content:center;width:var(--gauge);height:var(--gauge);position:relative}
@@ -101,6 +118,10 @@ body.wm .sc{background:rgba(255,255,255,.85);border-color:rgba(0,0,0,.08)}
 .tbn{flex:1;padding:4px 0;background:var(--glass);border:1px solid var(--gb);border-radius:5px 5px 0 0;font-family:'Michroma',sans-serif;font-size:calc(8px*var(--tab-fs));letter-spacing:2px;color:var(--txtd);cursor:pointer;text-align:center;transition:all .3s}
 .tbn.ac{color:var(--cyan);border-color:var(--cdim);background:rgba(0,229,255,.06)}
 body.wm .tbn{background:rgba(255,255,255,.8)}body.wm .tbn.ac{color:#1a1a1a;background:#fff}
+
+/* BPM Graph */
+.graphWrap{width:100%;height:clamp(80px,calc(var(--su)*22),140px);background:var(--glass);border:1px solid var(--gb);border-radius:var(--card-r);overflow:hidden;backdrop-filter:blur(10px);margin-top:4px}
+.graphWrap canvas{width:100%;height:100%;display:block}
 
 /* Config */
 .cfB{position:fixed;top:6px;right:6px;z-index:100;width:28px;height:28px;border-radius:7px;background:var(--glass);border:1px solid var(--gb);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:14px;transition:all .3s}.cfB.op{background:rgba(0,229,255,.1)}
@@ -141,6 +162,7 @@ body.wm .slL{color:#1a1a1a}body.wm .slV{color:#333}
 @media(min-width:800px)and(orientation:landscape){
 :root{--gauge:min(48vmin,400px)}.ct{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px;padding:0 14px}
 .tb{width:100%;max-width:none;order:-1}.ga{flex:0 0 auto}.bot{width:300px}.sr{grid-template-columns:1fr 1fr;gap:4px}
+.btnRow{width:var(--gauge)}
 }
 </style>
 </head>
@@ -192,28 +214,48 @@ body.wm .slL{color:#1a1a1a}body.wm .slV{color:#333}
   <div class="gw" id="gW">
     <canvas id="gC"></canvas>
     <div class="dr"><span class="bv" id="bV">0</span><div class="bu">BPM</div><div class="gn" id="gNE">AADI</div></div>
-    <button class="tapO" id="tapO" onpointerdown="doTap(event)"></button>
-    <button class="rstB" onclick="doRst()">R<br>S<br>T</button>
   </div>
   <div class="dm" id="dM">
     <div class="dmv" id="dV">000</div><div class="dml">BPM</div><div class="dmn" id="dN">AADI</div>
     <div class="dmb"><div class="dmbf" id="dF"></div></div>
-    <button class="dtO" onpointerdown="doTap(event)"></button>
+  </div>
+  <div class="btnRow">
+    <button class="btnTap" id="bTap" onpointerdown="doTap(event)"><span>TAP</span></button>
+    <button class="btnRst" onclick="doRst()">RST</button>
   </div>
 </div>
 
 <div class="bot">
-<div class="trw"><div class="tbn ac" onclick="sTab('main',this)">TEMPO</div><div class="tbn" onclick="sTab('hist',this)">HISTORY</div></div>
-<div id="tMain">
+<div class="trw">
+  <div class="tbn ac" onclick="sTab('tempo',this)">TEMPO</div>
+  <div class="tbn" onclick="sTab('hist',this)">HISTORY</div>
+  <div class="tbn" onclick="sTab('stats',this)">MIN/MAX</div>
+</div>
+
+<!-- TEMPO panel: tempo bar + basic stats -->
+<div id="pTempo">
 <div class="tbar" id="tBW"><div class="tbI" id="tBI"></div></div>
 <div class="sr" id="sRow">
-  <div class="sc" id="avgC"><div class="si" id="iAvg">&#9776;</div><div class="sla">AVG</div><div class="sv" id="avgV">&mdash;</div><div class="ss">bpm</div></div>
-  <div class="sc" id="minC"><div class="si" id="iMin">&#9660;</div><div class="sla">MIN</div><div class="sv" id="minV">&mdash;</div><div class="ss">bpm</div></div>
-  <div class="sc" id="maxC"><div class="si" id="iMax">&#9650;</div><div class="sla">MAX</div><div class="sv" id="maxV">&mdash;</div><div class="ss">bpm</div></div>
-  <div class="sc" id="tapC"><div class="si" id="iTap">&#9997;</div><div class="sla">TAPS</div><div class="sv" id="tapV">0</div><div class="ss">count</div></div>
+  <div class="sc" id="avgC"><div class="si">&#9776;</div><div class="sla">AVG</div><div class="sv" id="avgV">&mdash;</div><div class="ss">bpm</div></div>
+  <div class="sc" id="tapC"><div class="si">&#9997;</div><div class="sla">TAPS</div><div class="sv" id="tapV">0</div><div class="ss">count</div></div>
 </div>
 </div>
-<div id="tHist" style="display:none"><div class="sc" style="padding:10px;text-align:left"><div class="sla">SESSION LOG</div><div class="sv" id="hLog" style="font-size:var(--fs-xs);line-height:1.6;max-height:100px;overflow-y:auto;white-space:pre-wrap">&mdash;</div></div></div>
+
+<!-- HISTORY panel: session log -->
+<div id="pHist" style="display:none">
+<div class="sc" style="padding:10px;text-align:left"><div class="sla">SESSION LOG</div><div class="sv" id="hLog" style="font-size:var(--fs-xs);line-height:1.6;max-height:120px;overflow-y:auto;white-space:pre-wrap">&mdash;</div></div>
+</div>
+
+<!-- MIN/MAX panel: min, max, range cards + BPM graph -->
+<div id="pStats" style="display:none">
+<div class="sr" style="grid-template-columns:1fr 1fr 1fr">
+  <div class="sc" id="minC"><div class="si">&#9660;</div><div class="sla">MIN</div><div class="sv" id="minV">&mdash;</div><div class="ss">bpm</div></div>
+  <div class="sc" id="maxC"><div class="si">&#9650;</div><div class="sla">MAX</div><div class="sv" id="maxV">&mdash;</div><div class="ss">bpm</div></div>
+  <div class="sc" id="rngC"><div class="si">&#8596;</div><div class="sla">RANGE</div><div class="sv" id="rngV">&mdash;</div><div class="ss">bpm</div></div>
+</div>
+<div class="graphWrap"><canvas id="graphC"></canvas></div>
+</div>
+
 </div>
 </div>
 
@@ -288,7 +330,9 @@ document.getElementById('tBW').style.display=C.bars?'':'none';
 document.getElementById('sRow').style.display=C.cards?'':'none';
 }
 function tCf(){document.getElementById('cfP').classList.toggle('op');document.getElementById('cfB').classList.toggle('op');}
-function sTab(t,el){document.querySelectorAll('.tbn').forEach(b=>b.classList.remove('ac'));el.classList.add('ac');['tMain','tHist'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById(t==='main'?'tMain':'tHist').style.display='';}
+function sTab(t,el){document.querySelectorAll('.tbn').forEach(b=>b.classList.remove('ac'));el.classList.add('ac');['pTempo','pHist','pStats'].forEach(id=>document.getElementById(id).style.display='none');
+const map={tempo:'pTempo',hist:'pHist',stats:'pStats'};document.getElementById(map[t]).style.display='';
+if(t==='stats')drawGraph();}
 
 // SIZE
 function sz(k,v){if(locked)return;v=parseInt(v);const s=v/100,R=document.documentElement,el=document.getElementById('v_'+k);
@@ -374,15 +418,88 @@ if(C.rings)fPulse();
 const sl=document.getElementById('sLbl');if(curBPM>160){sl.textContent='HIGH TEMPO';sl.className='sl hot';}else if(curBPM>0){sl.textContent='TAPPING...';sl.className='sl chill';}
 document.getElementById('tapV').textContent=taps.length;}
 function doRst(){taps=[];bH=[];curBPM=0;tarN=0;sess.push('---');document.getElementById('bV').textContent='0';document.getElementById('dV').textContent='000';
-['avgV','minV','maxV'].forEach(id=>document.getElementById(id).textContent='\u2014');document.getElementById('tapV').textContent='0';
+['avgV','minV','maxV','rngV'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='\u2014';});
+document.getElementById('tapV').textContent='0';
 document.getElementById('sLbl').textContent='TAP TO BEGIN';document.getElementById('sLbl').className='sl';
-document.querySelectorAll('.sc').forEach(c=>c.classList.remove('hv'));document.getElementById('tBI').innerHTML='';document.getElementById('dF').style.width='0%';}
+document.querySelectorAll('.sc').forEach(c=>c.classList.remove('hv'));document.getElementById('tBI').innerHTML='';document.getElementById('dF').style.width='0%';
+drawGraph();}
+
 function updS(){if(!bH.length)return;const avg=Math.round(bH.reduce((a,b)=>a+b)/bH.length),mn=Math.min(...bH),mx=Math.max(...bH);
 document.getElementById('avgV').textContent=avg;document.getElementById('avgC').classList.add('hv');
 document.getElementById('minV').textContent=mn;document.getElementById('minC').classList.add('hv');
 document.getElementById('maxV').textContent=mx;document.getElementById('maxC').classList.add('hv');
+document.getElementById('rngV').textContent=mx-mn;document.getElementById('rngC').classList.add('hv');
 document.getElementById('tapC').classList.add('hv');
-sess.push(curBPM+'');document.getElementById('hLog').textContent=sess.slice(-20).join(' | ');}
+sess.push(curBPM+'');document.getElementById('hLog').textContent=sess.slice(-30).join(' | ');
+// Auto-update graph if stats tab visible
+if(document.getElementById('pStats').style.display!=='none')drawGraph();}
+
+function drawGraph(){
+const c=document.getElementById('graphC');if(!c)return;
+const d=devicePixelRatio||1,rect=c.parentElement.getBoundingClientRect();
+c.width=rect.width*d;c.height=rect.height*d;c.style.width=rect.width+'px';c.style.height=rect.height+'px';
+const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);
+const w=rect.width,h=rect.height;
+const T=C.style==='white'?TW:TH[C.theme];
+const[rr,gg,bb]=h2r(T.a);
+
+// Background
+x.clearRect(0,0,w,h);
+
+// Grid lines
+x.strokeStyle=`rgba(${rr},${gg},${bb},.08)`;x.lineWidth=.5;
+for(let i=1;i<4;i++){const y=h*i/4;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();}
+
+if(bH.length<2){
+  x.fillStyle=`rgba(${rr},${gg},${bb},.2)`;x.font='11px Share Tech Mono';x.textAlign='center';x.textBaseline='middle';
+  x.fillText('TAP TO SEE GRAPH',w/2,h/2);return;}
+
+const data=bH.slice(-50);
+const mn=Math.min(...data),mx=Math.max(...data);
+const range=mx-mn||1;
+const pad=10;
+const pw=w-pad*2,ph=h-pad*2;
+
+// Fill area
+x.beginPath();
+x.moveTo(pad,pad+ph);
+data.forEach((v,i)=>{
+  const px2=pad+i/(data.length-1)*pw;
+  const py=pad+ph-(v-mn)/range*ph;
+  if(i===0)x.lineTo(px2,py);else x.lineTo(px2,py);
+});
+x.lineTo(pad+(data.length-1)/(data.length-1)*pw,pad+ph);
+x.closePath();
+const grad=x.createLinearGradient(0,pad,0,pad+ph);
+grad.addColorStop(0,`rgba(${rr},${gg},${bb},.15)`);
+grad.addColorStop(1,`rgba(${rr},${gg},${bb},.02)`);
+x.fillStyle=grad;x.fill();
+
+// Line
+x.beginPath();
+data.forEach((v,i)=>{
+  const px2=pad+i/(data.length-1)*pw;
+  const py=pad+ph-(v-mn)/range*ph;
+  if(i===0)x.moveTo(px2,py);else x.lineTo(px2,py);
+});
+x.strokeStyle=T.a;x.lineWidth=2;x.stroke();
+
+// Dots on last 5 points
+const last5=data.slice(-5);
+const startI=data.length-last5.length;
+last5.forEach((v,i)=>{
+  const idx=startI+i;
+  const px2=pad+idx/(data.length-1)*pw;
+  const py=pad+ph-(v-mn)/range*ph;
+  x.beginPath();x.arc(px2,py,3,0,Math.PI*2);
+  x.fillStyle=T.a;x.fill();
+});
+
+// Min/Max labels
+x.fillStyle=`rgba(${rr},${gg},${bb},.5)`;x.font='9px Share Tech Mono';
+x.textAlign='left';x.fillText(mx+'',pad+2,pad+10);
+x.fillText(mn+'',pad+2,pad+ph-2);
+}
 function updB(){const inner=document.getElementById('tBI'),last=bH.slice(-30),mx=Math.max(...last,1);
 inner.innerHTML=last.map(b=>`<div class="tbi" style="height:${Math.max(b/mx*100,4)}%"></div>`).join('');}
 function fPulse(){const el=document.getElementById('pR'),cl=el.cloneNode();const T=C.style==='white'?TW:TH[C.theme];cl.style.animation='ro .6s ease-out forwards';cl.style.borderColor=T.a;el.parentNode.appendChild(cl);setTimeout(()=>cl.remove(),700);}
