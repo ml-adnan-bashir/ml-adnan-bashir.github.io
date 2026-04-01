@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCSA — National Cyber Security Academy | Air University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  /* Dynamic Variables controlled by Settings */
+  --base-size: 16px; 
+  --cyan: #00f0c8;
+  --cyan-rgb: 0, 240, 200;
+  --gold: #ffc845;
+  --gold-rgb: 255, 200, 69;
+  
+  --radius: 1rem; /* Controlled by slider */
+  --glow-opacity: 0.15; /* Controlled by slider */
+
+  --bg-deep: #05080e;
+  --bg-card: #0b1120;
+  --bg-card-hover: #101830;
+  --surface: #111b2e;
+  --border: rgba(var(--cyan-rgb), 0.08);
+  --border-hover: rgba(var(--cyan-rgb), 0.2);
+  --cyan-dim: color-mix(in srgb, var(--cyan) 80%, black);
+  --cyan-glow: rgba(var(--cyan-rgb), var(--glow-opacity));
+  --gold-dim: color-mix(in srgb, var(--gold) 80%, black);
+  --gold-glow: rgba(var(--gold-rgb), var(--glow-opacity));
+  --red: #ff4466;
+  --white: #e8edf5;
+  --muted: #7b8da8;
+  --muted2: #4a5d78;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+html { scroll-behavior: smooth; font-size: var(--base-size); }
+body {
+  font-family: var(--font-display);
+  background: var(--bg-deep);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width:0.375rem; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--cyan); border-radius:0.1875rem; }
+.container { max-width:75rem; margin:0 auto; padding:0 1.5rem; }
+.section-pad { padding: 6.25rem 0; }
+
+svg.icon { width: 1.5rem; height: 1.5rem; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+svg.icon-lg { width: 3rem; height: 3rem; stroke: currentColor; stroke-width: 1.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Grid BG */
+.grid-bg {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(var(--cyan-rgb),0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--cyan-rgb),0.025) 1px, transparent 1px);
+  background-size: 3.75rem 3.75rem;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 70%);
+}
+
+/* Particles */
+.particles { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.particle {
+  position:absolute; width:0.125rem; height:0.125rem; border-radius:50%;
+  background: var(--cyan); opacity:0;
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  0% { opacity:0; transform: translateY(100vh) scale(0.5); }
+  10% { opacity:0.5; } 90% { opacity:0.5; }
+  100% { opacity:0; transform: translateY(-10vh) scale(1.2); }
+}
+
+/* Ticker */
+.ticker {
+  position:fixed; top:0; left:0; right:0; z-index:1001;
+  background: linear-gradient(90deg, rgba(var(--cyan-rgb),0.1), rgba(var(--gold-rgb),0.06));
+  border-bottom:1px solid rgba(var(--cyan-rgb),0.08);
+  height:2.125rem; overflow:hidden; display:flex; align-items:center;
+}
+.ticker-label {
+  flex-shrink:0; padding:0 0.875rem; font-family:var(--font-mono);
+  font-size:0.625rem; font-weight:700; color:var(--cyan); letter-spacing:1px;
+  background:rgba(var(--cyan-rgb),0.06); height:100%; display:flex; align-items:center;
+  border-right:1px solid rgba(var(--cyan-rgb),0.1);
+}
+.ticker-track {
+  flex:1; overflow:hidden; height:100%; display:flex; align-items:center;
+  mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+}
+.ticker-content {
+  display:flex; gap:3rem; white-space:nowrap;
+  animation: marquee 40s linear infinite;
+  font-size:0.6875rem; color:var(--muted); letter-spacing:0.3px;
+}
+.ticker-content span { display:flex; align-items:center; gap:0.5rem; }
+.ticker-content .dot { width:0.25rem; height:0.25rem; border-radius:50%; background:var(--cyan); flex-shrink:0; }
+@keyframes marquee { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+/* Nav */
+nav {
+  position:fixed; top:2.125rem; left:0; right:0; z-index:1000;
+  background: rgba(5,8,14,0.8);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+nav.scrolled { background: rgba(5,8,14,0.95); box-shadow: 0 4px 40px rgba(0,0,0,0.6); }
+.nav-inner {
+  max-width:75rem; margin:0 auto; padding:0 1.5rem;
+  display:flex; align-items:center; justify-content:space-between; height:3.875rem;
+}
+.nav-brand { display:flex; align-items:center; gap:0.75rem; text-decoration:none; }
+.nav-brand-text { display:flex; flex-direction:column; line-height:1.2; }
+.nav-brand-text .primary { font-weight:700; font-size:0.875rem; color:var(--white); letter-spacing:1.5px; }
+.nav-brand-text .sub { font-size:0.5625rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
+.nav-links { display:flex; gap:1.625rem; list-style:none; }
+.nav-links a {
+  color:var(--muted); text-decoration:none; font-size:0.8125rem; font-weight:500;
+  letter-spacing:0.3px; transition:color 0.3s; position:relative; padding:0.25rem 0;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:0; left:0; width:0; height:2px;
+  background:var(--cyan); transition:width 0.3s;
+}
+.nav-links a:hover { color:var(--cyan); }
+.nav-links a:hover::after { width:100%; }
+.nav-links a.active { color:var(--cyan); }
+.nav-links a.active::after { width:100%; }
+.nav-cta {
+  padding:0.5625rem 1.25rem; border-radius: calc(var(--radius) * 0.5); font-size:0.6875rem; font-weight:700;
+  background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+  color:var(--bg-deep); text-decoration:none; letter-spacing:0.5px;
+  transition:transform 0.2s, box-shadow 0.3s; text-transform:uppercase;
+}
+.nav-cta:hover { transform:translateY(-2px); box-shadow: 0 8px 30px var(--cyan-glow); }
+
+.hamburger { display:none; background:none; border:none; cursor:pointer; padding:0.5rem; z-index:1002; }
+.hamburger span { display:block; width:1.375rem; height:0.125rem; background:var(--white); margin:5px 0; transition:0.3s; border-radius:1px; }
+.hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity:0; }
+.hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+.mobile-menu {
+  display:none; position:fixed; top:6rem; left:0; right:0; bottom:0;
+  background:rgba(5,8,14,0.97); backdrop-filter:blur(20px);
+  z-index:999; flex-direction:column; align-items:center; justify-content:center; gap:1.25rem;
+}
+.mobile-menu.open { display:flex; }
+.mobile-menu a { font-size:1.125rem; font-weight:600; color:var(--white); text-decoration:none; padding:0.625rem; transition:color 0.2s; }
+.mobile-menu a:hover { color:var(--cyan); }
+
+@media(max-width:860px) { .nav-links, .nav-cta { display:none; } .hamburger { display:block; } }
+
+/* Hero */
+.hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; z-index:1; }
+.hero-glow {
+  position:absolute; top:-20%; right:-5%; width:43.75rem; height:43.75rem;
+  background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 55%);
+  filter:blur(80px); pointer-events:none; animation: glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100%{opacity:0.8;} 50%{opacity:1;} }
+.hero-glow-2 {
+  position:absolute; bottom:-25%; left:-10%; width:31.25rem; height:31.25rem;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 55%);
+  filter:blur(60px); pointer-events:none;
+}
+.hero-inner { display:grid; grid-template-columns:1fr 23.75rem; gap:3rem; align-items:center; width:100%; }
+.hero-content { position:relative; z-index:2; padding-top:6rem; }
+.hero-tag {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  background: rgba(var(--cyan-rgb),0.07); border:1px solid rgba(var(--cyan-rgb),0.12);
+  border-radius:6.25rem; padding:0.4375rem 1rem; margin-bottom:1.375rem;
+  font-family:var(--font-mono); font-size:0.625rem; color:var(--cyan); letter-spacing:0.5px;
+}
+.hero-tag .dot { width:0.375rem; height:0.375rem; border-radius:50%; background:var(--cyan); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.3;transform:scale(0.8);} }
+.hero h1 { font-size:clamp(2.125rem, 5vw, 4.25rem); font-weight:900; line-height:1.05; margin-bottom:1.125rem; letter-spacing:-2px; }
+.hero h1 .accent { color:var(--cyan); }
+.hero h1 .gold-accent { color:var(--gold); }
+.hero-sub { font-size:0.9375rem; color:var(--muted); max-width:31.25rem; line-height:1.75; margin-bottom:2rem; }
+.hero-actions { display:flex; gap:0.75rem; flex-wrap:wrap; }
+.btn-primary {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:0.8125rem 1.75rem; border-radius: calc(var(--radius) * 0.6); font-size:0.8125rem; font-weight:700;
+  background:linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+  color:var(--bg-deep); text-decoration:none; border:none; cursor:pointer; transition:all 0.3s;
+}
+.btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 40px var(--cyan-glow); }
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:0.8125rem 1.75rem; border-radius: calc(var(--radius) * 0.6); font-size:0.8125rem; font-weight:600;
+  background:transparent; border:1px solid var(--border-hover);
+  color:var(--white); text-decoration:none; cursor:pointer; transition:all 0.3s;
+}
+.btn-ghost:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-3px); }
+
+.hero-visual { position:relative; z-index:2; padding-top:6rem; }
+.hero-shield { width:100%; max-width:22.5rem; margin:0 auto; animation: floatY 5s ease-in-out infinite; }
+@keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+.hero-shield svg { width:100%; height:auto; filter: drop-shadow(0 0 40px rgba(var(--cyan-rgb),0.2)); }
+@media(max-width:860px) { .hero-inner { grid-template-columns:1fr; } .hero-visual { display:none; } }
+
+.hero-stats-bar {
+  position:relative; z-index:2; display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  margin-top:4rem; border-radius: calc(var(--radius) * 0.8); overflow:hidden;
+  background:var(--bg-card); border:1px solid var(--border);
+}
+.hero-stat { padding:1.5rem 1.25rem; text-align:center; border-right:1px solid var(--border); transition:background 0.3s; }
+.hero-stat:last-child { border-right:none; }
+.hero-stat:hover { background:var(--bg-card-hover); }
+.hero-stat .num { font-size:1.875rem; font-weight:800; color:var(--cyan); font-family:var(--font-mono); line-height:1; }
+.hero-stat .label { font-size:0.6875rem; color:var(--muted); margin-top:0.3125rem; letter-spacing:0.5px; }
+@media(max-width:640px) { .hero-stats-bar { grid-template-columns:repeat(2,1fr); } .hero-stat:nth-child(2) { border-right:none; } .hero-stat { border-bottom:1px solid var(--border); } }
+
+/* Section headers */
+.section-header { margin-bottom:3.25rem; }
+.section-label {
+  display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--font-mono); font-size:0.6875rem; color:var(--cyan);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:0.75rem;
+}
+.section-label .line { width:1.75rem; height:1px; background:var(--cyan); }
+.section-title { font-size:clamp(1.5rem, 3.5vw, 2.625rem); font-weight:800; letter-spacing:-1px; line-height:1.15; margin-bottom:0.75rem; }
+.section-desc { font-size:0.875rem; color:var(--muted); max-width:35rem; line-height:1.75; }
+
+/* About */
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+.about-visual { position:relative; border-radius: var(--radius); overflow:hidden; border:1px solid var(--border); }
+.about-visual img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3; display: block; }
+.about-visual .overlay-badge {
+  position:absolute; bottom:0.875rem; left:0.875rem; padding:0.5rem 0.875rem;
+  background:rgba(5,8,14,0.88); backdrop-filter:blur(12px);
+  border:1px solid var(--border); border-radius: calc(var(--radius) * 0.5);
+  font-family:var(--font-mono); font-size:0.6875rem; color:var(--cyan);
+}
+.about-text p { color:var(--muted); line-height:1.8; margin-bottom:0.75rem; font-size:0.875rem; }
+.about-text p strong { color:var(--white); }
+.about-highlights { display:grid; grid-template-columns:1fr 1fr; gap:0.625rem; margin-top:1.25rem; }
+.about-highlight { padding:0.875rem; border-radius: calc(var(--radius) * 0.6); background:var(--bg-card); border:1px solid var(--border); }
+.about-highlight .val { font-family:var(--font-mono); font-size:1.25rem; font-weight:800; color:var(--cyan); }
+.about-highlight .lbl { font-size:0.6875rem; color:var(--muted); margin-top:0.125rem; }
+@media(max-width:768px) { .about-grid { grid-template-columns:1fr; } }
+
+/* Vision Mission */
+.vm-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+.vm-card {
+  padding:2.25rem; border-radius: var(--radius); background:var(--bg-card); border:1px solid var(--border);
+  transition:all 0.4s; position:relative; overflow:hidden;
+}
+.vm-card::before {
+  content:''; position:absolute; top:-50%; right:-50%; width:12.5rem; height:12.5rem;
+  border-radius:50%; pointer-events:none; transition:opacity 0.4s;
+}
+.vm-card:first-child::before { background:radial-gradient(circle, var(--cyan-glow), transparent); opacity:0.3; }
+.vm-card:last-child::before { background:radial-gradient(circle, var(--gold-glow), transparent); opacity:0.3; }
+.vm-card:hover { border-color:var(--border-hover); transform:translateY(-4px); }
+.vm-card:hover::before { opacity:0.7; }
+.vm-card .icon-row { display:flex; align-items:center; gap:0.625rem; margin-bottom:1rem; color:var(--cyan); }
+.vm-card .icon-row .tag { font-family:var(--font-mono); font-size:0.625rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); }
+.vm-card h3 { font-size:1.125rem; font-weight:700; margin-bottom:0.75rem; }
+.vm-card p { color:var(--muted); line-height:1.8; font-size:0.8125rem; }
+.vm-card p strong { color:var(--white); }
+@media(max-width:640px) { .vm-grid { grid-template-columns:1fr; } }
+
+/* Programs */
+.programs-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(15rem,1fr)); gap:1.125rem; }
+.program-card {
+  padding:1.75rem; border-radius: var(--radius); background:var(--bg-card); border:1px solid var(--border);
+  transition:all 0.4s; position:relative; overflow:hidden;
+}
+.program-card::before { content:''; position:absolute; top:0; left:0; right:0; height:0.1875rem; opacity:0; transition:opacity 0.3s; }
+.program-card.bs-card::before { background:linear-gradient(90deg, var(--cyan), var(--cyan-dim)); }
+.program-card.ms-card::before { background:linear-gradient(90deg, var(--gold), var(--gold-dim)); }
+.program-card.phd-card::before { background:linear-gradient(90deg, var(--red), #cc3355); }
+.program-card:hover { border-color:var(--border-hover); transform:translateY(-4px); }
+.program-card:hover::before { opacity:1; }
+.program-card .level {
+  display:inline-block; padding:0.25rem 0.625rem; border-radius:0.3125rem;
+  font-family:var(--font-mono); font-size:0.625rem; font-weight:700; margin-bottom:0.75rem; letter-spacing:1px;
+}
+.program-card .level.bs { background:rgba(var(--cyan-rgb),0.1); color:var(--cyan); }
+.program-card .level.ms { background:rgba(var(--gold-rgb),0.1); color:var(--gold); }
+.program-card .level.phd { background:rgba(255,68,102,0.1); color:var(--red); }
+.program-card h3 { font-size:1rem; font-weight:700; margin-bottom:0.375rem; }
+.program-card .since { font-size:0.625rem; color:var(--muted2); font-family:var(--font-mono); margin-bottom:0.5rem; }
+.program-card p { font-size:0.75rem; color:var(--muted); line-height:1.7; }
+
+/* Table */
+.prog-table-wrap { margin-top:2.5rem; border-radius: calc(var(--radius) * 0.8); overflow:hidden; border:1px solid var(--border); }
+.prog-table { width:100%; border-collapse:collapse; font-size:0.75rem; }
+.prog-table th { background:var(--surface); padding:0.75rem 1.125rem; text-align:left; font-weight:700; font-size:0.6875rem; letter-spacing:0.5px; color:var(--muted); border-bottom:1px solid var(--border); }
+.prog-table td { padding:0.75rem 1.125rem; border-bottom:1px solid var(--border); color:var(--muted); background:var(--bg-card); }
+.prog-table tr:hover td { background:var(--bg-card-hover); }
+.prog-table td:first-child { color:var(--white); font-weight:600; }
+.prog-table .badge { display:inline-block; padding:0.1875rem 0.5rem; border-radius:0.25rem; font-family:var(--font-mono); font-size:0.5625rem; font-weight:700; }
+.prog-table .badge.bs { background:rgba(var(--cyan-rgb),0.1); color:var(--cyan); }
+.prog-table .badge.ms { background:rgba(var(--gold-rgb),0.1); color:var(--gold); }
+.prog-table .badge.phd { background:rgba(255,68,102,0.1); color:var(--red); }
+@media(max-width:640px) { .prog-table-wrap { overflow-x:auto; } .prog-table { min-width:36.25rem; } }
+
+/* PLOs */
+.plo-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(12.5rem,1fr)); gap:0.875rem; }
+.plo-card { padding:1.375rem; border-radius: var(--radius); background:var(--bg-card); border:1px solid var(--border); transition:all 0.3s; }
+.plo-card:hover { border-color:var(--border-hover); }
+.plo-card .plo-num { font-family:var(--font-mono); font-size:0.625rem; font-weight:700; color:var(--cyan); margin-bottom:0.375rem; letter-spacing:1px; }
+.plo-card h4 { font-size:0.8125rem; font-weight:700; margin-bottom:0.3125rem; }
+.plo-card p { font-size:0.6875rem; color:var(--muted); line-height:1.6; }
+
+/* Dean */
+.dean-card {
+  display:grid; grid-template-columns:15rem 1fr; gap:2.25rem;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius: var(--radius); padding:2.5rem; align-items:start;
+  position:relative; overflow:hidden;
+}
+.dean-card::before {
+  content:''; position:absolute; top:-5rem; right:-5rem; width:16.25rem; height:16.25rem; border-radius:50%;
+  background:radial-gradient(circle, var(--cyan-glow), transparent); pointer-events:none; opacity:0.25;
+}
+.dean-photo {
+  width:100%; aspect-ratio:3/4; border-radius: calc(var(--radius) * 0.8);
+  background: linear-gradient(160deg, #0c1a32, #0a1428);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.625rem;
+  border:1px solid var(--border); color: var(--cyan);
+}
+.dean-photo .dean-name-badge { font-size:0.6875rem; color:var(--cyan); font-family:var(--font-mono); background:rgba(var(--cyan-rgb),0.08); padding:0.25rem 0.625rem; border-radius:0.3125rem; }
+.dean-info .name { font-size:1.5rem; font-weight:800; margin-bottom:0.1875rem; }
+.dean-info .title-line { color:var(--cyan); font-size:0.75rem; font-weight:600; margin-bottom:0.25rem; letter-spacing:0.3px; }
+.dean-info .cred { font-size:0.6875rem; color:var(--muted2); margin-bottom:1.125rem; font-family:var(--font-mono); }
+.dean-info .message { color:var(--muted); line-height:1.85; font-size:0.8125rem; }
+.dean-info .message p { margin-bottom:0.75rem; }
+.dean-info .quote-box {
+  border-left:0.1875rem solid var(--cyan); padding:0.875rem 1.125rem; margin:1.125rem 0;
+  background:rgba(var(--cyan-rgb),0.03); border-radius:0 calc(var(--radius)*0.6) calc(var(--radius)*0.6) 0;
+}
+.dean-info .quote-box p { font-style:italic; color:var(--white); font-size:0.875rem; line-height:1.7; margin:0; }
+@media(max-width:768px) { .dean-card { grid-template-columns:1fr; } .dean-photo { max-width:12.5rem; } }
+
+/* Pillars */
+.pillars-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.125rem; }
+.pillar {
+  padding:1.625rem; border-radius: var(--radius); text-align:center;
+  background:var(--bg-card); border:1px solid var(--border); transition:all 0.4s;
+}
+.pillar:hover { border-color:var(--border-hover); transform:translateY(-4px); }
+.pillar .num {
+  font-family:var(--font-mono); font-size:2.5rem; font-weight:800;
+  background:linear-gradient(135deg, var(--cyan), var(--gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:0.625rem; line-height:1;
+}
+.pillar h4 { font-size:0.8125rem; font-weight:700; margin-bottom:0.375rem; }
+.pillar p { font-size:0.6875rem; color:var(--muted); line-height:1.6; }
+@media(max-width:900px) { .pillars-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:500px) { .pillars-grid { grid-template-columns:1fr; } }
+
+/* Life */
+.life-section { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.life-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.life-card {
+  border-radius: var(--radius); overflow:hidden; background:var(--bg-card);
+  border:1px solid var(--border); transition:all 0.4s;
+}
+.life-card:hover { border-color:var(--border-hover); transform:translateY(-4px); }
+.life-card .life-img {
+  width:100%; aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; color: var(--cyan);
+}
+.life-card:nth-child(1) .life-img { background:linear-gradient(135deg, #0c2040, #0a1830); }
+.life-card:nth-child(2) .life-img { background:linear-gradient(135deg, #1a0c30, #120820); }
+.life-card:nth-child(3) .life-img { background:linear-gradient(135deg, #0c3020, #081a18); }
+.life-card .life-body { padding:1.125rem; }
+.life-card .life-body h4 { font-size:0.9375rem; font-weight:700; margin-bottom:0.3125rem; }
+.life-card .life-body p { font-size:0.75rem; color:var(--muted); line-height:1.6; }
+@media(max-width:768px) { .life-grid { grid-template-columns:1fr; } }
+
+/* Facilities */
+.facilities-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.125rem; }
+.facility-card {
+  padding:1.625rem; border-radius: var(--radius); background:var(--bg-card); border:1px solid var(--border); transition:all 0.4s;
+}
+.facility-card:hover { border-color:var(--border-hover); transform:translateY(-3px); }
+.facility-card .svg-wrap { margin-bottom:0.75rem; color: var(--cyan); }
+.facility-card h4 { font-size:0.875rem; font-weight:700; margin-bottom:0.375rem; }
+.facility-card p { font-size:0.6875rem; color:var(--muted); line-height:1.6; }
+@media(max-width:768px) { .facilities-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:500px) { .facilities-grid { grid-template-columns:1fr; } }
+
+/* Timeline */
+.timeline { position:relative; padding-left:2.25rem; max-width:42.5rem; }
+.timeline::before {
+  content:''; position:absolute; left:0.8125rem; top:0; bottom:0; width:0.125rem;
+  background:linear-gradient(to bottom, var(--cyan), var(--gold), var(--red), var(--cyan));
+}
+.timeline-item { position:relative; margin-bottom:2rem; }
+.timeline-item::before {
+  content:''; position:absolute; left:-1.875rem; top:0.3125rem; width:0.6875rem; height:0.6875rem; border-radius:50%;
+  background:var(--cyan); border:3px solid var(--bg-deep); box-shadow:0 0 10px var(--cyan-glow);
+}
+.timeline-item .year { font-family:var(--font-mono); font-size:0.6875rem; color:var(--cyan); font-weight:700; margin-bottom:0.1875rem; letter-spacing:0.5px; }
+.timeline-item h4 { font-size:0.875rem; font-weight:700; margin-bottom:0.1875rem; }
+.timeline-item p { font-size:0.75rem; color:var(--muted); line-height:1.6; }
+
+/* CTA */
+.cta-banner {
+  position:relative; border-radius: var(--radius); overflow:hidden;
+  background: linear-gradient(135deg, #081828, #0f2848);
+  border:1px solid var(--border); padding:3.25rem; text-align:center;
+}
+.cta-banner::before {
+  content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:28.125rem; height:28.125rem;
+  background: radial-gradient(circle, var(--cyan-glow), transparent 55%);
+  pointer-events:none; animation: glowPulse 4s ease-in-out infinite;
+}
+.cta-banner h2 { position:relative; font-size:clamp(1.5rem, 3.2vw, 2.25rem); font-weight:800; margin-bottom:0.75rem; letter-spacing:-0.5px; }
+.cta-banner p { position:relative; color:var(--muted); font-size:0.875rem; margin-bottom:1.5rem; max-width:28.75rem; margin-left:auto; margin-right:auto; }
+.cta-banner .btn-row { position:relative; display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
+
+/* Footer */
+footer { border-top:1px solid var(--border); padding:2.5rem 0 1.5rem; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:2rem; margin-bottom:2rem; }
+.footer-brand .logo-text { font-size:1.0625rem; font-weight:800; margin-bottom:0.5rem; }
+.footer-brand .logo-text span { color:var(--cyan); }
+.footer-brand p { font-size:0.6875rem; color:var(--muted); line-height:1.6; max-width:15.625rem; }
+.footer-col h4 { font-size:0.625rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); margin-bottom:0.75rem; }
+.footer-col a { display:block; color:var(--muted); text-decoration:none; font-size:0.75rem; padding:0.1875rem 0; transition:color 0.2s; }
+.footer-col a:hover { color:var(--cyan); }
+.footer-bottom {
+  border-top:1px solid var(--border); padding-top:1.125rem;
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.625rem;
+}
+.footer-bottom p { font-size:0.625rem; color:var(--muted2); }
+.footer-bottom .socials { display:flex; gap:0.5rem; }
+.footer-bottom .socials a {
+  width:2rem; height:2rem; border-radius:0.4375rem; border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted); text-decoration:none; font-size:0.75rem; transition:all 0.3s;
+}
+.footer-bottom .socials a:hover { border-color:var(--cyan); color:var(--cyan); }
+
+/* Settings Panel */
+.settings-btn {
+  position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 9999;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--cyan); width: 3rem; height: 3rem; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6); transition: all 0.3s;
+}
+.settings-btn:hover { border-color: var(--cyan); transform: rotate(45deg); box-shadow: 0 4px 20px var(--cyan-glow); }
+.settings-panel {
+  position: fixed; bottom: 5rem; right: 1.25rem; z-index: 9999;
+  background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: 1rem;
+  padding: 1.5rem; width: 17rem; transform: translateX(120%); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+.settings-panel.open { transform: translateX(0); opacity: 1; }
+.settings-panel h3 { font-size: 1rem; margin-bottom: 1.25rem; color: var(--white); display: flex; align-items: center; gap: 0.5rem; }
+.set-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.8rem; color: var(--muted); }
+.set-row input[type="range"] { width: 55%; accent-color: var(--cyan); cursor: pointer; }
+.set-row input[type="color"] { background: none; border: 1px solid var(--border); border-radius: 4px; width: 2rem; height: 2rem; cursor: pointer; padding: 0; }
+.set-row input[type="checkbox"] { width: 1rem; height: 1rem; accent-color: var(--cyan); cursor: pointer; }
+.set-row select { background: var(--surface); color: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; width: 55%; cursor: pointer; }
+
+@media(max-width:768px) { .footer-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:500px) { .footer-grid { grid-template-columns:1fr; } }
+
+/* Reveal */
+.reveal { opacity:0; transform:translateY(1.375rem); transition:opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="particles" id="particles"></div>
+
+<div class="ticker">
+  <div class="ticker-label">NEWS</div>
+  <div class="ticker-track">
+    <div class="ticker-content">
+      <span><span class="dot"></span>Admissions Fall 2026 Now Open — Apply Today</span>
+      <span><span class="dot"></span>NCSA signs strategic MoU with Pakistan's National CERT</span>
+      <span><span class="dot"></span>Air University ranked #2 Nationally by U.S. News &amp; World Report</span>
+      <span><span class="dot"></span>PhD Cyber Security program accepting applications</span>
+      <span><span class="dot"></span>Cyber awareness training delivered to 40+ government organizations</span>
+      <span><span class="dot"></span>NCCS operating 11 specialized labs across Pakistan</span>
+      <span><span class="dot"></span>Admissions Fall 2026 Now Open — Apply Today</span>
+      <span><span class="dot"></span>NCSA signs strategic MoU with Pakistan's National CERT</span>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <img src="ncsa.png" alt="NCSA Logo" style="height: 2.375rem; width: auto; object-fit: contain;">
+      <div class="nav-brand-text"><span class="primary">NCSA</span><span class="sub">Air University</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#dean">Dean</a></li>
+      <li><a href="#objectives">Objectives</a></li>
+      <li><a href="#life">Life@NCSA</a></li>
+      <li><a href="#facilities">Facilities</a></li>
+      <li><a href="#timeline">Journey</a></li>
+    </ul>
+    <a href="#apply" class="nav-cta">Apply Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#programs" onclick="closeMenu()">Programs</a>
+  <a href="#dean" onclick="closeMenu()">Dean's Message</a>
+  <a href="#objectives" onclick="closeMenu()">Objectives</a>
+  <a href="#life" onclick="closeMenu()">Life @ NCSA</a>
+  <a href="#facilities" onclick="closeMenu()">Facilities</a>
+  <a href="#timeline" onclick="closeMenu()">Our Journey</a>
+  <a href="#apply" onclick="closeMenu()" style="color:var(--cyan);">Apply Now →</a>
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>mp4
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-tag"><span class="dot"></span>PAKISTAN'S FIRST CYBER SECURITY ACADEMY</div>
+        <h1>Shaping the<br><span class="accent">Cyber</span> Defenders<br>of <span class="gold-accent">Tomorrow</span></h1>
+        <p class="hero-sub">The National Cyber Security Academy at Air University — pioneering BS, MS &amp; PhD programs since 2018. Four schools, a state-of-the-art cyber range, and 11+ research labs securing Pakistan's digital future.</p>
+        <div class="hero-actions">
+          <a href="#programs" class="btn-primary">Explore Programs <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#about" class="btn-ghost">Learn More</a>
+        </div>
+      </div>
+      
+      <!-- VIDEO MOVED TO THE FRONT HERE -->
+      <div class="hero-visual">
+        <video autoplay loop muted playsinline controls style="width: 100%; border-radius: var(--radius); border: 2px solid var(--cyan); box-shadow: 0 0 40px var(--cyan-glow); object-fit: cover; display: block; position: relative; z-index: 10;">
+         <source src="ncsa_video.mp4" type="video/mp4">
+        </video>
+      </div>
+
+    </div>
+    <div class="hero-stats-bar">
+      <div class="hero-stat"><div class="num">4</div><div class="label">Schools</div></div>
+      <div class="hero-stat"><div class="num">11+</div><div class="label">Specialized Labs</div></div>
+      <div class="hero-stat"><div class="num">2018</div><div class="label">Established</div></div>
+      <div class="hero-stat"><div class="num">#2</div><div class="label">AU National Rank</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="about">
+  <div class="container">
+    <div class="about-grid reveal">
+      
+      <!-- NEW: Campus Image replacing the SVG icon -->
+      <div class="about-visual">
+        <img src="ncsa_out.jpg" alt="Main Campus, Islamabad" />
+        <div class="overlay-badge">📍 E-9, PAF Complex, Islamabad</div>
+      </div>
+
+      <div class="about-text">
+        <div class="section-label"><span class="line"></span> Introduction</div>
+        <h2 class="section-title">Pakistan's First<br>Cyber Security Academy</h2>
+        <p>Welcome to the <strong>National Cyber Security Academy (NCSA)</strong> at Air University — the first-of-its-kind initiative in Pakistan dedicated to advancing education, training, and research in Cyber Security.</p>
+        <p>Our journey began in <strong>2018</strong> with the launch of Pakistan's pioneering undergraduate program. Today, NCSA has evolved into a comprehensive Academy with <strong>four schools</strong>, a <strong>training center</strong>, and a state-of-the-art <strong>cyber range</strong>.</p>
+        <p>We host the <strong>National Center for Cyber Security (NCCS)</strong>, supported by <strong>11 specialized labs</strong> across Pakistan.</p>
+        <div class="about-highlights">
+          <div class="about-highlight"><div class="val">5</div><div class="lbl">Degree Programs</div></div>
+          <div class="about-highlight"><div class="val">4</div><div class="lbl">Schools</div></div>
+          <div class="about-highlight"><div class="val">11+</div><div class="lbl">Research Labs</div></div>
+          <div class="about-highlight"><div class="val">40+</div><div class="lbl">Govt. Partners</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="padding-top:0;" id="vision">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Our Purpose</div><h2 class="section-title">Vision &amp; Mission</h2></div>
+    <div class="vm-grid">
+      <div class="vm-card reveal">
+        <div class="icon-row">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="tag">VISION</span>
+        </div>
+        <h3>Global Leadership in Cyber Security</h3>
+        <p>To position Pakistan as a <strong>global leader</strong> in Cyber Security education, research, and industry collaboration — developing a world-class workforce and driving innovation that strengthens national resilience in the digital domain.</p>
+      </div>
+      <div class="vm-card reveal reveal-d1">
+        <div class="icon-row">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span class="tag">MISSION</span>
+        </div>
+        <h3>Protecting National Digital Assets</h3>
+        <p>To provide knowledge and skills for producing graduates proficient in solving <strong>real-world cyber security problems</strong> with a keen sense of social responsibility and passion for lifelong learning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="programs">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Academic Programs</div><h2 class="section-title">Degree Programs</h2><p class="section-desc">Globally benchmarked curricula with strong emphasis on experiential learning — from foundational undergraduate studies to doctoral research.</p></div>
+    <div class="programs-grid reveal">
+      <div class="program-card bs-card"><span class="level bs">BS</span><h3>BS Cyber Security</h3><div class="since">Since Fall 2018</div><p>Pakistan's pioneering undergraduate program. Four-year program covering network security, digital forensics, cryptography, ethical hacking.</p></div>
+      <div class="program-card ms-card"><span class="level ms">MS</span><h3>MS Cyber Security</h3><div class="since">Since Fall 2020</div><p>Advanced graduate program covering threat analysis, security architecture, incident response, and applied research.</p></div>
+      <div class="program-card ms-card"><span class="level ms">MS</span><h3>MS System Security</h3><div class="since">Since Spring 2020</div><p>Specialized master's focusing on OS security, embedded systems, hardware security, and secure engineering.</p></div>
+      <div class="program-card ms-card"><span class="level ms">MS</span><h3>MS Cryptology</h3><div class="since">Graduate Program</div><p>Cryptographic algorithms and code-breaking — preparing specialists to protect critical infrastructure.</p></div>
+      <div class="program-card phd-card"><span class="level phd">PhD</span><h3>PhD Cyber Security</h3><div class="since">Since Fall 2020</div><p>Doctoral research producing researchers and specialists for national cyber defense demands.</p></div>
+    </div>
+    <div class="prog-table-wrap reveal" style="margin-top:2.25rem;">
+      <table class="prog-table">
+        <thead><tr><th>Program</th><th>Level</th><th>Eligibility</th><th>Duration</th></tr></thead>
+        <tbody>
+          <tr><td>BS Cyber Security</td><td><span class="badge bs">BS</span></td><td>Intermediate (HSSC) with Mathematics, min 50%</td><td>4 Years</td></tr>
+          <tr><td>MS Cyber Security</td><td><span class="badge ms">MS</span></td><td>BS Computing/CS/SE/IT (4yr, 130 CH), CGPA 2.0+</td><td>1.5–2 Years</td></tr>
+          <tr><td>MS System Security</td><td><span class="badge ms">MS</span></td><td>BS Computing/CS/SE/IT (4yr, 130 CH), CGPA 2.0+</td><td>1.5–2 Years</td></tr>
+          <tr><td>MS Cryptology</td><td><span class="badge ms">MS</span></td><td>BS Computing/Math (130 CH), AU test 60%, Interview</td><td>1.5–2 Years</td></tr>
+          <tr><td>PhD Cyber Security</td><td><span class="badge phd">PhD</span></td><td>MS/MPhil relevant field, min score + research credentials</td><td>3–5 Years</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="padding-top:0;" id="plos">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Learning Outcomes</div><h2 class="section-title">Program Educational Objectives</h2></div>
+    <div class="plo-grid reveal">
+      <div class="plo-card"><div class="plo-num">PEO-1</div><h4>Technical Competence</h4><p>Graduates possess knowledge and skills to solve real-world cyber security challenges.</p></div>
+      <div class="plo-card"><div class="plo-num">PEO-2</div><h4>Leadership & Communication</h4><p>Graduates act as effective team players, leaders, and strong communicators.</p></div>
+      <div class="plo-card"><div class="plo-num">PEO-3</div><h4>Emerging Technologies</h4><p>Graduates demonstrate initiative in emerging cyber security areas and adapt to challenging professions.</p></div>
+      <div class="plo-card"><div class="plo-num">PEO-4</div><h4>Ethics & Lifelong Learning</h4><p>Graduates engage in lifelong professional development and contribute to ethical practices.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="dean">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Leadership</div><h2 class="section-title">Message from the Dean</h2></div>
+    <div class="dean-card reveal">
+      <div class="dean-photo">
+        <svg class="icon-lg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="dean-name-badge">Dean, NCSA</div>
+      </div>
+      <div class="dean-info">
+        <div class="name">Prof. Dr. Zunera Jalil</div>
+        <div class="title-line">Dean, National Cyber Security Academy</div>
+        <div class="cred">20+ years academic experience · FAST-NUCES</div>
+        <div class="message">
+          <p>Welcome to the National Cyber Security Academy (NCSA) at Air University, the first-of-its-kind initiative in Pakistan dedicated to advancing education, training, and research in Cyber Security.</p>
+          <div class="quote-box"><p>With state-of-the-art facilities, globally benchmarked curricula, and a strong emphasis on experiential learning, the Academy stands as a hub for cultivating the next generation of Cyber Security professionals, researchers, and innovators.</p></div>
+          <p>Our vision is to position Pakistan as a global leader in Cyber Security education, research, and industry collaboration. We are committed to building a world-class workforce, advancing curriculum excellence, driving sustainable economic growth, and achieving global leadership.</p>
+          <p>As Dean of NCSA, I warmly invite you to join us in shaping a safer and more secure digital future for Pakistan and beyond.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="objectives">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Core Objectives</div><h2 class="section-title">Four Pillars of Excellence</h2></div>
+    <div class="pillars-grid reveal">
+      <div class="pillar"><div class="num">01</div><h4>World-Class Workforce</h4><p>Building skilled professionals for evolving national and global cyber threats.</p></div>
+      <div class="pillar"><div class="num">02</div><h4>Curriculum Excellence</h4><p>Globally benchmarked curricula aligned with international standards.</p></div>
+      <div class="pillar"><div class="num">03</div><h4>Economic Growth</h4><p>Driving innovation, industry collaboration, and entrepreneurship.</p></div>
+      <div class="pillar"><div class="num">04</div><h4>Global Leadership</h4><p>Positioning Pakistan as a leader in cyber security education and research.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad life-section" id="life">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Campus Experience</div><h2 class="section-title">Life @ NCSA</h2><p class="section-desc">Learn with Air University and experience the vibrant campus life of the Cyber Security Academy.</p></div>
+    <div class="life-grid reveal">
+      <div class="life-card">
+        <div class="life-img"><svg class="icon-lg" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <div class="life-body"><h4>Admissions</h4><p>Join Pakistan's premier cyber security programs. Fall 2026 admissions are now open. Merit-based evaluation through academics, tests, and interviews.</p></div>
+      </div>
+      <div class="life-card">
+        <div class="life-img"><svg class="icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+        <div class="life-body"><h4>Events & CTFs</h4><p>Hackathons, Capture-The-Flag competitions, seminars, and guest lectures from industry leaders and international experts.</p></div>
+      </div>
+      <div class="life-card">
+        <div class="life-img"><svg class="icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="life-body"><h4>Cyber Security Society</h4><p>Student-led society organizing workshops, security awareness campaigns, networking events, and industry collaborations.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="facilities">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Infrastructure</div><h2 class="section-title">Facilities &amp; Resources</h2></div>
+    <div class="facilities-grid reveal">
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h4>Computer Labs</h4><p>State-of-the-art labs with specialized tools, sandboxes, and virtualization environments.</p>
+      </div>
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h4>Cyber Range</h4><p>Dedicated range for attack-defense simulations and red/blue team operations.</p>
+      </div>
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <h4>NCCS Research Labs</h4><p>11 specialized labs across Pakistan — forensics, malware, IoT security, and more.</p>
+      </div>
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12h4l2-9 5 18 2-9h5"/></svg></div>
+        <h4>Training Center</h4><p>Executive cyber awareness programs for government and industry professionals.</p>
+      </div>
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg></div>
+        <h4>Research Groups</h4><p>Applied cryptography, network security, AI for security, malware analysis, digital forensics.</p>
+      </div>
+      <div class="facility-card">
+        <div class="svg-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Industry Partnerships</h4><p>NTISB, National CERT, PKCERT collaborations bridging academia and defense.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="timeline">
+  <div class="container">
+    <div class="section-header reveal"><div class="section-label"><span class="line"></span> Our Journey</div><h2 class="section-title">Milestones</h2></div>
+    <div class="timeline reveal">
+      <div class="timeline-item"><div class="year">2018</div><h4>NCSA Founded</h4><p>Launched Pakistan's first BS in Cyber Security. NCCS inaugurated by Federal Minister for Interior.</p></div>
+      <div class="timeline-item"><div class="year">Spring 2020</div><h4>MS System Security</h4><p>Graduate offerings expanded with the MS System Security program.</p></div>
+      <div class="timeline-item"><div class="year">Fall 2020</div><h4>MS & PhD Programs</h4><p>MS Cyber Security and PhD Cyber Security — complete BS-to-PhD pipeline established.</p></div>
+      <div class="timeline-item"><div class="year">2023</div><h4>Government Training</h4><p>Cyber awareness training for 40+ ministries/organizations with NTISB.</p></div>
+      <div class="timeline-item"><div class="year">2024</div><h4>National CERT MoU</h4><p>Strategic partnership with PKCERT for R&D, internships, and workforce development.</p></div>
+      <div class="timeline-item"><div class="year">2026</div><h4>Academy at Scale</h4><p>Four schools, training center, cyber range, 11+ research labs. Fall 2026 admissions open.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="apply">
+  <div class="container reveal">
+    <div class="cta-banner">
+      <h2>Ready to Defend the<br><span style="color:var(--cyan)">Digital Frontier</span>?</h2>
+      <p>Join Pakistan's premier Cyber Security Academy. Fall 2026 applications are open.</p>
+      <div class="btn-row">
+        <a href="https://au.edu.pk" class="btn-primary" target="_blank">Apply for Admissions <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#programs" class="btn-ghost">View Programs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <!-- NEW: Air University Logo -->
+        <img src="air.png" alt="Air University" style="height: 3.5rem; margin-bottom: 0.5rem; filter: brightness(0) invert(1) opacity(0.8);">
+        <div class="logo-text"><span>NCSA</span> · Air University</div>
+        <p>National Cyber Security Academy — Pakistan's first institution dedicated to cyber security education, training, and research.</p>
+      </div>
+      <div class="footer-col"><h4>Academy</h4><a href="#about">Introduction</a><a href="#vision">Vision & Mission</a><a href="#dean">Dean's Message</a><a href="#objectives">Objectives</a><a href="#timeline">Milestones</a></div>
+      <div class="footer-col"><h4>Programs</h4><a href="#programs">BS Cyber Security</a><a href="#programs">MS Cyber Security</a><a href="#programs">MS System Security</a><a href="#programs">MS Cryptology</a><a href="#programs">PhD Cyber Security</a></div>
+      <div class="footer-col"><h4>Resources</h4><a href="#facilities">Computer Labs</a><a href="#facilities">Research Groups</a><a href="#facilities">NCCS Labs</a><a href="#life">Cyber Society</a><a href="#life">Events</a></div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 National Cyber Security Academy, Air University, Islamabad.</p>
+      <div class="socials">
+        <a href="https://www.facebook.com/airuniversityofficial/" target="_blank">f</a>
+        <a href="https://pk.linkedin.com/company/national-cyber-security-academy-air-university-islamabad" target="_blank">in</a>
+        <a href="#">𝕏</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Settings UI -->
+<button class="settings-btn" id="settings-btn" aria-label="Settings">
+  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+</button>
+
+<div class="settings-panel" id="settings-panel">
+  <h3>
+    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+    Appearance Setup
+  </h3>
+  <div class="set-row">
+    <span>UI Scale</span>
+    <input type="range" id="ui-scale" min="12" max="22" value="16">
+  </div>
+  <div class="set-row">
+    <span>Roundness</span>
+    <input type="range" id="radius-scale" min="0" max="32" value="16">
+  </div>
+  <div class="set-row">
+    <span>Glow</span>
+    <input type="range" id="glow-scale" min="0" max="50" value="15">
+  </div>
+  <div class="set-row">
+    <span>Primary Color</span>
+    <input type="color" id="color-primary" value="#00f0c8">
+  </div>
+  <div class="set-row">
+    <span>Secondary Color</span>
+    <input type="color" id="color-secondary" value="#ffc845">
+  </div>
+  <div class="set-row">
+    <span>Font Style</span>
+    <select id="font-style">
+      <option value="'Outfit', sans-serif">Modern (Outfit)</option>
+      <option value="'JetBrains Mono', monospace">Terminal</option>
+      <option value="sans-serif">Basic Sans</option>
+    </select>
+  </div>
+  <div class="set-row">
+    <span>Animations</span>
+    <input type="checkbox" id="anim-toggle" checked>
+  </div>
+</div>
+
+<script>
+// --- SETTINGS PANEL LOGIC ---
+const root = document.documentElement;
+const hexToRgb = hex => `${parseInt(hex.slice(1,3),16)}, ${parseInt(hex.slice(3,5),16)}, ${parseInt(hex.slice(5,7),16)}`;
+
+document.getElementById('settings-btn').addEventListener('click', () => {
+  document.getElementById('settings-panel').classList.toggle('open');
+});
+
+// Resizing text & UI
+document.getElementById('ui-scale').addEventListener('input', e => {
+  root.style.setProperty('--base-size', e.target.value + 'px');
+});
+
+// Changing Card Sharpness/Roundness
+document.getElementById('radius-scale').addEventListener('input', e => {
+  root.style.setProperty('--radius', (e.target.value / 16) + 'rem');
+});
+
+// Adjusting Glow strength
+document.getElementById('glow-scale').addEventListener('input', e => {
+  root.style.setProperty('--glow-opacity', e.target.value / 100);
+});
+
+// Changing Fonts
+document.getElementById('font-style').addEventListener('change', e => {
+  root.style.setProperty('--font-display', e.target.value);
+});
+
+// Colors
+document.getElementById('color-primary').addEventListener('input', e => {
+  root.style.setProperty('--cyan', e.target.value);
+  root.style.setProperty('--cyan-rgb', hexToRgb(e.target.value));
+});
+
+document.getElementById('color-secondary').addEventListener('input', e => {
+  root.style.setProperty('--gold', e.target.value);
+  root.style.setProperty('--gold-rgb', hexToRgb(e.target.value));
+});
+
+// Particles toggle
+document.getElementById('anim-toggle').addEventListener('change', e => {
+  document.getElementById('particles').style.display = e.target.checked ? 'block' : 'none';
+  document.querySelector('.grid-bg').style.display = e.target.checked ? 'block' : 'none';
+  const video = document.querySelector('.hero video');
+  if (video) { e.target.checked ? video.play() : video.pause(); }
+});
+
+// --- CORE LOGIC ---
+!function(){const c=document.getElementById('particles');for(let i=0;i<22;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(10+Math.random()*14)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.width=p.style.height=(1+Math.random()*2)+'px';c.appendChild(p)}}();
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50));
+const hamburger=document.getElementById('hamburger'),mm=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mm.classList.toggle('open');document.body.style.overflow=mm.classList.contains('open')?'hidden':'';});
+function closeMenu(){hamburger.classList.remove('active');mm.classList.remove('open');document.body.style.overflow='';}
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}));
+const secs=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-130)c=s.id});document.querySelectorAll('.nav-links a').forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})});
+</script>
+</body>
+</html>
