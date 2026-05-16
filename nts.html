@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NAT-ICS MCQ Prep App</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --ink: #15202b;
+      --muted: #5b6778;
+      --line: #dbe1ea;
+      --primary: #2457d6;
+      --primary-soft: #e9efff;
+      --good: #14804a;
+      --bad: #b42318;
+      --warn: #9a6700;
+      --shadow: 0 10px 30px rgba(20, 32, 43, 0.08);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(246,247,251,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h1 {
+      font-size: clamp(20px, 2.2vw, 30px);
+      margin: 0;
+      letter-spacing: -0.03em;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .timer-chip {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 8px 12px;
+      min-width: 128px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(20, 32, 43, 0.05);
+    }
+    .timer-chip span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-weight: 800;
+    }
+    .timer-chip strong {
+      display: block;
+      font-size: 18px;
+      letter-spacing: .02em;
+    }
+    button {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    button.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    button.ghost { background: transparent; }
+    button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 22px 20px 50px;
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 22px;
+    }
+    aside {
+      position: sticky;
+      top: 92px;
+      align-self: start;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #edf1f7;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width .2s ease;
+    }
+    .section-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .section-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fbfcff;
+      cursor: pointer;
+    }
+    .section-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .section-card strong {
+      display: block;
+      font-size: 14px;
+    }
+    .section-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .mini-stat {
+      margin-top: 8px;
+      height: 7px;
+      border-radius: 999px;
+      background: #edf1f7;
+      overflow: hidden;
+    }
+    .mini-stat i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--good);
+    }
+    .content {
+      min-width: 0;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 3vw, 30px);
+    }
+    .mode-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .mode-tabs button.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: #fbfcff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .context {
+      background: #fff8e6;
+      border: 1px solid #f4d37d;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+      color: #3b2b00;
+    }
+    .context h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+    .question h2 {
+      font-size: clamp(20px, 2.2vw, 28px);
+      letter-spacing: -0.02em;
+      margin: 0 0 18px;
+      white-space: pre-wrap;
+    }
+    .options {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0 24px;
+    }
+    .option {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fbfcff;
+      padding: 14px 14px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: start;
+      cursor: pointer;
+    }
+    .option:hover { border-color: #a9b8d2; }
+    .option.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .option.correct {
+      border-color: rgba(20,128,74,.5);
+      background: #eaf8f0;
+    }
+    .option.incorrect {
+      border-color: rgba(180,35,24,.45);
+      background: #fff0ee;
+    }
+    .letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: #edf1f7;
+      font-weight: 800;
+    }
+    .option input { display: none; }
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 14px;
+      background: #fbfcff;
+    }
+    .stat-card b {
+      display: block;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+      margin-bottom: 2px;
+    }
+    .stat-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .review-item {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 14px;
+      margin: 12px 0;
+      background: #fbfcff;
+    }
+    .review-item.correct-border { border-color: rgba(20,128,74,.4); }
+    .review-item.bad-border { border-color: rgba(180,35,24,.4); }
+    .hide { display: none !important; }
+    .notice {
+      border: 1px solid #f4d37d;
+      background: #fff8e6;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+      color: #3b2b00;
+      font-size: 14px;
+    }
+    .attention-box {
+      border: 1px solid rgba(154, 103, 0, .35);
+      background: #fff9eb;
+      border-radius: 15px;
+      padding: 14px;
+      margin: 14px 0 4px;
+    }
+    .attention-box strong { display: block; margin-bottom: 4px; }
+    .small-muted { color: var(--muted); font-size: 13px; }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .analysis-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div>
+        <h1>NAT-ICS MCQ Prep App</h1>
+        <p class="subtitle">90 questions across 5 sections. Choose answers, track time, submit, and review score + time analysis.</p>
+      </div>
+      <div class="top-actions">
+        <div class="timer-chip"><span>Total time</span><strong id="liveTimer">00:00</strong></div>
+        <button id="reviewBtn" class="ghost">Review answers</button>
+        <button id="submitBtn" class="primary">Submit test</button>
+        <button id="resetBtn">Restart</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <div class="progress-label"><span>Answered</span><strong id="answeredCount">0 / 90</strong></div>
+      <div class="bar"><span id="progressBar"></span></div>
+      <div class="pill" id="scorePill">Score hidden until submission</div>
+      <div class="pill" id="questionTimerPill">Current question: 00:00</div>
+      <div class="section-list" id="sectionList"></div>
+      <div class="notice">
+        OCR note: A few source questions/options were unclear in the extraction. They are preserved as provided.
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="mode-tabs">
+        <button id="practiceTab" class="active">Practice</button>
+        <button id="analysisTab">Analysis</button>
+        <button id="reviewTab">Detailed review</button>
+      </div>
+
+      <div id="practiceView" class="panel question">
+        <div class="question-meta">
+          <span class="pill" id="sectionPill"></span>
+          <span id="questionCounter"></span>
+        </div>
+        <div id="contextBox" class="context hide"></div>
+        <h2 id="questionText"></h2>
+        <div id="optionsBox" class="options"></div>
+        <div class="nav-row">
+          <div>
+            <button id="prevBtn">Previous</button>
+            <button id="nextBtn" class="primary">Next</button>
+          </div>
+          <div>
+            <button id="clearBtn">Clear answer</button>
+          </div>
+        </div>
+        <p class="status" id="statusLine"></p>
+      </div>
+
+      <div id="analysisView" class="panel hide">
+        <h2>Analysis</h2>
+        <p class="subtitle" id="analysisSubtitle">Submit the test to view score analysis.</p>
+        <div class="analysis-grid">
+          <div class="stat-card"><b id="totalScore">--</b><span>Total score</span></div>
+          <div class="stat-card"><b id="accuracy">--</b><span>Accuracy</span></div>
+          <div class="stat-card"><b id="correctCount">--</b><span>Correct</span></div>
+          <div class="stat-card"><b id="wrongCount">--</b><span>Wrong / unanswered</span></div>
+          <div class="stat-card"><b id="totalTimeTaken">--</b><span>Total time taken</span></div>
+          <div class="stat-card"><b id="avgTimePerQuestion">--</b><span>Average time / question</span></div>
+          <div class="stat-card"><b id="slowestQuestion">--</b><span>Slowest question</span></div>
+          <div class="stat-card"><b id="fastestQuestion">--</b><span>Fastest answered question</span></div>
+        </div>
+        <div class="attention-box" id="attentionBox">
+          <strong>Section needing attention: --</strong>
+          <div class="small-muted">Submit the test to calculate the focus area.</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Section</th>
+                <th>Questions</th>
+                <th>Answered</th>
+                <th>Correct</th>
+                <th>Accuracy</th>
+                <th>Total time</th>
+                <th>Avg time / question</th>
+                <th>Suggested focus</th>
+              </tr>
+            </thead>
+            <tbody id="sectionAnalysis"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="reviewView" class="panel hide">
+        <h2>Detailed review</h2>
+        <p class="subtitle">After submission, correct answers are shown beside your selections.</p>
+        <div id="reviewList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DATA = {"sections": [{"name": "Verbal", "range": "Q1-Q20", "description": "Sentence completion, analogies, antonyms, synonyms, and reading comprehension."}, {"name": "Analytical", "range": "Q21-Q40", "description": "Data sufficiency, grouping rules, classification, and logic sets."}, {"name": "Quantitative", "range": "Q41-Q60", "description": "Arithmetic, algebra, geometry, percentages, averages, and number concepts."}, {"name": "Physics & Computer Science", "range": "Q61-Q80", "description": "Physics fundamentals and computer science basics."}, {"name": "Mathematics", "range": "Q81-Q90", "description": "Functions, limits, calculus, coordinate geometry, and conics."}], "contexts": {"19-20": {"range": [19, 20], "title": "Reading passage", "text": "A man who has no sense of history, Hitler declared, is a man who has no ears or eyes. He himself claimed to have had a passionate interest in history since his school days and he displayed considerable familiarity with the course of European history. His conversation was studded with historical reference and historical parallels. More than that, Hitler's whole cast of thought was historical and his sense of mission was derived from his sense of history. Like his contemporary Spengler, Hitler was fascinated by the rise and fall of civilizations. He was himself born at a critical moment in European history when the liberal bourgeois world of nineteenth century was disintegrating. What would take its place? The future lay with the Jew-Bolshevik ideology of the masses unless Europe could be saved by the Nazi racist ideology of the elite."}, "21-24": {"range": [21, 24], "title": "Data sufficiency directions", "text": "Each problem has a question and two statements. Determine which statement(s) are sufficient."}, "25-30": {"range": [25, 30], "title": "Sports-wing committee setup", "text": "A Government College sports president wishes to select four members of a sports-wing committee as special representatives. The committee consists of eight members: K, L, M and N are sports teachers; P, Q, R and S are sports students. Rules: the four representatives must consist of exactly two sports teachers and two students; either K or L must be selected, but not both; if P is selected then M must also be selected; if R is selected then L cannot be selected."}, "31-35": {"range": [31, 35], "title": "Shelf volumes setup", "text": "On a shelf are six volumes labeled A, B, C, D, E and F. B, C and E have green covers; the other volumes have yellow covers. A, D and B are new volumes; the rest are old volumes. A, C and B are law reports; the rest are Gazetteers."}, "36-40": {"range": [36, 40], "title": "Teachers and subjects setup", "text": "There are six teachers A, B, C, D, E and F. Each teaches two subjects, one compulsory and one optional. D's optional subject was History while three others have it as compulsory. E and F have Physics as one subject. F's compulsory subject is Mathematics, which is the optional subject of both C and E. History and English are A's subjects but, in compulsory/optional terms, they are the reverse of D's. Chemistry is an optional subject of only one teacher. The only female teacher has English as her compulsory subject."}}, "questions": [{"id": 1, "question": "A recent study indicates that the crime rate in the United States remains _____ and that one in three households _____ some form of major crime in any year.", "options": [{"label": "A", "text": "Incredible, Witnesses"}, {"label": "B", "text": "Astronomical, Experiences"}, {"label": "C", "text": "Simultaneous, Perpetrates"}, {"label": "D", "text": "Defeated, Prosecutes"}], "answer": "A", "section": "Verbal", "contextKey": ""}, {"id": 2, "question": "You should _____ this paragraph in order to make your essay more _____.", "options": [{"label": "A", "text": "Delete, Succinct"}, {"label": "B", "text": "Enlarge, Redundant"}, {"label": "C", "text": "Remove, Discursive"}, {"label": "D", "text": "Revise, Abstruse"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 3, "question": "On the top of Mount Everest, I did not feel anything _____, I rather felt a great _____ to God.", "options": [{"label": "A", "text": "Sinful, Love"}, {"label": "B", "text": "Superstitious, Similarity"}, {"label": "C", "text": "Superhuman, Closeness"}, {"label": "D", "text": "Strange, Nearness"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 4, "question": "Ocean currents play a _____ role in setting long-term climate _____.", "options": [{"label": "A", "text": "Specific, Weather"}, {"label": "B", "text": "Major, Patterns"}, {"label": "C", "text": "Nominal, Conditions"}, {"label": "D", "text": "Vital, Sequence"}], "answer": "A", "section": "Verbal", "contextKey": ""}, {"id": 5, "question": "Although its publicity has been _____, the film itself is intelligent, well-acted, handsomely produced and altogether _____.", "options": [{"label": "A", "text": "Tasteless, Respectable"}, {"label": "B", "text": "Extensive, Moderate"}, {"label": "C", "text": "Sophisticated, Moderate"}, {"label": "D", "text": "Risque, Crude PART 2: ANALOGIES - same relation as the first pair (Q6-Q10)"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 6, "question": "VESSEL : FLEET ::", "options": [{"label": "A", "text": "Wolf : Pack"}, {"label": "B", "text": "Forest : Clearing"}, {"label": "C", "text": "Vehicle : Truck"}, {"label": "D", "text": "Carriage : Horse"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 7, "question": "BUSTLE : MOVE ::", "options": [{"label": "A", "text": "Hum : Sing"}, {"label": "B", "text": "Lope : Run"}, {"label": "C", "text": "Glide : Dance"}, {"label": "D", "text": "Chatter : Talk"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 8, "question": "ILLUSION : REALITY ::", "options": [{"label": "A", "text": "School : Principal"}, {"label": "B", "text": "Neglect : Punishment"}, {"label": "C", "text": "Beginning : Introduction"}, {"label": "D", "text": "Fancy : Fact"}], "answer": "D", "section": "Verbal", "contextKey": ""}, {"id": 9, "question": "LAUREL : VICTOR ::", "options": [{"label": "A", "text": "Chevrons : Army"}, {"label": "B", "text": "Oscar : Movie Star"}, {"label": "C", "text": "Power : Glory"}, {"label": "D", "text": "Blue Ribbon : Cooking"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 10, "question": "LIQUID : HYDRAULICS ::", "options": [{"label": "A", "text": "Gallop : Stop"}, {"label": "B", "text": "Government : Exile"}, {"label": "C", "text": "Motion : Dynamics"}, {"label": "D", "text": "Sugar : Solution PART 3: ANTONYMS - opposite in meaning (Q11-Q14)"}], "answer": "C", "section": "Verbal", "contextKey": ""}, {"id": 11, "question": "BAUBLE :", "options": [{"label": "A", "text": "Plaything"}, {"label": "B", "text": "Valuable"}, {"label": "C", "text": "Modest"}, {"label": "D", "text": "Besiege"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 12, "question": "PHYSICAL :", "options": [{"label": "A", "text": "Moral"}, {"label": "B", "text": "Spiritual"}, {"label": "C", "text": "Emotional"}, {"label": "D", "text": "Mental"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 13, "question": "TACITURN :", "options": [{"label": "A", "text": "Reserved"}, {"label": "B", "text": "Chatty"}, {"label": "C", "text": "Grown up"}, {"label": "D", "text": "Scheme"}], "answer": "B", "section": "Verbal", "contextKey": ""}, {"id": 14, "question": "PRESAGE :", "options": [{"label": "A", "text": "Indication"}, {"label": "B", "text": "Benefit"}, {"label": "C", "text": "Fulfilment"}, {"label": "D", "text": "Rash PART 4: SYNONYMS - similar in meaning (Q15-Q18)"}], "answer": "C", "section": "Verbal", "contextKey": ""}, {"id": 15, "question": "INTERVENE :", "options": [{"label": "A", "text": "Draw back"}, {"label": "B", "text": "Come forward"}, {"label": "C", "text": "Unpopular"}, {"label": "D", "text": "Come between"}], "answer": "D", "section": "Verbal", "contextKey": ""}, {"id": 16, "question": "LUSTROUS :", "options": [{"label": "A", "text": "Transparent"}, {"label": "B", "text": "Colourless"}, {"label": "C", "text": "Glossy"}, {"label": "D", "text": "Dull"}], "answer": "C", "section": "Verbal", "contextKey": ""}, {"id": 17, "question": "ELUDE :", "options": [{"label": "A", "text": "Evade"}, {"label": "B", "text": "Rule"}, {"label": "C", "text": "Sway"}, {"label": "D", "text": "Fascinate"}], "answer": "A", "section": "Verbal", "contextKey": ""}, {"id": 18, "question": "OUTCAST :", "options": [{"label": "A", "text": "Member"}, {"label": "B", "text": "Vagabond"}, {"label": "C", "text": "Open"}, {"label": "D", "text": "Error PART 5: READING COMPREHENSION (Q19-Q20) Passage: A man who has no sense of history, Hitler declared, is a man who has no ears or eyes. He himself claimed to have had a passionate interest in history since his school days and he displayed considerable familiarity with the course of European history. His conversation was studded with historical reference and historical parallels. More than that, Hitler's whole cast of thought was historical and his sense of mission was derived from his sense of history. Like his contemporary Spengler, Hitler was fascinated by the rise and fall of civilizations. He was himself born at a critical moment in European history when the liberal bourgeois world of nineteenth century was disintegrating. What would take its place? The future lay with the Jew-Bolshevik ideology of the masses unless Europe could be saved by the Nazi racist ideology of the elite."}], "answer": "A", "section": "Verbal", "contextKey": ""}, {"id": 19, "question": "Who has no ears or eyes?", "options": [{"label": "A", "text": "A man having sense of history"}, {"label": "B", "text": "A man who has no sense of history"}, {"label": "C", "text": "A man who has extra knowledge"}, {"label": "D", "text": "A man having passionate interest in history"}], "answer": "B", "section": "Verbal", "contextKey": "19-20"}, {"id": 20, "question": "Hitler displayed familiarity with:", "options": [{"label": "A", "text": "Scientific facts"}, {"label": "B", "text": "American history"}, {"label": "C", "text": "European history"}, {"label": "D", "text": "None of these ================================================================ ANALYTICAL SECTION (Q21-Q40) ================================================================ Q21-Q24: Each problem has a question and two statements (1 and 2). Determine which statements are sufficient."}], "answer": "C", "section": "Verbal", "contextKey": "19-20"}, {"id": 21, "question": "How many bulbs does Munir have? 1. He bought two boxes each containing 12 bulbs. 2. He lent three bulbs to Khalid.", "options": [{"label": "A", "text": "Statement 1 ALONE is sufficient but 2 ALONE is not"}, {"label": "B", "text": "Statement 2 ALONE is sufficient but 1 ALONE is not"}, {"label": "C", "text": "Statements 1 and 2 TOGETHER are sufficient but neither alone"}, {"label": "D", "text": "Statements 1 and 2 COMBINED are not sufficient"}], "answer": "C", "section": "Analytical", "contextKey": "21-24"}, {"id": 22, "question": "If M > N and O > P, then M + O > N + P. Is S > T? 1. S + A > T + B 2. A > B", "options": [{"label": "A", "text": "Statement 1 ALONE is sufficient but 2 ALONE is not"}, {"label": "B", "text": "Statement 2 ALONE is sufficient but 1 ALONE is not"}, {"label": "C", "text": "Statements 1 and 2 TOGETHER are sufficient but neither alone"}, {"label": "D", "text": "Statements 1 and 2 COMBINED are not sufficient"}], "answer": "B", "section": "Analytical", "contextKey": "21-24"}, {"id": 23, "question": "In Lahore Zoo, there are 37 deers. How many small black deers are there? 1. 12 of deers are small. 2. There are 20 black deers in the Zoo.", "options": [{"label": "A", "text": "Statement 1 ALONE is sufficient but 2 ALONE is not"}, {"label": "B", "text": "Statement 2 ALONE is sufficient but 1 ALONE is not"}, {"label": "C", "text": "Statements 1 and 2 TOGETHER are sufficient but neither alone"}, {"label": "D", "text": "Statements 1 and 2 COMBINED are not sufficient"}], "answer": "C", "section": "Analytical", "contextKey": "21-24"}, {"id": 24, "question": "Can there be more than 150 pictures in a 30-page book? 1. There is at least two pictures in each page. 2. There are no more than 4 pictures in any page.", "options": [{"label": "A", "text": "Statement 1 ALONE is sufficient but 2 ALONE is not"}, {"label": "B", "text": "Statement 2 ALONE is sufficient but 1 ALONE is not"}, {"label": "C", "text": "Statements 1 and 2 TOGETHER are sufficient but neither alone"}, {"label": "D", "text": "Statements 1 and 2 COMBINED are not sufficient Q25-Q30: A Government College sports president wishes to select four members of a sports-wing committee as special representatives. The committee consists of eight members four of which (K, L, M and N) are sports teachers whereas the other four (P, Q, R and S) are sports students. The president can select any four of the eight committee members as long as the following rules are observed: - The four representatives must consist of exactly two sports teachers and two students. - Either K or L must be one of the representatives but K and L both cannot be the representatives. - If P is a representative then M must also be a representative. - If R is a representative then L cannot be a representative."}], "answer": "A", "section": "Analytical", "contextKey": "21-24"}, {"id": 25, "question": "If P is a representative but M is not a representative then the whole group can be determined if it were also true that:", "options": [{"label": "A", "text": "K is a representative"}, {"label": "B", "text": "N is a representative"}, {"label": "C", "text": "P is a representative"}, {"label": "D", "text": "S is not a representative"}], "answer": "D", "section": "Analytical", "contextKey": "25-30"}, {"id": 26, "question": "If P is a representative then which of the following CANNOT be a representative?", "options": [{"label": "A", "text": "M"}, {"label": "B", "text": "N"}, {"label": "C", "text": "Q"}, {"label": "D", "text": "R"}], "answer": "B", "section": "Analytical", "contextKey": "25-30"}, {"id": 27, "question": "If L is a representative then which of the following can be the other three representatives?", "options": [{"label": "A", "text": "K, Q and S"}, {"label": "B", "text": "M, N and P"}, {"label": "C", "text": "M, P and Q"}, {"label": "D", "text": "N, P and S"}], "answer": "A", "section": "Analytical", "contextKey": "25-30"}, {"id": 28, "question": "If neither Q nor S is a representative then which of the following is a pair of teachers' representatives?", "options": [{"label": "A", "text": "K and L"}, {"label": "B", "text": "K and M"}, {"label": "C", "text": "K and N"}, {"label": "D", "text": "L and M"}], "answer": "D", "section": "Analytical", "contextKey": "25-30"}, {"id": 29, "question": "If L, N and Q are representatives then which of the following must also be a representative?", "options": [{"label": "A", "text": "M"}, {"label": "B", "text": "P"}, {"label": "C", "text": "R"}, {"label": "D", "text": "S"}], "answer": "B", "section": "Analytical", "contextKey": "25-30"}, {"id": 30, "question": "If K and N are representatives then which of the following is not a representative?", "options": [{"label": "A", "text": "Q"}, {"label": "B", "text": "R"}, {"label": "C", "text": "P"}, {"label": "D", "text": "None Q31-Q35: On a shelf are placed six volumes side by side labeled A, B, C, D, E and F. Three volumes B, C and E have green covers while the other volumes have yellow covers. A, D and B are new volumes while the rest are old volumes. A, C and B are law reports, while the rest are Gazetteers."}], "answer": "D", "section": "Analytical", "contextKey": "25-30"}, {"id": 31, "question": "Which volume is new, yellow covered and a Gazetteer?", "options": [{"label": "A", "text": "B"}, {"label": "B", "text": "D"}, {"label": "C", "text": "E"}, {"label": "D", "text": "F"}], "answer": "C", "section": "Analytical", "contextKey": "31-35"}, {"id": 32, "question": "Which two volumes are old Gazetteers and have green covers?", "options": [{"label": "A", "text": "B, C"}, {"label": "B", "text": "B, E"}, {"label": "C", "text": "B, F"}, {"label": "D", "text": "E, F"}], "answer": "C", "section": "Analytical", "contextKey": "31-35"}, {"id": 33, "question": "Which is green covered, old and a law report volume?", "options": [{"label": "A", "text": "C"}, {"label": "B", "text": "B"}, {"label": "C", "text": "D"}, {"label": "D", "text": "E"}], "answer": "A", "section": "Analytical", "contextKey": "31-35"}, {"id": 34, "question": "Which is the yellow covered new law report volume?", "options": [{"label": "A", "text": "E"}, {"label": "B", "text": "D"}, {"label": "C", "text": "B"}, {"label": "D", "text": "C"}], "answer": "A", "section": "Analytical", "contextKey": "31-35"}, {"id": 35, "question": "Which of the following is the old volume of a Gazetteer?", "options": [{"label": "A", "text": "C"}, {"label": "B", "text": "D"}, {"label": "C", "text": "E"}, {"label": "D", "text": "B Q36-Q40: There are six teachers A, B, C, D, E and F in a school. Each of the teachers teaches two subjects, one compulsory subject and the other optional subject. D's optional subject was History while three others have it as compulsory subject. E and F have Physics as one of their subjects. F's compulsory subject is Mathematics, which is the optional subject of both C and E. History and English are A's subjects but in terms of compulsory and optional subjects, they are just reverse of those of D's. Chemistry is an optional subject of only one of them. The only female teacher in the school has English as her compulsory subject."}], "answer": "C", "section": "Analytical", "contextKey": "31-35"}, {"id": 36, "question": "What is C's compulsory subject?", "options": [{"label": "A", "text": "History"}, {"label": "B", "text": "Physics"}, {"label": "C", "text": "Chemistry"}, {"label": "D", "text": "English"}], "answer": "C", "section": "Analytical", "contextKey": "36-40"}, {"id": 37, "question": "Who is a female member in the group?", "options": [{"label": "A", "text": "A"}, {"label": "B", "text": "B"}, {"label": "C", "text": "C"}, {"label": "D", "text": "D"}], "answer": "C", "section": "Analytical", "contextKey": "36-40"}, {"id": 38, "question": "Which of the following has same compulsory and optional subjects as those of F's?", "options": [{"label": "A", "text": "D"}, {"label": "B", "text": "B"}, {"label": "C", "text": "A"}, {"label": "D", "text": "C"}], "answer": "B", "section": "Analytical", "contextKey": "36-40"}, {"id": 39, "question": "Disregarding which is the compulsory and which is the optional subject who has the same two subject combination as F?", "options": [{"label": "A", "text": "A"}, {"label": "B", "text": "B"}, {"label": "C", "text": "E"}, {"label": "D", "text": "D"}], "answer": "A", "section": "Analytical", "contextKey": "36-40"}, {"id": 40, "question": "Which of the following groups has History as the compulsory subject?", "options": [{"label": "A", "text": "A, C and D"}, {"label": "B", "text": "B, C and D"}, {"label": "C", "text": "C and D"}, {"label": "D", "text": "A, B and C ================================================================ QUANTITATIVE SECTION (Q41-Q60) ================================================================"}], "answer": "A", "section": "Analytical", "contextKey": "36-40"}, {"id": 41, "question": "What is 15% of 32?", "options": [{"label": "A", "text": "4"}, {"label": "B", "text": "4.80"}, {"label": "C", "text": "3.80"}, {"label": "D", "text": "3"}], "answer": "A", "section": "Quantitative", "contextKey": ""}, {"id": 42, "question": "In the following figure, what is the value of p? [Figure: circle with inscribed values]", "options": [{"label": "A", "text": "49"}, {"label": "B", "text": "42"}, {"label": "C", "text": "52"}, {"label": "D", "text": "78"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 43, "question": "Talha's test scores were 175, 155 and 210. What is his average?", "options": [{"label": "A", "text": "135"}, {"label": "B", "text": "180"}, {"label": "C", "text": "210"}, {"label": "D", "text": "275"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 44, "question": "If x books cost $3 each and y books cost $7 each, then the average (arithmetic mean) cost, in dollars per book, is equal to:", "options": [{"label": "A", "text": "(3x + 7y)/10"}, {"label": "B", "text": "(x + y)/10"}, {"label": "C", "text": "(3x + 7y)/(x + y)"}, {"label": "D", "text": "10/(x + y)"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 45, "question": "If the result obtained by multiplying a number, x, by a number 1 less than itself is 4 less than multiplying x by itself, then x =", "options": [{"label": "A", "text": "1"}, {"label": "B", "text": "2"}, {"label": "C", "text": "3"}, {"label": "D", "text": "4"}], "answer": "D", "section": "Quantitative", "contextKey": ""}, {"id": 46, "question": "If n is a multiple of 5 and m = 5n, which of the following will be the value of n + m? [option text unclear in OCR]", "options": [{"label": "A", "text": "I only"}, {"label": "B", "text": "II only"}, {"label": "C", "text": "I and II only"}, {"label": "D", "text": "I and III only"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 47, "question": "If the sum of the edges of a cube is 48 inches, the volume of the cube in inches is:", "options": [{"label": "A", "text": "4096 cubic inches"}, {"label": "B", "text": "512 cubic inches"}, {"label": "C", "text": "64 cubic inches"}, {"label": "D", "text": "1728 cubic inches"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 48, "question": "What is 5% of 20%?", "options": [{"label": "A", "text": "1%"}, {"label": "B", "text": "10%"}, {"label": "C", "text": "20%"}, {"label": "D", "text": "25%"}], "answer": "A", "section": "Quantitative", "contextKey": ""}, {"id": 49, "question": "In the following figure, the larger circle with radius 4 cms is touched internally by two smaller circles that also touch each other externally at the centre O of the larger circle. The area of the shaded region is:", "options": [{"label": "A", "text": "4 pi"}, {"label": "B", "text": "7 pi"}, {"label": "C", "text": "12 pi"}, {"label": "D", "text": "16 pi"}], "answer": "D", "section": "Quantitative", "contextKey": ""}, {"id": 50, "question": "The area of the circle is 16 pi. Find the length of the diameter of the circle.", "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "4"}, {"label": "C", "text": "8"}, {"label": "D", "text": "16"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 51, "question": "If 8x + 8y = 64, what is the average of x and y?", "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "4"}, {"label": "C", "text": "8"}, {"label": "D", "text": "16"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 52, "question": "The two numbers, whose sum is -3 and product is -40, are:", "options": [{"label": "A", "text": "15, -2"}, {"label": "B", "text": "8, 5"}, {"label": "C", "text": "-8, 5"}, {"label": "D", "text": "-8, -5"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 53, "question": "If n + 3 = n x 3, then n =", "options": [{"label": "A", "text": "1"}, {"label": "B", "text": "1/2"}, {"label": "C", "text": "1 1/2"}, {"label": "D", "text": "None of these"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 54, "question": "If a number is divisible by 102, then it is also divisible by:", "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "5"}, {"label": "C", "text": "11"}, {"label": "D", "text": "23"}], "answer": "A", "section": "Quantitative", "contextKey": ""}, {"id": 55, "question": "In the following figure, the sides of a triangle are produced. The sum of the exterior angles, i.e. /x + /y + /z =", "options": [{"label": "A", "text": "180"}, {"label": "B", "text": "360"}, {"label": "C", "text": "90"}, {"label": "D", "text": "270"}], "answer": "A", "section": "Quantitative", "contextKey": ""}, {"id": 56, "question": "Alina drives 20 miles from her home to the store at a speed of 30 miles per hour. If she makes the return trip home at a speed of 40 miles per hour, what is the total amount of time she spent driving?", "options": [{"label": "A", "text": "25 minutes"}, {"label": "B", "text": "45 minutes"}, {"label": "C", "text": "1 hour and 10 minutes"}, {"label": "D", "text": "1 hour and 20 minutes"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 57, "question": "3/40 is the same as:", "options": [{"label": "A", "text": "0.075"}, {"label": "B", "text": "0.0175"}, {"label": "C", "text": "0.075"}, {"label": "D", "text": "0.75"}], "answer": "A", "section": "Quantitative", "contextKey": ""}, {"id": 58, "question": "If y < 2 and 2x - 3y = 0, which of the following must be true?", "options": [{"label": "A", "text": "x > -3"}, {"label": "B", "text": "x < 2"}, {"label": "C", "text": "x = 3"}, {"label": "D", "text": "x < 3"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 59, "question": "What is the area of the circle which is inscribed in an equilateral triangle of side 24 cm^2?", "options": [{"label": "A", "text": "24 pi cm^2"}, {"label": "B", "text": "36 pi cm^2"}, {"label": "C", "text": "48 pi cm^2"}, {"label": "D", "text": "18 pi cm^2"}], "answer": "B", "section": "Quantitative", "contextKey": ""}, {"id": 60, "question": "Which of these shows the CORRECT meaning of 407?", "options": [{"label": "A", "text": "(4 x 10) + (7 x 1)"}, {"label": "B", "text": "(4 x 10 x 10) + (0 x 10) + (7 x 1)"}, {"label": "C", "text": "(4 + 0 + 7) x (100)"}, {"label": "D", "text": "(4 x 1) + (7 x 10) ================================================================ SUBJECT SECTION (Q61-Q90) ================================================================"}], "answer": "C", "section": "Quantitative", "contextKey": ""}, {"id": 61, "question": "A 40 Newton object is lifted 10 meters above the ground and then released. After object has fallen 4 meters and is 6 meters above the ground, its Kinetic Energy will be, in joules:", "options": [{"label": "A", "text": "5"}, {"label": "B", "text": "160"}, {"label": "C", "text": "240"}, {"label": "D", "text": "400"}, {"label": "E", "text": "5,120"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 62, "question": "In an experiment, an object was placed on the principal axis of a convex lens 25 centimeters away from the lens. A real image 4 times the size of the object was obtained. The focal length of the lens is:", "options": [{"label": "A", "text": "20 cm"}, {"label": "B", "text": "25 cm"}, {"label": "C", "text": "33 cm"}, {"label": "D", "text": "50 cm"}, {"label": "E", "text": "100 cm"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 63, "question": "A rock is dropped from a high bridge. At the end of 3 seconds, what is the speed of the rock in centimetres per second?", "options": [{"label": "A", "text": "1,000"}, {"label": "B", "text": "2,000"}, {"label": "C", "text": "3,000"}, {"label": "D", "text": "4,000"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 64, "question": "In electrostatics:", "options": [{"label": "A", "text": "All of the Newton's laws are valid"}, {"label": "B", "text": "Newton's first law may not be valid"}, {"label": "C", "text": "Newton's law may not be valid in certain cases"}, {"label": "D", "text": "Newton's third law may not be valid in certain cases"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 65, "question": "Salim walks 2 meters north, 4 meters west, and 2 meters south. What is his final displacement?", "options": [{"label": "A", "text": "4 m west"}, {"label": "B", "text": "2 m"}, {"label": "C", "text": "4 m east"}, {"label": "D", "text": "2 m north south"}], "answer": "A", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 66, "question": "If the speed of an object is tripled, its kinetic energy is _____ times its original speed.", "options": [{"label": "A", "text": "3"}, {"label": "B", "text": "6"}, {"label": "C", "text": "9"}, {"label": "D", "text": "12"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 67, "question": "For Boyle's law to hold good, the necessary conditions is:", "options": [{"label": "A", "text": "Isothermal"}, {"label": "B", "text": "Adiabatic"}, {"label": "C", "text": "Isobaric"}, {"label": "D", "text": "Isochoric"}], "answer": "A", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 68, "question": "A temperature of 450 Kelvin is equivalent to a Celsius temperature of:", "options": [{"label": "A", "text": "120 deg"}, {"label": "B", "text": "177 deg"}, {"label": "C", "text": "273 deg"}, {"label": "D", "text": "477 deg"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 69, "question": "Compton effect proves the _____.", "options": [{"label": "A", "text": "Photon theory of light"}, {"label": "B", "text": "Dual nature of light"}, {"label": "C", "text": "Wave nature of light"}, {"label": "D", "text": "Uncertain nature of light"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 70, "question": "The term _____ movement refers to irregular motions of small particles suspended in a fluid.", "options": [{"label": "A", "text": "Stretching"}, {"label": "B", "text": "Capillary"}, {"label": "C", "text": "Elastic"}, {"label": "D", "text": "Brownian"}], "answer": "D", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 71, "question": "A set of well defined rules for the solution of a problem in finite number of steps is called:", "options": [{"label": "A", "text": "Algorithm"}, {"label": "B", "text": "Program"}, {"label": "C", "text": "Executable"}, {"label": "D", "text": "None of the above"}], "answer": "A", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 72, "question": "Raw data is processed by the computer into:", "options": [{"label": "A", "text": "Paragraphs"}, {"label": "B", "text": "Number sheets"}, {"label": "C", "text": "Information"}, {"label": "D", "text": "Integers"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 73, "question": "The bit can have how many possible values:", "options": [{"label": "A", "text": "0"}, {"label": "B", "text": "1"}, {"label": "C", "text": "2"}, {"label": "D", "text": "3"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 74, "question": "What is called the loading of operating system in a personal computer?", "options": [{"label": "A", "text": "Paging"}, {"label": "B", "text": "Interrupting"}, {"label": "C", "text": "Filling"}, {"label": "D", "text": "Booting"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 75, "question": "A device that enables computers to communicate with other computers via phone line is a:", "options": [{"label": "A", "text": "Modem"}, {"label": "B", "text": "Chip"}, {"label": "C", "text": "Disk"}, {"label": "D", "text": "Floppy disk"}], "answer": "D", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 76, "question": "If a processor does not have direct and unassisted access to data items, these items are said to be:", "options": [{"label": "A", "text": "Off line"}, {"label": "B", "text": "Time Shared"}, {"label": "C", "text": "On line"}, {"label": "D", "text": "None of these"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 77, "question": "Rearranging data in a new sequence is known as:", "options": [{"label": "A", "text": "Updating"}, {"label": "B", "text": "Batching"}, {"label": "C", "text": "Sorting"}, {"label": "D", "text": "Summarising"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 78, "question": "Which of the following is not a component of telecommunications?", "options": [{"label": "A", "text": "Sender"}, {"label": "B", "text": "Office device"}, {"label": "C", "text": "Medium"}, {"label": "D", "text": "Receiver"}], "answer": "C", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 79, "question": "In Time Division Multiplexing:", "options": [{"label": "A", "text": "Time is doubled between bits of a byte"}, {"label": "B", "text": "Time slicing at CPU level takes place"}, {"label": "C", "text": "Total time available in the channel is divided between several users and each user is allotted a time slice"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 80, "question": "Point of Sale terminal to:", "options": [{"label": "A", "text": "Terminals associated with MICR"}, {"label": "B", "text": "Smart terminal"}, {"label": "C", "text": "Terminal associated with OCR"}, {"label": "D", "text": "None of above"}], "answer": "B", "section": "Physics & Computer Science", "contextKey": ""}, {"id": 81, "question": "If the vertex function f(x) is at (1, 1), where is the vertex of the function f(x - 2) + 1?", "options": [{"label": "A", "text": "(2, 3)"}, {"label": "B", "text": "(3, 2)"}, {"label": "C", "text": "(2, -1)"}, {"label": "D", "text": "(-1, 0)"}], "answer": "B", "section": "Mathematics", "contextKey": ""}, {"id": 82, "question": "Lim (x->3) (x^2 - 9)/(x + 3) = ?", "options": [{"label": "A", "text": "-6"}, {"label": "B", "text": "6"}, {"label": "C", "text": "0"}, {"label": "D", "text": "1"}, {"label": "E", "text": "-1"}], "answer": "A", "section": "Mathematics", "contextKey": ""}, {"id": 83, "question": "Integral of 1/x dx = ?", "options": [{"label": "A", "text": "0"}, {"label": "B", "text": "ln x"}, {"label": "C", "text": "x^e"}, {"label": "D", "text": "x^(-2)"}, {"label": "E", "text": "x^2"}], "answer": "B", "section": "Mathematics", "contextKey": ""}, {"id": 84, "question": "If Rabia's average rose from 62 to 82, by what percent did her average increase?", "options": [{"label": "A", "text": "33.33%"}, {"label": "B", "text": "32.80%"}, {"label": "C", "text": "33%"}, {"label": "D", "text": "35%"}], "answer": "C", "section": "Mathematics", "contextKey": ""}, {"id": 85, "question": "If slopes of the two lines are equal, then lines must be:", "options": [{"label": "A", "text": "Perpendicular"}, {"label": "B", "text": "Intersecting"}, {"label": "C", "text": "Parallel"}, {"label": "D", "text": "Not parallel"}, {"label": "E", "text": "Intercepting"}], "answer": "C", "section": "Mathematics", "contextKey": ""}, {"id": 86, "question": "The equation of the tangent to hyperbola 4y^2 = x^2 - 1 at (1, 0) is:", "options": [{"label": "A", "text": "x - 1 = 0"}, {"label": "B", "text": "y - 1 = 0"}, {"label": "C", "text": "x = -2"}, {"label": "D", "text": "None of these"}], "answer": "A", "section": "Mathematics", "contextKey": ""}, {"id": 87, "question": "If the line y = mx + c touches the ellipse x^2/b^2 - y^2/a^2 = 1, then c =", "options": [{"label": "A", "text": "+/- sqrt(b^2 m^2 - a^2)"}, {"label": "B", "text": "+/- sqrt(b^2 m^2 - b^2)"}, {"label": "C", "text": "+/- sqrt(a^2 m^2 + b^2)"}, {"label": "D", "text": "+/- sqrt(b^2 m^2 + a^2)"}], "answer": "A", "section": "Mathematics", "contextKey": ""}, {"id": 88, "question": "The line y = mx + c touches the parabola x^2 = 4ay if:", "options": [{"label": "A", "text": "c = a/m"}, {"label": "B", "text": "c = -a/m"}, {"label": "C", "text": "c = am^2"}, {"label": "D", "text": "c = -am^2"}], "answer": "D", "section": "Mathematics", "contextKey": ""}, {"id": 89, "question": "The equation of the tangent to the hyperbola x^2/a^2 - y^2/b^2 = 1 at the point (m, n) is:", "options": [{"label": "A", "text": "a^2 x/m - b^2 y/n = 1"}, {"label": "B", "text": "ax^2/m - ay^2/n = 1"}, {"label": "C", "text": "a^2 m/x - b^2 n/y = 1"}, {"label": "D", "text": "mx/a^3 - ny/b^3 = 1"}], "answer": "A", "section": "Mathematics", "contextKey": ""}, {"id": 90, "question": "The equation of the normal to the hyperbola x^2/a^2 - y^2/b^2 = 1 in terms of slope \"m\" is:", "options": [{"label": "A", "text": "y = mx +/- sqrt[(a^2 - b^2 m^2)/m(a^2 + b^2)]"}, {"label": "B", "text": "y = mx +/- (a^2 - b^2 m^2)/sqrt[m(a^2 + b^2)]"}, {"label": "C", "text": "y = mx +/- m(a^2 + b^2)/sqrt(a^2 - b^2 m^2)"}, {"label": "D", "text": "y = a^2 - b^2 m +/- mx ================================================================"}], "answer": "B", "section": "Mathematics", "contextKey": ""}]};
+    let currentIndex = 0;
+    let submitted = false;
+    const responses = JSON.parse(localStorage.getItem("natIcsResponses") || "{}");
+    submitted = localStorage.getItem("natIcsSubmitted") === "true";
+
+    const $ = id => document.getElementById(id);
+    const questions = DATA.questions;
+
+    let questionTimes = JSON.parse(localStorage.getItem("natIcsQuestionTimes") || "{}");
+    let testStartedAt = Number(localStorage.getItem("natIcsStartedAt") || "0");
+    let testSubmittedAt = Number(localStorage.getItem("natIcsSubmittedAt") || "0");
+    let activeQuestionId = null;
+    let activeQuestionEnteredAt = Date.now();
+
+    if (!testStartedAt) {
+      testStartedAt = Date.now();
+      localStorage.setItem("natIcsStartedAt", String(testStartedAt));
+    }
+
+    function saveState() {
+      localStorage.setItem("natIcsResponses", JSON.stringify(responses));
+      localStorage.setItem("natIcsSubmitted", String(submitted));
+      localStorage.setItem("natIcsQuestionTimes", JSON.stringify(questionTimes));
+      localStorage.setItem("natIcsStartedAt", String(testStartedAt));
+      if (testSubmittedAt) localStorage.setItem("natIcsSubmittedAt", String(testSubmittedAt));
+      else localStorage.removeItem("natIcsSubmittedAt");
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
+    }
+
+    function formatTime(ms) {
+      ms = Math.max(0, Math.round(ms || 0));
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      const pad = n => String(n).padStart(2, "0");
+      return hours > 0 ? `${hours}:${pad(minutes)}:${pad(seconds)}` : `${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    function markQuestionTime() {
+      if (submitted || activeQuestionId === null) return;
+      const now = Date.now();
+      const delta = Math.max(0, now - activeQuestionEnteredAt);
+      if (delta > 0) {
+        questionTimes[activeQuestionId] = (Number(questionTimes[activeQuestionId]) || 0) + delta;
+        activeQuestionEnteredAt = now;
+        saveState();
+      }
+    }
+
+    function timeForQuestion(id) {
+      let ms = Number(questionTimes[id]) || 0;
+      if (!submitted && activeQuestionId === id) {
+        ms += Math.max(0, Date.now() - activeQuestionEnteredAt);
+      }
+      return ms;
+    }
+
+    function totalElapsedMs() {
+      if (!testStartedAt) return 0;
+      const end = submitted && testSubmittedAt ? testSubmittedAt : Date.now();
+      return Math.max(0, end - testStartedAt);
+    }
+
+    function getSectionQuestions(sectionName) {
+      return questions.filter(q => q.section === sectionName);
+    }
+
+    function answeredTotal() {
+      return questions.filter(q => responses[q.id]).length;
+    }
+
+    function scoreFor(list = questions) {
+      return list.filter(q => responses[q.id] && responses[q.id] === q.answer).length;
+    }
+
+    function sectionTimeMs(sectionName) {
+      return getSectionQuestions(sectionName).reduce((sum, q) => sum + timeForQuestion(q.id), 0);
+    }
+
+    function buildSections() {
+      const container = $("sectionList");
+      container.innerHTML = "";
+      DATA.sections.forEach(section => {
+        const qs = getSectionQuestions(section.name);
+        const answered = qs.filter(q => responses[q.id]).length;
+        const correct = scoreFor(qs);
+        const div = document.createElement("div");
+        div.className = "section-card" + (questions[currentIndex].section === section.name ? " active" : "");
+        div.innerHTML = `
+          <strong>${section.name}</strong>
+          <span>${section.range} · ${answered}/${qs.length} answered${submitted ? ` · ${correct} correct` : ""} · ${formatTime(sectionTimeMs(section.name))}</span>
+          <div class="mini-stat"><i style="width:${(answered / qs.length) * 100}%"></i></div>
+        `;
+        div.addEventListener("click", () => {
+          markQuestionTime();
+          currentIndex = questions.findIndex(q => q.section === section.name);
+          renderPractice();
+        });
+        container.appendChild(div);
+      });
+    }
+
+    function renderPractice() {
+      const q = questions[currentIndex];
+      activeQuestionId = q.id;
+      activeQuestionEnteredAt = Date.now();
+      $("sectionPill").textContent = q.section;
+      $("questionCounter").textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+      $("questionText").textContent = `Q${q.id}. ${q.question}`;
+
+      const ctx = q.contextKey ? DATA.contexts[q.contextKey] : null;
+      if (ctx) {
+        $("contextBox").classList.remove("hide");
+        $("contextBox").innerHTML = `<h3>${escapeHtml(ctx.title)}</h3><div>${escapeHtml(ctx.text)}</div>`;
+      } else {
+        $("contextBox").classList.add("hide");
+        $("contextBox").innerHTML = "";
+      }
+
+      const optionsBox = $("optionsBox");
+      optionsBox.innerHTML = "";
+      q.options.forEach(opt => {
+        const selected = responses[q.id] === opt.label;
+        const label = document.createElement("label");
+        label.className = "option" + (selected ? " selected" : "");
+        if (submitted) {
+          if (opt.label === q.answer) label.classList.add("correct");
+          if (selected && opt.label !== q.answer) label.classList.add("incorrect");
+        }
+        label.innerHTML = `
+          <input type="radio" name="q${q.id}" value="${escapeHtml(opt.label)}" ${selected ? "checked" : ""}>
+          <span class="letter">${escapeHtml(opt.label)}</span>
+          <span>${escapeHtml(opt.text)}</span>
+        `;
+        label.addEventListener("click", () => {
+          markQuestionTime();
+          responses[q.id] = opt.label;
+          saveState();
+          renderPractice();
+          updateProgress();
+        });
+        optionsBox.appendChild(label);
+      });
+
+      $("prevBtn").disabled = currentIndex === 0;
+      $("nextBtn").disabled = currentIndex === questions.length - 1;
+      $("statusLine").textContent = responses[q.id]
+        ? `Selected answer: ${responses[q.id]}${submitted ? ` · Correct answer: ${q.answer}` : ""} · Time on question: ${formatTime(timeForQuestion(q.id))}`
+        : `No answer selected. Time on question: ${formatTime(timeForQuestion(q.id))}`;
+      buildSections();
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const answered = answeredTotal();
+      $("answeredCount").textContent = `${answered} / ${questions.length}`;
+      $("progressBar").style.width = `${(answered / questions.length) * 100}%`;
+      $("liveTimer").textContent = formatTime(totalElapsedMs());
+      const q = questions[currentIndex];
+      $("questionTimerPill").textContent = `Current question: ${formatTime(timeForQuestion(q.id))}`;
+      if (submitted) {
+        const correct = scoreFor();
+        $("scorePill").textContent = `Score: ${correct} / ${questions.length} (${Math.round(correct / questions.length * 100)}%)`;
+      } else {
+        $("scorePill").textContent = "Score hidden until submission";
+      }
+    }
+
+    function focusAdvice(acc, unanswered, avgMs, totalMs) {
+      if (unanswered > 0) return "Complete unanswered questions first.";
+      if (acc < 60 && avgMs > 90000) return "High error rate and slow pace; rebuild fundamentals before timed practice.";
+      if (acc < 60) return "Low accuracy; revise concepts and redo this section.";
+      if (avgMs > 90000) return "Accuracy is usable, but speed needs timed drills.";
+      if (acc >= 80) return "Maintain speed and review mistakes.";
+      return "Revise missed concepts and repeat section.";
+    }
+
+    function getAttentionSection() {
+      const rows = DATA.sections.map(section => {
+        const qs = getSectionQuestions(section.name);
+        const qCount = qs.length;
+        const secAnswered = qs.filter(q => responses[q.id]).length;
+        const secCorrect = scoreFor(qs);
+        const acc = qCount ? secCorrect / qCount : 0;
+        const unanswered = qCount - secAnswered;
+        const totalMs = sectionTimeMs(section.name);
+        const avgMs = qCount ? totalMs / qCount : 0;
+        const priority = (1 - acc) * 1000 + unanswered * 25 + avgMs / 60000;
+        return { section, qCount, secAnswered, secCorrect, acc, unanswered, totalMs, avgMs, priority };
+      });
+      rows.sort((a, b) => b.priority - a.priority);
+      return rows[0];
+    }
+
+    function renderAnalysis() {
+      markQuestionTime();
+      const total = questions.length;
+      const correct = scoreFor();
+      const answered = answeredTotal();
+      const wrong = total - correct;
+      const elapsed = totalElapsedMs();
+      const timedQs = questions.map(q => ({q, ms: timeForQuestion(q.id)}));
+      const answeredTimed = timedQs.filter(item => responses[item.q.id] && item.ms > 0);
+      const slowest = timedQs.slice().sort((a, b) => b.ms - a.ms)[0];
+      const fastest = answeredTimed.slice().sort((a, b) => a.ms - b.ms)[0];
+      $("totalScore").textContent = `${correct}/${total}`;
+      $("accuracy").textContent = `${Math.round(correct / total * 100)}%`;
+      $("correctCount").textContent = correct;
+      $("wrongCount").textContent = wrong;
+      $("totalTimeTaken").textContent = formatTime(elapsed);
+      $("avgTimePerQuestion").textContent = formatTime(total ? elapsed / total : 0);
+      $("slowestQuestion").textContent = slowest && slowest.ms ? `Q${slowest.q.id} · ${formatTime(slowest.ms)}` : "--";
+      $("fastestQuestion").textContent = fastest ? `Q${fastest.q.id} · ${formatTime(fastest.ms)}` : "--";
+      $("analysisSubtitle").textContent = submitted
+        ? `${answered} of ${total} questions answered. Unanswered questions are counted as wrong. Time is tracked from opening/restarting the test until submission.`
+        : "Submit the test to view final score and time analysis.";
+
+      const focus = getAttentionSection();
+      $("attentionBox").innerHTML = submitted && focus
+        ? `<strong>Section needing attention: ${escapeHtml(focus.section.name)}</strong><div class="small-muted">Accuracy: ${Math.round(focus.acc * 100)}%, unanswered: ${focus.unanswered}, total time: ${formatTime(focus.totalMs)}, average: ${formatTime(focus.avgMs)} per question.</div>`
+        : `<strong>Section needing attention: --</strong><div class="small-muted">Submit the test to calculate the focus area.</div>`;
+
+      const tbody = $("sectionAnalysis");
+      tbody.innerHTML = "";
+      DATA.sections.forEach(section => {
+        const qs = getSectionQuestions(section.name);
+        const qCount = qs.length;
+        const secAnswered = qs.filter(q => responses[q.id]).length;
+        const secCorrect = scoreFor(qs);
+        const acc = qCount ? Math.round(secCorrect / qCount * 100) : 0;
+        const totalMs = sectionTimeMs(section.name);
+        const avgMs = qCount ? totalMs / qCount : 0;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(section.name)}</strong><br><span class="subtitle">${escapeHtml(section.description)}</span></td>
+          <td>${qCount}</td>
+          <td>${secAnswered}</td>
+          <td>${secCorrect}</td>
+          <td>${acc}%</td>
+          <td>${formatTime(totalMs)}</td>
+          <td>${formatTime(avgMs)}</td>
+          <td>${focusAdvice(acc, qCount - secAnswered, avgMs, totalMs)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderReview() {
+      markQuestionTime();
+      const list = $("reviewList");
+      list.innerHTML = "";
+      questions.forEach(q => {
+        const selected = responses[q.id] || "Not answered";
+        const ok = responses[q.id] === q.answer;
+        const div = document.createElement("div");
+        div.className = "review-item " + (ok ? "correct-border" : "bad-border");
+        const selectedText = q.options.find(o => o.label === responses[q.id])?.text || "";
+        const answerText = q.options.find(o => o.label === q.answer)?.text || "";
+        div.innerHTML = `
+          <div class="question-meta">
+            <span class="pill">${escapeHtml(q.section)}</span>
+            <span>${ok ? "Correct" : "Needs review"}</span>
+            <span>Time: ${formatTime(timeForQuestion(q.id))}</span>
+          </div>
+          <strong>Q${q.id}. ${escapeHtml(q.question)}</strong>
+          <p><b>Your answer:</b> ${escapeHtml(selected)}${selectedText ? ` — ${escapeHtml(selectedText)}` : ""}</p>
+          <p><b>Correct answer:</b> ${escapeHtml(q.answer)} — ${escapeHtml(answerText)}</p>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function showView(name) {
+      markQuestionTime();
+      $("practiceView").classList.toggle("hide", name !== "practice");
+      $("analysisView").classList.toggle("hide", name !== "analysis");
+      $("reviewView").classList.toggle("hide", name !== "review");
+      $("practiceTab").classList.toggle("active", name === "practice");
+      $("analysisTab").classList.toggle("active", name === "analysis");
+      $("reviewTab").classList.toggle("active", name === "review");
+      if (name === "analysis") renderAnalysis();
+      if (name === "review") renderReview();
+      if (name === "practice") renderPractice();
+    }
+
+    $("prevBtn").addEventListener("click", () => {
+      markQuestionTime();
+      if (currentIndex > 0) currentIndex--;
+      renderPractice();
+    });
+
+    $("nextBtn").addEventListener("click", () => {
+      markQuestionTime();
+      if (currentIndex < questions.length - 1) currentIndex++;
+      renderPractice();
+    });
+
+    $("clearBtn").addEventListener("click", () => {
+      markQuestionTime();
+      delete responses[questions[currentIndex].id];
+      saveState();
+      renderPractice();
+    });
+
+    $("submitBtn").addEventListener("click", () => {
+      markQuestionTime();
+      submitted = true;
+      testSubmittedAt = Date.now();
+      saveState();
+      updateProgress();
+      renderPractice();
+      renderAnalysis();
+      showView("analysis");
+    });
+
+    $("reviewBtn").addEventListener("click", () => {
+      markQuestionTime();
+      if (!submitted) {
+        submitted = true;
+        testSubmittedAt = Date.now();
+        saveState();
+      }
+      renderPractice();
+      showView("review");
+    });
+
+    $("resetBtn").addEventListener("click", () => {
+      if (confirm("Restart and clear all selected answers and timing data?")) {
+        Object.keys(responses).forEach(k => delete responses[k]);
+        questionTimes = {};
+        submitted = false;
+        currentIndex = 0;
+        testStartedAt = Date.now();
+        testSubmittedAt = 0;
+        activeQuestionId = null;
+        activeQuestionEnteredAt = Date.now();
+        saveState();
+        renderPractice();
+        renderAnalysis();
+        renderReview();
+        showView("practice");
+      }
+    });
+
+    $("practiceTab").addEventListener("click", () => showView("practice"));
+    $("analysisTab").addEventListener("click", () => showView("analysis"));
+    $("reviewTab").addEventListener("click", () => showView("review"));
+
+    setInterval(() => {
+      updateProgress();
+      if (document.hidden || submitted) return;
+      const q = questions[currentIndex];
+      if (q) {
+        $("statusLine").textContent = responses[q.id]
+          ? `Selected answer: ${responses[q.id]}${submitted ? ` · Correct answer: ${q.answer}` : ""} · Time on question: ${formatTime(timeForQuestion(q.id))}`
+          : `No answer selected. Time on question: ${formatTime(timeForQuestion(q.id))}`;
+      }
+    }, 1000);
+
+    renderPractice();
+    updateProgress();
+    renderAnalysis();
+  </script>
+</body>
+</html>
