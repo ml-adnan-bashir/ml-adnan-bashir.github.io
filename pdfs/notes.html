@@ -288,7 +288,7 @@
   <div id="sidebar-header">
     <div class="kicker">Vol. I — Compiled edition</div>
     <h1>Study Library</h1>
-    <p>Notes, NTS preparation, GSC material &amp; entrance test resources.</p>
+    <p>NET, NTS &amp; entrance prep — cheat sheets, benchmarks &amp; formula books.</p>
     <input type="text" id="search" placeholder="Search the index…">
   </div>
   <div id="categories"></div>
@@ -320,27 +320,29 @@
    Each file's "file" path is relative to this HTML file.
    ========================================================= */
 const LIBRARY = {
-  "NUST Entry Test": {
-    "General": [
-      { name: "Syllabus Overview", file: "pdfs/nust-entry-test/syllabus-overview.pdf" }
-    ],
+  "NUST Entry Test (NET)": {
     "Mathematics": [
-      { name: "Algebra Notes", file: "pdfs/nust-entry-test/algebra-notes.pdf" }
+      { name: "Maths Cheat Sheet", file: "NET___MATHS___Cheat_Sheet.pdf" },
+      { name: "Math, Phy & Eng — 100/60/40 Strategy", file: "NET___Math_Phy_Eng___100_60_40.pdf" },
+      { name: "FSC Math Formula & Trick Book", file: "fsc_math_formula_trick_book.pdf" }
     ],
-    "Physics": [],
-    "English": []
+    "Physics": [
+      { name: "Physics Cheat Sheet", file: "NET___PHYSICS___Cheat_Sheet.pdf" }
+    ],
+    "Strategy": [
+      { name: "MCQ Strategy & Benchmark", file: "NET_Benchmark_MCQ_Strategy_Branded_Project.pdf" }
+    ]
   },
   "NTS Material": {
-    "Quantitative": [
-      { name: "Quant Tricks & Shortcuts", file: "pdfs/nts-material/quant-tricks.pdf" }
+    "Analytical Reasoning": [
+      { name: "NAT Analytical Prep — Benchmark", file: "NTS_NAT_Analytical_Prep__BASHIR_BENCHMARK.pdf" },
+      { name: "NTS Practice Answers", file: "nts1_ans.pdf" }
     ],
-    "Analytical Reasoning": [],
+    "Quantitative": [],
     "Verbal": []
   },
   "GSC Notes": {
-    "General Science": [
-      { name: "GSC Overview Notes", file: "pdfs/gsc-notes/gsc-overview.pdf" }
-    ],
+    "General Science": [],
     "Computer Science": []
   },
   "Course Notes": {
@@ -348,6 +350,11 @@ const LIBRARY = {
     "CY-223 Network Security": [],
     "CY-433 Penetration Testing": [],
     "CS-270 Professional Practices": []
+  },
+  "Other": {
+    "Misc": [
+      { name: "Test File", file: "test.pdf" }
+    ]
   }
 };
 
