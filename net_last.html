@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NET Full Syllabus Interactive Review Session</title>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)'], ['$', '$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<style>
+:root{
+  --bg:#f4f6fb;
+  --panel:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --line:#d9e0ef;
+  --blue:#1d4ed8;
+  --blue2:#eff6ff;
+  --green:#15803d;
+  --green2:#ecfdf3;
+  --red:#b42318;
+  --red2:#fef3f2;
+  --amber:#b45309;
+  --amber2:#fff7ed;
+  --shadow:0 18px 50px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(135deg,#eef2ff,#f8fafc 40%,#ecfeff);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.92);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);
+}
+.header-inner{
+  max-width:1440px;
+  margin:auto;
+  padding:14px 18px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:center;
+}
+h1{
+  margin:0;
+  font-size:22px;
+  letter-spacing:-.02em;
+}
+.subtitle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:13px;
+}
+.header-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+button,select,input{
+  font:inherit;
+}
+button{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  border-radius:12px;
+  padding:9px 12px;
+  cursor:pointer;
+  font-weight:700;
+}
+button:hover{border-color:#9db4e8}
+button.primary{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--blue);
+}
+button.good{
+  background:var(--green);
+  color:#fff;
+  border-color:var(--green);
+}
+button.warn{
+  background:var(--amber2);
+  color:#7c2d12;
+  border-color:#fed7aa;
+}
+.container{
+  max-width:1440px;
+  margin:18px auto;
+  padding:0 18px 30px;
+  display:grid;
+  grid-template-columns:290px minmax(0,1fr) 360px;
+  gap:18px;
+}
+.card{
+  background:rgba(255,255,255,.95);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
+.side{
+  position:sticky;
+  top:86px;
+  height:calc(100vh - 104px);
+  overflow:auto;
+  padding:14px;
+}
+.main{
+  padding:18px;
+}
+.right{
+  position:sticky;
+  top:86px;
+  height:calc(100vh - 104px);
+  overflow:auto;
+  padding:14px;
+}
+.section-title{
+  font-size:13px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#344054;
+  margin:4px 0 10px;
+}
+.filter-grid{
+  display:grid;
+  gap:8px;
+}
+select,input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:9px 10px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:12px 0;
+}
+.stat{
+  background:#f8fafc;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px;
+}
+.stat b{
+  display:block;
+  font-size:20px;
+}
+.stat span{
+  color:var(--muted);
+  font-size:12px;
+}
+.nav-list{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  margin-top:10px;
+}
+.nav-btn{
+  border-radius:10px;
+  padding:8px 0;
+  font-size:12px;
+  background:#fff;
+}
+.nav-btn.active{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--blue);
+}
+.nav-btn.done{
+  background:var(--green2);
+  color:var(--green);
+  border-color:#bbf7d0;
+}
+.nav-btn.picked{
+  background:var(--amber2);
+  color:#92400e;
+  border-color:#fed7aa;
+}
+.badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:12px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  padding:6px 10px;
+  background:#fff;
+  color:#344054;
+  font-size:12px;
+  font-weight:800;
+}
+.badge.blue{background:var(--blue2);color:var(--blue);border-color:#bfdbfe}
+.badge.green{background:var(--green2);color:var(--green);border-color:#bbf7d0}
+.badge.amber{background:var(--amber2);color:#92400e;border-color:#fed7aa}
+.question-box{
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+  background:#fff;
+}
+.qtext{
+  font-size:22px;
+  line-height:1.55;
+  font-weight:800;
+  margin:10px 0 16px;
+}
+.options{
+  display:grid;
+  gap:10px;
+}
+.option{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px 14px;
+  display:grid;
+  grid-template-columns:42px 1fr;
+  gap:8px;
+  align-items:start;
+  background:#fff;
+  cursor:pointer;
+}
+.option:hover{background:#f8fafc}
+.option .letter{
+  width:30px;
+  height:30px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:#eef2ff;
+  color:#1e3a8a;
+  font-weight:900;
+}
+.option.selected{
+  border-color:#f59e0b;
+  background:#fffbeb;
+}
+.option.correct{
+  border-color:#22c55e;
+  background:var(--green2);
+}
+.option.wrong{
+  border-color:#ef4444;
+  background:var(--red2);
+}
+.reveal{
+  margin-top:14px;
+  display:none;
+  border:1px solid #bbf7d0;
+  border-radius:18px;
+  padding:14px;
+  background:var(--green2);
+}
+.reveal.show{display:block}
+.hint{
+  margin-top:14px;
+  display:none;
+  border:1px solid #fed7aa;
+  border-radius:18px;
+  padding:14px;
+  background:var(--amber2);
+}
+.hint.show{display:block}
+.tool-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.timer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px 14px;
+  background:#f8fafc;
+  margin-bottom:12px;
+}
+.timer strong{
+  font-size:26px;
+  font-variant-numeric:tabular-nums;
+}
+.progress-wrap{
+  height:10px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin:10px 0 2px;
+}
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#2563eb,#16a34a);
+  width:0%;
+}
+.formula-group{
+  border:1px solid var(--line);
+  border-radius:18px;
+  margin-bottom:10px;
+  overflow:hidden;
+  background:#fff;
+}
+.formula-head{
+  padding:12px;
+  font-weight:900;
+  background:#f8fafc;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+}
+.formula-body{
+  display:none;
+  padding:12px;
+  border-top:1px solid var(--line);
+}
+.formula-body.open{display:block}
+.formula-item{
+  padding:9px 0;
+  border-bottom:1px dashed #e5e7eb;
+}
+.formula-item:last-child{border-bottom:0}
+.formula-item b{display:block;margin-bottom:4px}
+.small{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+.table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+.table th,.table td{
+  border-bottom:1px solid var(--line);
+  padding:8px 6px;
+  text-align:left;
+}
+.table th{
+  color:#344054;
+  background:#f8fafc;
+}
+.note{
+  border:1px solid #bfdbfe;
+  background:#eff6ff;
+  color:#1e3a8a;
+  padding:10px 12px;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.5;
+}
+@media(max-width:1100px){
+  .container{grid-template-columns:1fr}
+  .side,.right{position:relative;top:auto;height:auto}
+  .header-inner{grid-template-columns:1fr}
+  .header-actions{justify-content:flex-start}
+}
+@media print{
+  header,.side,.right,.tool-row{display:none}
+  body{background:#fff}
+  .container{display:block;margin:0;padding:0}
+  .card{box-shadow:none;border:0}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>NET Full Syllabus Interactive Review Session</h1>
+      <div class="subtitle">Representative NET-style study tool. Answers stay hidden until Reveal Answer. Includes hints, timers, formulas, shortcuts, and solution notes.</div>
+    </div>
+    <div class="header-actions">
+      <button onclick="showFormulaOnly()">Formula Bank</button>
+      <button onclick="exportCSV()">Export Timing CSV</button>
+      <button onclick="resetProgress()" class="warn">Reset</button>
+      <button onclick="window.print()" class="primary">Print</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <aside class="card side">
+    <div class="section-title">Filters</div>
+    <div class="filter-grid">
+      <select id="sectionFilter" onchange="applyFilters()">
+        <option value="All">All Sections</option>
+      </select>
+      <select id="topicFilter" onchange="applyFilters()">
+        <option value="All">All Topics</option>
+      </select>
+      <select id="levelFilter" onchange="applyFilters()">
+        <option value="All">All Difficulty Levels</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+      <input id="searchBox" placeholder="Search question, topic, formula..." oninput="applyFilters()">
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="totalCount">0</b><span>Visible MCQs</span></div>
+      <div class="stat"><b id="revealedCount">0</b><span>Answers Revealed</span></div>
+      <div class="stat"><b id="pickedCount">0</b><span>Options Picked</span></div>
+      <div class="stat"><b id="totalTime">00:00</b><span>Total Time</span></div>
+    </div>
+
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="small" id="progressText">0% complete</div>
+
+    <div class="section-title" style="margin-top:16px">Question Navigator</div>
+    <div class="nav-list" id="navList"></div>
+  </aside>
+
+  <main class="card main">
+    <div id="questionArea"></div>
+  </main>
+
+  <aside class="card right">
+    <div class="timer">
+      <div>
+        <div class="section-title" style="margin:0">Current Timer</div>
+        <div class="small">Timer stops when answer is revealed.</div>
+      </div>
+      <strong id="qTimer">00:00</strong>
+    </div>
+
+    <div class="note">
+      Study rule: solve first, use hint only if stuck, then reveal answer and write the mistake pattern. The goal is not guessing; it is recognizing repeatable MCQ traps.
+    </div>
+
+    <div class="section-title" style="margin-top:16px">Essential Formula Bank</div>
+    <div id="formulaBank"></div>
+
+    <div class="section-title" style="margin-top:16px">Topic Timing</div>
+    <table class="table" id="topicTable">
+      <thead><tr><th>Topic</th><th>Time</th><th>Seen</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </aside>
+</div>
+
+<script>
+const QUESTIONS = [
+  {id:1, section:"Mathematics", topic:"Complex Numbers", level:"Easy", q:"If \\(z=\\dfrac{3-4i}{1+2i}\\), the real part of \\(z\\) is:", options:["\\(-1\\)","\\(1\\)","\\(-5\\)","\\(\\dfrac{11}{5}\\)"], answer:0, hint:"Multiply numerator and denominator by the conjugate \\(1-2i\\).", formula:"\\(\\dfrac{a+bi}{c+di}\\times\\dfrac{c-di}{c-di}\\)", solution:"\\((3-4i)(1-2i)=-5-10i\\) and \\((1+2i)(1-2i)=5\\). Hence \\(z=-1-2i\\), so the real part is \\(-1\\).", tip:"For a complex quotient, rationalize first. If only real part is asked, stop after the real part is clear."},
+  {id:2, section:"Mathematics", topic:"Complex Numbers", level:"Easy", q:"The modulus of \\((1+i)^6\\) is:", options:["\\(4\\)","\\(8\\)","\\(16\\)","\\(64\\)"], answer:1, hint:"Use \\(|z^n|=|z|^n\\).", formula:"\\(|zw|=|z||w|,\\quad |z^n|=|z|^n\\)", solution:"\\(|1+i|=\\sqrt2\\). Therefore \\(|(1+i)^6|=(\\sqrt2)^6=8\\).", tip:"Do not expand powers unless necessary. Modulus questions usually collapse quickly."},
+  {id:3, section:"Mathematics", topic:"Complex Numbers", level:"Medium", q:"If \\(\\omega\\) is a non-real cube root of unity, then \\(1+\\omega^7+\\omega^8\\) equals:", options:["\\(0\\)","\\(1\\)","\\(\\omega\\)","\\(\\omega^2\\)"], answer:0, hint:"Reduce powers modulo 3.", formula:"\\(\\omega^3=1,\\quad 1+\\omega+\\omega^2=0\\)", solution:"\\(\\omega^7=\\omega\\) and \\(\\omega^8=\\omega^2\\). Hence \\(1+\\omega+\\omega^2=0\\).", tip:"When \\(\\omega\\) appears, immediately write the cube-root identities."},
+  {id:4, section:"Mathematics", topic:"Complex Numbers", level:"Easy", q:"The value of \\(i^{137}\\) is:", options:["\\(i\\)","\\(-i\\)","\\(1\\)","\\(-1\\)"], answer:0, hint:"Powers of \\(i\\) repeat every 4.", formula:"\\(i^1=i,\\ i^2=-1,\\ i^3=-i,\\ i^4=1\\)", solution:"\\(137\\equiv1\\pmod4\\). Therefore \\(i^{137}=i\\).", tip:"Only the remainder after division by 4 matters."},
+  {id:5, section:"Mathematics", topic:"Sets and Functions", level:"Easy", q:"If \\(|x-2|<3\\), then \\(x\\) belongs to:", options:["\\((-1,5)\\)","\\((-5,1)\\)","\\((2,3)\\)","\\((-3,2)\\)"], answer:0, hint:"Write it as a compound inequality.", formula:"\\(|x-a|<b\\Rightarrow a-b<x<a+b\\)", solution:"\\(-3<x-2<3\\). Adding 2 gives \\(-1<x<5\\).", tip:"For absolute-value intervals, move the center first."},
+  {id:6, section:"Mathematics", topic:"Sets and Functions", level:"Easy", q:"For sets \\(A\\) and \\(B\\), \\(n(A)=30\\), \\(n(B)=25\\), and \\(n(A\\cup B)=45\\). Find \\(n(A\\cap B)\\).", options:["\\(5\\)","\\(10\\)","\\(15\\)","\\(20\\)"], answer:1, hint:"Use the two-set inclusion-exclusion formula.", formula:"\\(n(A\\cup B)=n(A)+n(B)-n(A\\cap B)\\)", solution:"\\(45=30+25-x\\), so \\(x=10\\).", tip:"Union counts overlap once, so subtract the intersection."},
+  {id:7, section:"Mathematics", topic:"Sets and Functions", level:"Easy", q:"If \\(f(x)=2x-3\\) and \\(g(x)=x^2+1\\), then \\((g\\circ f)(2)\\) is:", options:["\\(0\\)","\\(2\\)","\\(5\\)","\\(10\\)"], answer:1, hint:"Find \\(f(2)\\) first, then apply \\(g\\).", formula:"\\((g\\circ f)(x)=g(f(x))\\)", solution:"\\(f(2)=1\\), so \\(g(f(2))=g(1)=1^2+1=2\\).", tip:"Composition order is right-to-left."},
+  {id:8, section:"Mathematics", topic:"Sets and Functions", level:"Medium", q:"If \\(f(x)=\\dfrac{x}{x-1}\\), then \\(f(f(x))\\) equals:", options:["\\(x\\)","\\(\\dfrac1x\\)","\\(x-1\\)","\\(1-x\\)"], answer:0, hint:"Substitute \\(\\dfrac{x}{x-1}\\) into the same function.", formula:"\\(f(f(x))=\\dfrac{f(x)}{f(x)-1}\\)", solution:"\\(f(f(x))=\\dfrac{x/(x-1)}{x/(x-1)-1}=\\dfrac{x/(x-1)}{1/(x-1)}=x\\).", tip:"Simplify the denominator first; most traps reverse the fraction."},
+  {id:9, section:"Mathematics", topic:"Matrices", level:"Easy", q:"The determinant of \\(\\begin{pmatrix}2&3\\\\5&7\\end{pmatrix}\\) is:", options:["\\(-1\\)","\\(1\\)","\\(29\\)","\\(-29\\)"], answer:0, hint:"Use \\(ad-bc\\).", formula:"\\(\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=ad-bc\\)", solution:"\\(2(7)-3(5)=14-15=-1\\).", tip:"Cross-product order decides the sign."},
+  {id:10, section:"Mathematics", topic:"Matrices", level:"Medium", q:"If \\(A\\) is a \\(2\\times2\\) matrix with \\(\\det(A)=3\\), then \\(\\det(2A)\\) is:", options:["\\(6\\)","\\(9\\)","\\(12\\)","\\(24\\)"], answer:2, hint:"For an \\(n\\times n\\) matrix, \\(\\det(kA)=k^n\\det(A)\\).", formula:"\\(\\det(kA)=k^n\\det(A)\\)", solution:"Here \\(n=2\\), so \\(\\det(2A)=2^2\\cdot3=12\\).", tip:"Do not multiply determinant by \\(k\\) only; use \\(k^n\\)."},
+  {id:11, section:"Mathematics", topic:"Matrices", level:"Medium", q:"If \\(A\\) is singular, then:", options:["\\(\\det(A)=0\\)","\\(\\det(A)=1\\)","\\(A\\) must be diagonal","\\(A\\) has no zero entries"], answer:0, hint:"Singular means non-invertible.", formula:"\\(A^{-1}\\) exists iff \\(\\det(A)\\ne0\\)", solution:"A singular matrix has no inverse, so its determinant is zero.", tip:"Singular matrix questions are usually determinant questions."},
+  {id:12, section:"Mathematics", topic:"Quadratic Equations", level:"Easy", q:"For \\(x^2-5x+6=0\\), the product of roots is:", options:["\\(5\\)","\\(6\\)","\\(-5\\)","\\(-6\\)"], answer:1, hint:"Use product \\(c/a\\).", formula:"For \\(ax^2+bx+c=0\\), \\(\\alpha+\\beta=-b/a\\), \\(\\alpha\\beta=c/a\\)", solution:"Here \\(a=1\\) and \\(c=6\\). Product \\(=6\\).", tip:"For root sum/product, avoid solving the quadratic."},
+  {id:13, section:"Mathematics", topic:"Quadratic Equations", level:"Medium", q:"If the roots of \\(x^2-kx+16=0\\) are equal, then \\(k\\) is:", options:["\\(\\pm 4\\)","\\(\\pm 8\\)","\\(16\\)","\\(-16\\)"], answer:1, hint:"Equal roots mean discriminant zero.", formula:"\\(D=b^2-4ac\\)", solution:"\\(D=(-k)^2-4(1)(16)=k^2-64=0\\). Thus \\(k=\\pm8\\).", tip:"Equal roots always point to \\(D=0\\)."},
+  {id:14, section:"Mathematics", topic:"Quadratic Equations", level:"Medium", q:"If one root of \\(x^2-6x+k=0\\) is \\(2\\), find \\(k\\).", options:["\\(4\\)","\\(6\\)","\\(8\\)","\\(12\\)"], answer:2, hint:"Substitute \\(x=2\\) directly.", formula:"If \\(r\\) is a root, then \\(f(r)=0\\)", solution:"\\(2^2-6(2)+k=0\\Rightarrow4-12+k=0\\Rightarrow k=8\\).", tip:"Known-root questions are fastest by direct substitution."},
+  {id:15, section:"Mathematics", topic:"Partial Fractions", level:"Medium", q:"If \\(\\dfrac{1}{x(x+2)}=\\dfrac{A}{x}+\\dfrac{B}{x+2}\\), then \\(A-B\\) is:", options:["\\(1\\)","\\(-1\\)","\\(\\dfrac12\\)","\\(0\\)"], answer:0, hint:"Cover-up method works because factors are linear.", formula:"\\(A=\\left.\\dfrac{1}{x+2}\\right|_{x=0},\\quad B=\\left.\\dfrac{1}{x}\\right|_{x=-2}\\)", solution:"\\(A=1/2\\), \\(B=-1/2\\), so \\(A-B=1\\).", tip:"For distinct linear factors, cover-up saves time."},
+  {id:16, section:"Mathematics", topic:"Partial Fractions", level:"Medium", q:"In \\(\\dfrac{5}{x^2-1}\\), the coefficient of \\(\\dfrac{1}{x-1}\\) is:", options:["\\(\\dfrac52\\)","\\(-\\dfrac52\\)","\\(5\\)","\\(-5\\)"], answer:0, hint:"Write \\(x^2-1=(x-1)(x+1)\\).", formula:"\\(\\dfrac{5}{(x-1)(x+1)}=\\dfrac{A}{x-1}+\\dfrac{B}{x+1}\\)", solution:"\\(A=\\left.\\dfrac{5}{x+1}\\right|_{x=1}=\\dfrac52\\).", tip:"Set the matching factor to zero for the required coefficient."},
+  {id:17, section:"Mathematics", topic:"Sequences and Series", level:"Easy", q:"Find the 10th term of the arithmetic progression \\(7,11,15,\\ldots\\).", options:["\\(39\\)","\\(43\\)","\\(47\\)","\\(51\\)"], answer:1, hint:"Here \\(a=7\\), \\(d=4\\).", formula:"\\(a_n=a+(n-1)d\\)", solution:"\\(a_{10}=7+9(4)=43\\).", tip:"For AP term, do not sum; use the nth-term formula."},
+  {id:18, section:"Mathematics", topic:"Sequences and Series", level:"Easy", q:"The sum of the first 20 odd positive integers is:", options:["\\(100\\)","\\(200\\)","\\(400\\)","\\(420\\)"], answer:2, hint:"The sum of first \\(n\\) odd numbers is \\(n^2\\).", formula:"\\(1+3+5+\\cdots+(2n-1)=n^2\\)", solution:"For \\(n=20\\), sum \\(=20^2=400\\).", tip:"Odd-number sums are perfect squares."},
+  {id:19, section:"Mathematics", topic:"Sequences and Series", level:"Medium", q:"For a GP with \\(a=3\\), \\(r=2\\), the sum of first 6 terms is:", options:["\\(96\\)","\\(189\\)","\\(192\\)","\\(63\\)"], answer:1, hint:"Use \\(S_n=a(r^n-1)/(r-1)\\).", formula:"\\(S_n=\\dfrac{a(r^n-1)}{r-1}\\), for \\(r\\ne1\\)", solution:"\\(S_6=3(2^6-1)/(2-1)=3(63)=189\\).", tip:"Check whether \\(r>1\\) before choosing the GP sum form."},
+  {id:20, section:"Mathematics", topic:"Permutation and Combination", level:"Easy", q:"How many four-digit numbers can be formed from digits \\(1,2,3,4,5\\) without repetition?", options:["\\(20\\)","\\(60\\)","\\(120\\)","\\(625\\)"], answer:2, hint:"Order matters.", formula:"\\({}^nP_r=\\dfrac{n!}{(n-r)!}\\)", solution:"\\({}^5P_4=5\\cdot4\\cdot3\\cdot2=120\\).", tip:"Formation of numbers means permutation, not combination."},
+  {id:21, section:"Mathematics", topic:"Permutation and Combination", level:"Easy", q:"The number of ways to choose 3 students from 8 students is:", options:["\\(24\\)","\\(56\\)","\\(112\\)","\\(336\\)"], answer:1, hint:"Choose means order does not matter.", formula:"\\({}^nC_r=\\dfrac{n!}{r!(n-r)!}\\)", solution:"\\({}^8C_3=\\dfrac{8\\cdot7\\cdot6}{3\\cdot2\\cdot1}=56\\).", tip:"Choose, select, committee usually mean combination."},
+  {id:22, section:"Mathematics", topic:"Probability", level:"Medium", q:"Two dice are rolled. The probability of getting a sum of 9 is:", options:["\\(\\dfrac19\\)","\\(\\dfrac16\\)","\\(\\dfrac14\\)","\\(\\dfrac{5}{36}\\)"], answer:0, hint:"List pairs giving 9.", formula:"\\(P(E)=\\dfrac{\\text{favourable outcomes}}{\\text{total outcomes}}\\)", solution:"Pairs are \\((3,6),(4,5),(5,4),(6,3)\\), so probability \\(=4/36=1/9\\).", tip:"For two dice, total outcomes are always 36."},
+  {id:23, section:"Mathematics", topic:"Probability", level:"Medium", q:"A card is drawn from a standard deck. The probability that it is a king or a heart is:", options:["\\(\\dfrac4{13}\\)","\\(\\dfrac{17}{52}\\)","\\(\\dfrac{13}{52}\\)","\\(\\dfrac{1}{13}\\)"], answer:0, hint:"Use inclusion-exclusion; king of hearts is counted twice.", formula:"\\(P(A\\cup B)=P(A)+P(B)-P(A\\cap B)\\)", solution:"Kings \\(=4\\), hearts \\(=13\\), overlap \\(=1\\). Favourable \\(=4+13-1=16\\). Probability \\(=16/52=4/13\\).", tip:"For OR probability, subtract overlap."},
+  {id:24, section:"Mathematics", topic:"Binomial Theorem", level:"Easy", q:"The coefficient of \\(x^3\\) in \\((1+x)^8\\) is:", options:["\\(28\\)","\\(35\\)","\\(56\\)","\\(70\\)"], answer:2, hint:"Use \\({}^8C_3\\).", formula:"\\((1+x)^n=\\sum_{r=0}^n{}^nC_r x^r\\)", solution:"Coefficient of \\(x^3\\) is \\({}^8C_3=56\\).", tip:"For \\((1+x)^n\\), coefficient of \\(x^r\\) is directly \\({}^nC_r\\)."},
+  {id:25, section:"Mathematics", topic:"Binomial Theorem", level:"Medium", q:"The sum of coefficients in \\((2x-1)^7\\) is:", options:["\\(0\\)","\\(1\\)","\\(2^7\\)","\\(-1\\)"], answer:1, hint:"Put \\(x=1\\).", formula:"Sum of coefficients of \\(P(x)\\) is \\(P(1)\\)", solution:"\\((2(1)-1)^7=1^7=1\\).", tip:"Sum of coefficients never needs expansion."},
+  {id:26, section:"Mathematics", topic:"Trigonometry", level:"Easy", q:"If \\(\\sin\\theta=\\dfrac35\\) and \\(\\theta\\) is acute, find \\(\\cos\\theta\\).", options:["\\(\\dfrac25\\)","\\(\\dfrac35\\)","\\(\\dfrac45\\)","\\(\\dfrac54\\)"], answer:2, hint:"Use a 3-4-5 triangle.", formula:"\\(\\sin^2\\theta+\\cos^2\\theta=1\\)", solution:"\\(\\cos\\theta=\\sqrt{1-9/25}=4/5\\), positive because \\(\\theta\\) is acute.", tip:"Acute angle means all basic trigonometric ratios are positive."},
+  {id:27, section:"Mathematics", topic:"Trigonometry", level:"Medium", q:"The maximum value of \\(3\\sin x+4\\cos x\\) is:", options:["\\(4\\)","\\(5\\)","\\(7\\)","\\(12\\)"], answer:1, hint:"Use \\(R=\\sqrt{a^2+b^2}\\).", formula:"Maximum of \\(a\\sin x+b\\cos x=\\sqrt{a^2+b^2}\\)", solution:"Maximum \\(=\\sqrt{3^2+4^2}=5\\).", tip:"Convert linear sine-cosine form into amplitude."},
+  {id:28, section:"Mathematics", topic:"Trigonometry", level:"Medium", q:"\\(\\sin75^\\circ\\cos15^\\circ-\\cos75^\\circ\\sin15^\\circ\\) equals:", options:["\\(0\\)","\\(\\dfrac12\\)","\\(\\dfrac{\\sqrt3}{2}\\)","\\(1\\)"], answer:1, hint:"Recognize \\(\\sin A\\cos B-\\cos A\\sin B\\).", formula:"\\(\\sin A\\cos B-\\cos A\\sin B=\\sin(A-B)\\)", solution:"Expression \\(=\\sin(75^\\circ-15^\\circ)=\\sin60^\\circ=\\sqrt3/2\\).", tip:"This is a formula-recognition item. Match signs before calculating."},
+  {id:29, section:"Mathematics", topic:"Trigonometry", level:"Medium", q:"If \\(\\sec\\theta=\\dfrac54\\) and \\(\\theta\\) is acute, then \\(\\tan\\theta\\) is:", options:["\\(\\dfrac34\\)","\\(\\dfrac43\\)","\\(\\dfrac35\\)","\\(\\dfrac53\\)"], answer:0, hint:"\\(\\sec\\theta=5/4\\Rightarrow\\cos\\theta=4/5\\).", formula:"\\(1+\tan^2\\theta=\\sec^2\\theta\\)", solution:"\\(\\tan^2\\theta=25/16-1=9/16\\), so \\(\\tan\\theta=3/4\\).", tip:"Use identity or 3-4-5 triangle."},
+  {id:30, section:"Mathematics", topic:"Limits", level:"Easy", q:"Evaluate \\(\\lim_{x\\to2}\\dfrac{x^2-4}{x-2}\\).", options:["\\(0\\)","\\(2\\)","\\(4\\)","\\(\\infty\\)"], answer:2, hint:"Factor \\(x^2-4\\).", formula:"\\(x^2-a^2=(x-a)(x+a)\\)", solution:"\\(\\dfrac{(x-2)(x+2)}{x-2}=x+2\\). At \\(x=2\\), limit \\(=4\\).", tip:"Cancel only after factoring; do not substitute into zero-over-zero."},
+  {id:31, section:"Mathematics", topic:"Limits", level:"Medium", q:"Evaluate \\(\\lim_{x\\to0}\\dfrac{\\sin5x}{x}\\).", options:["\\(0\\)","\\(1\\)","\\(5\\)","\\(\\dfrac15\\)"], answer:2, hint:"Write it as \\(5\\cdot\\dfrac{\\sin5x}{5x}\\).", formula:"\\(\\lim_{u\\to0}\\dfrac{\\sin u}{u}=1\\)", solution:"\\(\\dfrac{\\sin5x}{x}=5\\dfrac{\\sin5x}{5x}\\to5\\).", tip:"Make the denominator match the sine argument."},
+  {id:32, section:"Mathematics", topic:"Differentiation", level:"Easy", q:"If \\(f(x)=x^3-2x\\), find \\(f'(2)\\).", options:["\\(6\\)","\\(8\\)","\\(10\\)","\\(12\\)"], answer:2, hint:"Differentiate first.", formula:"\\(\\dfrac{d}{dx}x^n=nx^{n-1}\\)", solution:"\\(f'(x)=3x^2-2\\). Thus \\(f'(2)=12-2=10\\).", tip:"Never substitute before differentiating when derivative is asked."},
+  {id:33, section:"Mathematics", topic:"Differentiation", level:"Medium", q:"Differentiate \\(\\ln(x^2+1)\\) with respect to \\(x\\).", options:["\\(\\dfrac{2x}{x^2+1}\\)","\\(\\dfrac1{x^2+1}\\)","\\(2x\\ln x\\)","\\(x^2+1\\)"], answer:0, hint:"Use chain rule.", formula:"\\(\\dfrac{d}{dx}\\ln u=\\dfrac{u'}{u}\\)", solution:"Here \\(u=x^2+1\\), so derivative \\(=2x/(x^2+1)\\).", tip:"For logarithm derivative, numerator is derivative of inside."},
+  {id:34, section:"Mathematics", topic:"Integration", level:"Medium", q:"Evaluate \\(\\int 2x\\cos(x^2)\\,dx\\).", options:["\\(\\sin(x^2)+C\\)","\\(\\cos(x^2)+C\\)","\\(2\\sin x+C\\)","\\(-\\sin(x^2)+C\\)"], answer:0, hint:"Let \\(u=x^2\\).", formula:"\\(\\int f'(x)\\cos(f(x))dx=\\sin(f(x))+C\\)", solution:"Since \\(d(x^2)=2x\\,dx\\), integral \\(=\\sin(x^2)+C\\).", tip:"Look for inside derivative already present."},
+  {id:35, section:"Mathematics", topic:"Integration", level:"Easy", q:"Evaluate \\(\\int_0^1 3x^2\\,dx\\).", options:["\\(0\\)","\\(1\\)","\\(2\\)","\\(3\\)"], answer:1, hint:"Antiderivative of \\(3x^2\\) is \\(x^3\\).", formula:"\\(\\int_a^b f(x)dx=F(b)-F(a)\\)", solution:"\\([x^3]_0^1=1-0=1\\).", tip:"Definite integrals need upper minus lower."},
+  {id:36, section:"Mathematics", topic:"Coordinate Geometry", level:"Easy", q:"The distance between \\((1,2)\\) and \\((4,6)\\) is:", options:["\\(3\\)","\\(4\\)","\\(5\\)","\\(7\\)"], answer:2, hint:"Differences are 3 and 4.", formula:"\\(d=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}\\)", solution:"\\(d=\\sqrt{3^2+4^2}=5\\).", tip:"Coordinate distance often forms a 3-4-5 triangle."},
+  {id:37, section:"Mathematics", topic:"Coordinate Geometry", level:"Medium", q:"Find the radius of \\(x^2+y^2-6x+8y=0\\).", options:["\\(3\\)","\\(4\\)","\\(5\\)","\\(25\\)"], answer:2, hint:"Complete squares.", formula:"\\((x-h)^2+(y-k)^2=r^2\\)", solution:"\\((x-3)^2+(y+4)^2=25\\), so radius \\(=5\\).", tip:"After completing squares, radius is square root of RHS."},
+  {id:38, section:"Mathematics", topic:"Conic Sections", level:"Easy", q:"For the parabola \\(y^2=12x\\), the focus is:", options:["\\((3,0)\\)","\\((0,3)\\)","\\((6,0)\\)","\\((0,6)\\)"], answer:0, hint:"Compare with \\(y^2=4ax\\).", formula:"\\(y^2=4ax\\Rightarrow\\text{focus}=(a,0)\\)", solution:"\\(4a=12\\Rightarrow a=3\\). Focus is \\((3,0)\\).", tip:"For right-opening parabola, focus lies on x-axis."},
+  {id:39, section:"Mathematics", topic:"Vectors", level:"Easy", q:"If \\(\\vec a=(2,-1,3)\\), \\(\\vec b=(1,4,-2)\\), then \\(\\vec a\\cdot\\vec b\\) is:", options:["\\(-8\\)","\\(-6\\)","\\(0\\)","\\(12\\)"], answer:0, hint:"Multiply corresponding components and add.", formula:"\\(\\vec a\\cdot\\vec b=a_1b_1+a_2b_2+a_3b_3\\)", solution:"\\(2(1)+(-1)(4)+3(-2)=2-4-6=-8\\).", tip:"Dot product is scalar, not vector."},
+  {id:40, section:"Mathematics", topic:"Vectors", level:"Easy", q:"\\(\\mathbf{i}\\times\\mathbf{j}\\) equals:", options:["\\(\\mathbf{i}\\)","\\(\\mathbf{j}\\)","\\(\\mathbf{k}\\)","\\(-\\mathbf{k}\\)"], answer:2, hint:"Use the cyclic order \\(i,j,k\\).", formula:"\\(\\mathbf{i}\\times\\mathbf{j}=\\mathbf{k},\\ \\mathbf{j}\\times\\mathbf{k}=\\mathbf{i},\\ \\mathbf{k}\\times\\mathbf{i}=\\mathbf{j}\\)", solution:"By the right-hand cyclic rule, \\(\\mathbf{i}\\times\\mathbf{j}=\\mathbf{k}\\).", tip:"Reverse order changes the sign."},
+  {id:41, section:"Mathematics", topic:"Logarithms", level:"Easy", q:"If \\(\\log_2 x=5\\), find \\(x\\).", options:["\\(10\\)","\\(16\\)","\\(25\\)","\\(32\\)"], answer:3, hint:"Convert log form to exponential form.", formula:"\\(\\log_a x=b\\Leftrightarrow x=a^b\\)", solution:"\\(x=2^5=32\\).", tip:"Log equation means exponent question."},
+  {id:42, section:"Mathematics", topic:"Algebraic Identities", level:"Medium", q:"If \\(x+\\dfrac1x=5\\), then \\(x^2+\\dfrac1{x^2}\\) is:", options:["\\(21\\)","\\(23\\)","\\(25\\)","\\(27\\)"], answer:1, hint:"Square both sides.", formula:"\\((x+1/x)^2=x^2+2+1/x^2\\)", solution:"\\(25=x^2+2+1/x^2\\). Hence \\(x^2+1/x^2=23\\).", tip:"Do not solve for \\(x\\); use identity."},
+  {id:43, section:"Mathematics", topic:"Remainder Theorem", level:"Easy", q:"The remainder when \\(x^3-2x+5\\) is divided by \\(x-2\\) is:", options:["\\(5\\)","\\(7\\)","\\(9\\)","\\(13\\)"], answer:2, hint:"Use \\(f(2)\\).", formula:"Remainder on division by \\(x-a\\) is \\(f(a)\\)", solution:"\\(f(2)=8-4+5=9\\).", tip:"Remainder theorem avoids polynomial division."},
+  {id:44, section:"Mathematics", topic:"Linear Programming", level:"Medium", q:"Maximize \\(Z=3x+2y\\) subject to \\(x+y\\le4\\), \\(x\\le3\\), \\(y\\le3\\), \\(x,y\\ge0\\). The maximum value is:", options:["\\(8\\)","\\(10\\)","\\(11\\)","\\(12\\)"], answer:2, hint:"Check corner points.", formula:"Linear objective reaches optimum at a feasible-region vertex", solution:"Feasible vertices include \\((0,0),(3,0),(3,1),(1,3),(0,3)\\). Values are \\(0,9,11,9,6\\). Maximum is \\(11\\).", tip:"For LPP MCQs, test only corner points."},
+
+  {id:45, section:"Physics", topic:"Kinematics", level:"Easy", q:"A body starts from rest and accelerates uniformly at \\(2\\,m\\,s^{-2}\\) for \\(5\\,s\\). Its final speed is:", options:["\\(5\\,m\\,s^{-1}\\)","\\(10\\,m\\,s^{-1}\\)","\\(20\\,m\\,s^{-1}\\)","\\(25\\,m\\,s^{-1}\\)"], answer:1, hint:"Use \\(v=u+at\\).", formula:"\\(v=u+at\\)", solution:"\\(v=0+2(5)=10\\,m\\,s^{-1}\\).", tip:"If starts from rest, put \\(u=0\\) immediately."},
+  {id:46, section:"Physics", topic:"Kinematics", level:"Medium", q:"A projectile has initial speed \\(20\\,m\\,s^{-1}\\) at \\(30^\\circ\\). Its horizontal component is approximately:", options:["\\(10\\,m\\,s^{-1}\\)","\\(17.3\\,m\\,s^{-1}\\)","\\(20\\,m\\,s^{-1}\\)","\\(34.6\\,m\\,s^{-1}\\)"], answer:1, hint:"Horizontal component uses cosine.", formula:"\\(v_x=v\\cos\\theta\\), \\(v_y=v\\sin\\theta\\)", solution:"\\(v_x=20\\cos30^\\circ=20(0.866)\\approx17.3\\,m\\,s^{-1}\\).", tip:"Horizontal is cosine when angle is measured from horizontal."},
+  {id:47, section:"Physics", topic:"Newtonian Mechanics", level:"Easy", q:"If a force of \\(12\\,N\\) acts on a mass of \\(3\\,kg\\), the acceleration is:", options:["\\(3\\,m\\,s^{-2}\\)","\\(4\\,m\\,s^{-2}\\)","\\(9\\,m\\,s^{-2}\\)","\\(36\\,m\\,s^{-2}\\)"], answer:1, hint:"Use \\(F=ma\\).", formula:"\\(F=ma\\)", solution:"\\(a=F/m=12/3=4\\,m\\,s^{-2}\\).", tip:"Keep force, mass, acceleration roles separate."},
+  {id:48, section:"Physics", topic:"Work Energy Power", level:"Easy", q:"The kinetic energy of a \\(2\\,kg\\) body moving at \\(3\\,m\\,s^{-1}\\) is:", options:["\\(3\\,J\\)","\\(6\\,J\\)","\\(9\\,J\\)","\\(18\\,J\\)"], answer:2, hint:"Velocity is squared.", formula:"\\(K=\\dfrac12mv^2\\)", solution:"\\(K=\\dfrac12(2)(3^2)=9\\,J\\).", tip:"Energy traps often forget the square on speed."},
+  {id:49, section:"Physics", topic:"Circular Motion", level:"Medium", q:"In uniform circular motion, acceleration is directed:", options:["Along velocity","Away from center","Toward center","Zero"], answer:2, hint:"Direction changes even if speed is constant.", formula:"\\(a_c=\\dfrac{v^2}{r}=\\omega^2r\\)", solution:"Velocity changes direction continuously, so acceleration is centripetal, directed toward the center.", tip:"Constant speed does not mean zero acceleration in circular motion."},
+  {id:50, section:"Physics", topic:"Gravitation", level:"Medium", q:"If the distance between two masses is doubled, the gravitational force becomes:", options:["One-fourth","One-half","Double","Four times"], answer:0, hint:"Force varies inversely as square of distance.", formula:"\\(F=G\\dfrac{m_1m_2}{r^2}\\)", solution:"Doubling \\(r\\) makes force \\(1/2^2=1/4\\) of original.", tip:"Inverse-square law questions are proportionality questions."},
+  {id:51, section:"Physics", topic:"Simple Harmonic Motion", level:"Medium", q:"For a mass-spring system, the time period is:", options:["\\(2\\pi\\sqrt{k/m}\\)","\\(2\\pi\\sqrt{m/k}\\)","\\(\\dfrac1{2\\pi}\\sqrt{m/k}\\)","\\(2\\pi mk\\)"], answer:1, hint:"Mass in numerator, spring constant in denominator.", formula:"\\(T=2\\pi\\sqrt{m/k}\\)", solution:"The standard mass-spring period is \\(T=2\\pi\\sqrt{m/k}\\).", tip:"A stiffer spring gives smaller period, so \\(k\\) must be in denominator."},
+  {id:52, section:"Physics", topic:"Waves", level:"Easy", q:"A wave has frequency \\(50\\,Hz\\) and wavelength \\(2\\,m\\). Its speed is:", options:["\\(25\\,m\\,s^{-1}\\)","\\(50\\,m\\,s^{-1}\\)","\\(100\\,m\\,s^{-1}\\)","\\(200\\,m\\,s^{-1}\\)"], answer:2, hint:"Use wave speed formula.", formula:"\\(v=f\\lambda\\)", solution:"\\(v=50(2)=100\\,m\\,s^{-1}\\).", tip:"Check units: Hz times metre gives metre per second."},
+  {id:53, section:"Physics", topic:"Sound", level:"Medium", q:"If the frequency of a sound wave increases while speed in the same medium stays constant, its wavelength:", options:["Increases","Decreases","Stays same","Becomes zero"], answer:1, hint:"Use \\(v=f\\lambda\\).", formula:"\\(\\lambda=v/f\\)", solution:"With \\(v\\) constant, wavelength is inversely proportional to frequency.", tip:"In the same medium, sound speed is usually treated as fixed."},
+  {id:54, section:"Physics", topic:"Fluids", level:"Easy", q:"The SI unit of pressure is:", options:["Watt","Pascal","Joule","Tesla"], answer:1, hint:"Pressure is force per unit area.", formula:"\\(P=F/A\\), unit \\(N/m^2=Pa\\)", solution:"The SI unit of pressure is pascal.", tip:"Watt is power, joule is energy, tesla is magnetic field."},
+  {id:55, section:"Physics", topic:"Fluids", level:"Medium", q:"Pressure at depth \\(h\\) in a liquid of density \\(\\rho\\) is proportional to:", options:["\\(\\rho/h\\)","\\(h/\\rho\\)","\\(\\rho h\\)","\\(1/(\\rho h)\\)"], answer:2, hint:"Hydrostatic pressure grows with depth and density.", formula:"\\(P=\\rho gh\\)", solution:"Since \\(g\\) is constant, \\(P\\propto\\rho h\\).", tip:"Greater depth means greater liquid pressure."},
+  {id:56, section:"Physics", topic:"Thermal Physics", level:"Easy", q:"Heat required to raise temperature is given by:", options:["\\(Q=mc\\Delta T\\)","\\(Q=mgh\\)","\\(Q=Pt\\)","\\(Q=IR\\)"], answer:0, hint:"Specific heat capacity appears.", formula:"\\(Q=mc\\Delta T\\)", solution:"Sensible heat is mass times specific heat times temperature change.", tip:"If temperature changes without phase change, use \\(mc\\Delta T\\)."},
+  {id:57, section:"Physics", topic:"Thermal Physics", level:"Medium", q:"At constant temperature, for an ideal gas \\(PV\\) is:", options:["Zero","Constant","Increasing only","Equal to mass"], answer:1, hint:"This is Boyle's law.", formula:"\\(PV=\\text{constant}\\) at constant \\(T\\)", solution:"Boyle's law states pressure is inversely proportional to volume at constant temperature.", tip:"Constant temperature means Boyle's law."},
+  {id:58, section:"Physics", topic:"Electrostatics", level:"Medium", q:"If distance between two charges is doubled, electrostatic force becomes:", options:["One-fourth","One-half","Double","Four times"], answer:0, hint:"Coulomb force also follows inverse-square law.", formula:"\\(F=k\\dfrac{q_1q_2}{r^2}\\)", solution:"Doubling distance makes the force \\(1/4\\) of the original.", tip:"Coulomb and gravitation have the same distance dependence."},
+  {id:59, section:"Physics", topic:"Current Electricity", level:"Easy", q:"A \\(6\\,V\\) battery is connected to a \\(3\\,\\Omega\\) resistor. Current is:", options:["\\(1\\,A\\)","\\(2\\,A\\)","\\(3\\,A\\)","\\(18\\,A\\)"], answer:1, hint:"Use Ohm's law.", formula:"\\(V=IR\\)", solution:"\\(I=V/R=6/3=2\\,A\\).", tip:"For direct resistor MCQs, rearrange Ohm's law first."},
+  {id:60, section:"Physics", topic:"Current Electricity", level:"Medium", q:"Two resistors \\(2\\Omega\\) and \\(3\\Omega\\) are connected in series. Equivalent resistance is:", options:["\\(1.2\\Omega\\)","\\(5\\Omega\\)","\\(6\\Omega\\)","\\(\\dfrac56\\Omega\\)"], answer:1, hint:"Series resistances add directly.", formula:"Series: \\(R_{eq}=R_1+R_2+\\cdots\\)", solution:"\\(R_{eq}=2+3=5\\Omega\\).", tip:"Series adds; parallel reciprocal-adds."},
+  {id:61, section:"Physics", topic:"Capacitance", level:"Medium", q:"The energy stored in a capacitor is:", options:["\\(CV\\)","\\(\\dfrac12CV^2\\)","\\(C/V\\)","\\(V/C\\)"], answer:1, hint:"Capacitor energy contains one-half.", formula:"\\(U=\\dfrac12CV^2=\\dfrac12QV=\\dfrac{Q^2}{2C}\\)", solution:"The standard energy stored in a capacitor is \\(\\frac12CV^2\\).", tip:"Do not confuse charge \\(Q=CV\\) with energy."},
+  {id:62, section:"Physics", topic:"Magnetism", level:"Medium", q:"Force on a charge moving perpendicular to a magnetic field is:", options:["\\(qB/v\\)","\\(qvB\\)","\\(qv/B\\)","\\(B/qv\\)"], answer:1, hint:"Use magnetic Lorentz force.", formula:"\\(F=qvB\\sin\\theta\\)", solution:"For perpendicular motion, \\(\\theta=90^\\circ\\), so \\(F=qvB\\).", tip:"If perpendicular is stated, \\(\\sin\\theta=1\\)."},
+  {id:63, section:"Physics", topic:"Electromagnetic Induction", level:"Easy", q:"A transformer works on:", options:["Coulomb induction","Mutual induction","Photoelectric effect","Thermionic emission"], answer:1, hint:"Changing current in one coil induces emf in another.", formula:"Transformer principle: mutual induction", solution:"A transformer operates by mutual induction between coils.", tip:"No changing flux means no transformer action."},
+  {id:64, section:"Physics", topic:"AC Circuits", level:"Hard", q:"In a pure capacitor AC circuit, current:", options:["Lags voltage by \\(90^\\circ\\)","Leads voltage by \\(90^\\circ\\)","Is in phase with voltage","Is zero"], answer:1, hint:"Remember CIVIL: capacitor current leads.", formula:"Capacitor: current leads voltage by \\(90^\\circ\\)", solution:"For a pure capacitor, current leads voltage by \\(90^\\circ\\).", tip:"Use CIVIL: in C, I leads V; in L, V leads I."},
+  {id:65, section:"Physics", topic:"Geometrical Optics", level:"Medium", q:"For a concave mirror, if object is at center of curvature, image is formed:", options:["At focus","At center of curvature","Behind mirror","At infinity"], answer:1, hint:"Object at \\(C\\) gives image at \\(C\\).", formula:"Mirror formula: \\(\\dfrac1f=\\dfrac1u+\\dfrac1v\\)", solution:"For a concave mirror, object at center of curvature gives a real, inverted, same-size image at center of curvature.", tip:"Memorize standard ray diagram positions."},
+  {id:66, section:"Physics", topic:"Geometrical Optics", level:"Medium", q:"A convex lens has focal length \\(20\\,cm\\). Its power is:", options:["\\(+2D\\)","\\(+5D\\)","\\(-5D\\)","\\(+20D\\)"], answer:1, hint:"Convert cm to m.", formula:"\\(P=1/f\\) with \\(f\\) in metres", solution:"\\(f=0.20\\,m\\), so \\(P=1/0.20=+5D\\).", tip:"Lens power MCQs often trap with centimetres."},
+  {id:67, section:"Physics", topic:"Wave Optics", level:"Medium", q:"In Young's double-slit experiment, fringe spacing \\(\\beta\\) is:", options:["\\(\\dfrac{dD}{\\lambda}\\)","\\(\\dfrac{\\lambda D}{d}\\)","\\(\\dfrac{\\lambda d}{D}\\)","\\(\\lambda dD\\)"], answer:1, hint:"Spacing increases with wavelength and screen distance.", formula:"\\(\\beta=\\dfrac{\\lambda D}{d}\\)", solution:"The standard fringe spacing formula is \\(\\beta=\\lambda D/d\\).", tip:"If slit separation increases, fringes get closer."},
+  {id:68, section:"Physics", topic:"Modern Physics", level:"Easy", q:"The Balmer series of hydrogen lies mainly in:", options:["Visible region","Infrared region","Microwave region","Radio region"], answer:0, hint:"Balmer lines are visible hydrogen spectral lines.", formula:"Balmer series: transitions ending at \\(n=2\\)", solution:"Balmer series lies mainly in the visible region.", tip:"Lyman is ultraviolet; Balmer is visible; Paschen is infrared."},
+  {id:69, section:"Physics", topic:"Modern Physics", level:"Easy", q:"An alpha particle is:", options:["Electron","Helium nucleus","Photon","Neutron"], answer:1, hint:"Alpha has mass number 4 and charge +2.", formula:"\\(\\alpha={}^4_2He\\)", solution:"An alpha particle is a helium nucleus.", tip:"Separate alpha, beta, and gamma by composition first."},
+  {id:70, section:"Physics", topic:"Nuclear Physics", level:"Easy", q:"The most penetrating common nuclear radiation is:", options:["\\(\\alpha\\)","\\(\\beta\\)","\\(\\gamma\\)","Proton beam always"], answer:2, hint:"Gamma has no charge and very high penetration.", formula:"Penetration order: \\(\\alpha<\\beta<\\gamma\\)", solution:"Gamma radiation is the most penetrating among alpha, beta, and gamma.", tip:"Ionizing power is opposite: alpha is strongest ionizer."},
+  {id:71, section:"Physics", topic:"Nuclear Physics", level:"Medium", q:"Half-life is the time in which:", options:["All nuclei decay","Half the undecayed nuclei decay","Mass becomes zero","Activity doubles"], answer:1, hint:"Half-life does not mean all nuclei vanish.", formula:"\\(N=N_0(1/2)^{t/T_{1/2}}\\)", solution:"Half-life is the time required for half of the undecayed radioactive nuclei to decay.", tip:"After each half-life, remaining amount halves again."},
+  {id:72, section:"Physics", topic:"Photoelectric Effect", level:"Medium", q:"Photoelectric emission occurs when incident photon energy is:", options:["Less than work function","Equal to zero","At least the work function","Independent of frequency"], answer:2, hint:"Threshold frequency is required.", formula:"\\(hf=\\phi+K_{max}\\)", solution:"Emission occurs when \\(hf\\ge\\phi\\), where \\(\\phi\\) is the work function.", tip:"Increasing intensity cannot cause emission below threshold frequency."},
+  {id:73, section:"Physics", topic:"Semiconductors", level:"Easy", q:"A p-type semiconductor has majority carriers as:", options:["Electrons","Holes","Photons","Neutrons"], answer:1, hint:"p-type means positive carriers dominate.", formula:"p-type: holes majority; n-type: electrons majority", solution:"In p-type semiconductors, holes are the majority carriers.", tip:"p means positive holes; n means negative electrons."},
+
+  {id:74, section:"English", topic:"Vocabulary Meaning", level:"Easy", q:"Choose the closest meaning of 'meticulous'.", options:["Careless","Very careful and precise","Angry","Uncertain"], answer:1, hint:"Think of someone checking every detail.", formula:"Synonym rule: replace the word in a simple sentence and keep the same meaning.", solution:"Meticulous means very careful and precise.", tip:"Do not pick an emotionally related word; pick exact meaning."},
+  {id:75, section:"English", topic:"Vocabulary Meaning", level:"Easy", q:"Choose the closest meaning of 'tenacious'.", options:["Weak","Persistent","Noisy","Brief"], answer:1, hint:"A tenacious person does not give up easily.", formula:"Meaning test: use a personal sentence, then substitute the option.", solution:"Tenacious means persistent or determined.", tip:"Reject options that match only the mood, not the meaning."},
+  {id:76, section:"English", topic:"Antonyms", level:"Easy", q:"Choose the antonym of 'opaque'.", options:["Transparent","Dark","Solid","Heavy"], answer:0, hint:"Opaque means not allowing light through.", formula:"Antonym rule: find core meaning, then reverse it exactly.", solution:"The direct opposite of opaque is transparent.", tip:"A different word is not always the opposite word."},
+  {id:77, section:"English", topic:"Antonyms", level:"Easy", q:"Choose the antonym of 'expand'.", options:["Extend","Contract","Explain","Increase"], answer:1, hint:"Expand means become larger.", formula:"Antonym rule: reverse the central action.", solution:"The opposite of expand is contract.", tip:"Avoid near-synonyms placed as traps."},
+  {id:78, section:"English", topic:"Analogy", level:"Medium", q:"Doctor : Hospital :: Teacher : ?", options:["Court","School","Laboratory","Market"], answer:1, hint:"Name the relationship: person works at place.", formula:"Analogy rule: A is related to B in the same way C is related to D.", solution:"A doctor works in a hospital; a teacher works in a school.", tip:"Relationship match is stronger than topic match."},
+  {id:79, section:"English", topic:"Analogy", level:"Medium", q:"Thermometer : Temperature :: Barometer : ?", options:["Pressure","Speed","Current","Mass"], answer:0, hint:"Both are measuring instruments.", formula:"Instrument : quantity measured", solution:"A thermometer measures temperature; a barometer measures pressure.", tip:"Convert analogy into a sentence before checking options."},
+  {id:80, section:"English", topic:"Spelling", level:"Easy", q:"Choose the correctly spelled word.", options:["Seperate","Separate","Seperete","Separete"], answer:1, hint:"The correct form has 'para' in the middle.", formula:"Spelling rule: compare vowel order and doubled letters visually.", solution:"The correct spelling is Separate.", tip:"Spelling MCQs punish pronunciation-based guessing."},
+  {id:81, section:"English", topic:"Spelling", level:"Easy", q:"Choose the correctly spelled word.", options:["Definately","Definitely","Definitly","Definetely"], answer:1, hint:"The middle is 'finite'.", formula:"Spelling rule: identify the root inside the word.", solution:"The correct spelling is Definitely.", tip:"Look for familiar root groups instead of sounding the word out."},
+  {id:82, section:"English", topic:"Grammar Fit", level:"Easy", q:"Fill in the blank: He is senior ___ me.", options:["than","from","to","with"], answer:2, hint:"The adjective senior takes a fixed preposition.", formula:"Fixed phrase: senior to, junior to, superior to, inferior to", solution:"The correct phrase is senior to me.", tip:"Comparative-looking adjectives do not always take 'than'."},
+  {id:83, section:"English", topic:"Grammar Fit", level:"Easy", q:"Fill in the blank: She insisted ___ paying the bill.", options:["on","at","for","to"], answer:0, hint:"Insist is followed by a fixed preposition.", formula:"Fixed phrase: insist on + gerund", solution:"Correct sentence: She insisted on paying the bill.", tip:"For prepositions, test the whole phrase, not the blank alone."},
+  {id:84, section:"English", topic:"Articles", level:"Medium", q:"Fill in the blank: The committee has reached ___ decision.", options:["a","an","the","no article"], answer:0, hint:"The idiom is 'reached a decision'.", formula:"Article rule: use 'a' before singular countable noun when not specific.", solution:"Correct phrase is reached a decision.", tip:"Idioms with articles must be memorized as phrase chunks."},
+  {id:85, section:"English", topic:"Subject Verb Agreement", level:"Medium", q:"Choose the correct sentence.", options:["Neither of the answers are correct.","Neither of the answers is correct.","Neither of answers is correct.","Neither answers are correct."], answer:1, hint:"Neither is treated as singular here.", formula:"Neither/either + singular verb in standard agreement.", solution:"Correct sentence: Neither of the answers is correct.", tip:"Plural-looking nouns near the verb can mislead agreement."},
+  {id:86, section:"English", topic:"Sentence Correction", level:"Medium", q:"Choose the correct sentence.", options:["The data is analyzed yesterday.","The data were analyzed yesterday.","The data analyzing yesterday.","The data was analyze yesterday."], answer:1, hint:"Use past passive form.", formula:"Past passive: was/were + past participle", solution:"Correct formal sentence: The data were analyzed yesterday.", tip:"Check tense and voice before choosing conversational options."},
+  {id:87, section:"English", topic:"Reported Speech", level:"Medium", q:"Choose the correct indirect speech: He said, 'I am tired.'", options:["He said that I am tired.","He said that he was tired.","He said that he is tired.","He says that he was tired."], answer:1, hint:"Backshift present to past and change pronoun.", formula:"Direct present after past reporting verb usually shifts to past.", solution:"Correct indirect speech: He said that he was tired.", tip:"Reported speech changes both tense and pronoun."},
+  {id:88, section:"English", topic:"Active Passive Voice", level:"Medium", q:"Choose the correct passive voice: They completed the project.", options:["The project completed them.","The project was completed by them.","The project is completed them.","The project has completing by them."], answer:1, hint:"Object becomes subject.", formula:"Simple past passive: was/were + past participle", solution:"The project was completed by them.", tip:"Find object first, then apply tense of the original verb."},
+  {id:89, section:"English", topic:"Reading Inference", level:"Medium", q:"Reading: A passage says the Indus Valley cities had planned streets and drainage. Which conclusion is most supported?", options:["They lacked organization","They had urban planning","They used no water","They were all modern cities"], answer:1, hint:"Stay inside the evidence.", formula:"Inference rule: choose only what the passage supports.", solution:"Planned streets and drainage support the conclusion that they had urban planning.", tip:"Reading MCQs punish outside assumptions."},
+  {id:90, section:"English", topic:"Reading Tone", level:"Medium", q:"Reading: Renewable energy reduces dependence on fossil fuels but needs storage solutions. The tone is best described as:", options:["Balanced","Mocking","Angry","Completely hopeless"], answer:0, hint:"The sentence gives both benefit and limitation.", formula:"Tone rule: benefit + limitation usually indicates balanced tone.", solution:"The tone is balanced because it presents both advantage and limitation.", tip:"Extreme tone options are usually traps unless the passage is clearly extreme."}
+];
+
+const FORMULAS = [
+  {section:"Mathematics", title:"Complex Numbers", items:[
+    ["Quotient", "\\(\\dfrac{a+bi}{c+di}\\times\\dfrac{c-di}{c-di}\\)", "Use conjugate. For real part, stop once real numerator is known."],
+    ["Modulus", "\\(|a+bi|=\\sqrt{a^2+b^2}\\), \\(|z^n|=|z|^n\\)", "Avoid expansion for powers."],
+    ["Powers of i", "\\(i,i^2=-1,i^3=-i,i^4=1\\)", "Reduce exponent modulo 4."],
+    ["Cube root unity", "\\(\\omega^3=1\\), \\(1+\\omega+\\omega^2=0\\)", "Reduce powers modulo 3."]
+  ]},
+  {section:"Mathematics", title:"Sets, Functions, Matrices", items:[
+    ["Inclusion-exclusion", "\\(n(A\\cup B)=n(A)+n(B)-n(A\\cap B)\\)", "Union means overlap was counted twice."],
+    ["Composition", "\\((g\\circ f)(x)=g(f(x))\\)", "Work right-to-left."],
+    ["2 by 2 determinant", "\\(ad-bc\\)", "Cross-product order controls sign."],
+    ["Scaled determinant", "\\(\\det(kA)=k^n\\det(A)\\)", "Use matrix order \\(n\\), not just \\(k\\)."]
+  ]},
+  {section:"Mathematics", title:"Algebra, Series, Counting", items:[
+    ["Quadratic roots", "\\(\\alpha+\\beta=-b/a\\), \\(\\alpha\\beta=c/a\\)", "Use sum/product instead of solving."],
+    ["Equal roots", "\\(D=b^2-4ac=0\\)", "Equal roots always point to discriminant zero."],
+    ["AP term and sum", "\\(a_n=a+(n-1)d\\), \\(S_n=\\frac n2[2a+(n-1)d]\\)", "Term question is not a sum question."],
+    ["GP sum", "\\(S_n=\\frac{a(r^n-1)}{r-1}\\)", "Use when \\(r\\ne1\\)."],
+    ["Permutation", "\\({}^nP_r=\\frac{n!}{(n-r)!}\\)", "Order matters."],
+    ["Combination", "\\({}^nC_r=\\frac{n!}{r!(n-r)!}\\)", "Selection means order does not matter."],
+    ["Probability", "\\(P(E)=\\frac{favourable}{total}\\)", "For cards and dice, know totals: 52 and 36."],
+    ["Binomial", "\\((a+b)^n=\\sum{}^nC_r a^{n-r}b^r\\)", "Coefficient questions usually need one term, not full expansion."]
+  ]},
+  {section:"Mathematics", title:"Trigonometry and Calculus", items:[
+    ["Basic identity", "\\(\\sin^2\\theta+\\cos^2\\theta=1\\)", "Use acute condition for positive sign."],
+    ["Amplitude", "\\(a\\sin x+b\\cos x\\le\\sqrt{a^2+b^2}\\)", "Maximum is the amplitude."],
+    ["Angle formula", "\\(\\sin A\\cos B-\\cos A\\sin B=\\sin(A-B)\\)", "Match signs before using formula."],
+    ["Standard limit", "\\(\\lim_{x\\to0}\\frac{\\sin ax}{x}=a\\)", "Make denominator match the angle."],
+    ["Derivative", "\\(\\frac{d}{dx}x^n=nx^{n-1}\\), \\(\\frac{d}{dx}\\ln u=u'/u\\)", "Differentiate first, substitute later."],
+    ["Integral substitution", "\\(\\int f'(x)g(f(x))dx\\)", "Look for inside derivative already present."]
+  ]},
+  {section:"Mathematics", title:"Geometry, Conics, Vectors", items:[
+    ["Distance", "\\(d=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}\\)", "Recognize 3-4-5 and 5-12-13 triangles."],
+    ["Circle", "\\((x-h)^2+(y-k)^2=r^2\\)", "Complete squares carefully."],
+    ["Parabola", "\\(y^2=4ax\\Rightarrow focus=(a,0)\\)", "Compare coefficient with \\(4a\\)."],
+    ["Dot product", "\\(\\vec a\\cdot\\vec b=a_1b_1+a_2b_2+a_3b_3\\)", "Perpendicular vectors have dot product zero."],
+    ["Cross product unit vectors", "\\(i\\times j=k\\), \\(j\\times k=i\\), \\(k\\times i=j\\)", "Reverse order changes sign."]
+  ]},
+  {section:"Physics", title:"Mechanics", items:[
+    ["Kinematics", "\\(v=u+at\\), \\(s=ut+\\frac12at^2\\), \\(v^2=u^2+2as\\)", "Starts from rest means \\(u=0\\)."],
+    ["Newton law", "\\(F=ma\\)", "Net force, not just one named force."],
+    ["Energy", "\\(K=\\frac12mv^2\\), \\(U=mgh\\), \\(P=W/t\\)", "Velocity is squared in kinetic energy."],
+    ["Circular motion", "\\(a_c=v^2/r=\\omega^2r\\)", "Acceleration points toward center."],
+    ["Gravitation", "\\(F=Gm_1m_2/r^2\\)", "Doubling distance gives one-fourth force."]
+  ]},
+  {section:"Physics", title:"Waves, Heat, Fluids", items:[
+    ["Wave speed", "\\(v=f\\lambda\\)", "Frequency up means wavelength down if speed fixed."],
+    ["SHM spring", "\\(T=2\\pi\\sqrt{m/k}\\)", "Stiffer spring means smaller period."],
+    ["Pressure", "\\(P=F/A\\), \\(P=\\rho gh\\)", "Pressure increases with depth."],
+    ["Heat", "\\(Q=mc\\Delta T\\), \\(Q=mL\\)", "Temperature change uses \\(mc\\Delta T\\); phase change uses \\(mL\\)."],
+    ["Gas law", "\\(PV=nRT\\)", "Constant temperature gives Boyle's law."]
+  ]},
+  {section:"Physics", title:"Electricity, Magnetism, Optics, Modern", items:[
+    ["Ohm law", "\\(V=IR\\)", "Series adds; parallel reciprocal-adds."],
+    ["Capacitor", "\\(Q=CV\\), \\(U=\\frac12CV^2\\)", "Do not confuse charge and energy."],
+    ["Magnetic force", "\\(F=qvB\\sin\\theta\\)", "Perpendicular means \\(\\sin90^\\circ=1\\)."],
+    ["Transformer", "\\(V_s/V_p=N_s/N_p\\)", "Works on mutual induction."],
+    ["Lens power", "\\(P=1/f\\) in metres", "Convert cm to m."],
+    ["Young's fringes", "\\(\\beta=\\lambda D/d\\)", "Increasing slit separation reduces spacing."],
+    ["Photoelectric", "\\(hf=\\phi+K_{max}\\)", "Frequency threshold matters more than intensity."],
+    ["Nuclear decay", "\\(N=N_0(1/2)^{t/T_{1/2}}\\)", "Each half-life halves the remaining amount."]
+  ]},
+  {section:"English", title:"Vocabulary and Analogy", items:[
+    ["Synonym", "Use substitution in a simple sentence.", "Pick closest meaning, not a related emotion."],
+    ["Antonym", "Core meaning first, then exact reversal.", "Different word does not always mean opposite."],
+    ["Analogy", "State the relationship as a sentence.", "Relationship match beats topic match."]
+  ]},
+  {section:"English", title:"Grammar and Reading", items:[
+    ["Preposition fit", "Use fixed phrase memory: senior to, insist on, fond of.", "Literal translation creates traps."],
+    ["Articles", "Use a/an for non-specific singular count nouns.", "Learn idioms as chunks."],
+    ["Subject-verb agreement", "Neither/either usually takes singular verb.", "Ignore nearby plural distractors."],
+    ["Reported speech", "Past reporting verb usually backshifts tense.", "Change pronoun and time words too."],
+    ["Passive voice", "Object becomes subject; use be + past participle.", "Keep original tense."],
+    ["Reading inference", "Choose only what passage states or strongly implies.", "Avoid outside knowledge."]
+  ]}
+];
+
+let state = JSON.parse(localStorage.getItem("netReviewState") || '{"times":{},"revealed":{},"selected":{}}');
+let filtered = [...QUESTIONS];
+let currentIndex = 0;
+let activeId = null;
+let lastTick = Date.now();
+let timerHandle = null;
+
+function saveState(){
+  localStorage.setItem("netReviewState", JSON.stringify(state));
+}
+function secondsToMMSS(s){
+  s = Math.max(0, Math.floor(s || 0));
+  const m = String(Math.floor(s/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  return `${m}:${sec}`;
+}
+function commitTime(){
+  if(activeId === null) return;
+  if(state.revealed[activeId]) return;
+  const now = Date.now();
+  const delta = Math.max(0, Math.round((now-lastTick)/1000));
+  if(delta > 0){
+    state.times[activeId] = (state.times[activeId] || 0) + delta;
+    saveState();
+  }
+  lastTick = now;
+}
+function startTimer(id){
+  commitTime();
+  activeId = id;
+  lastTick = Date.now();
+  clearInterval(timerHandle);
+  if(!state.revealed[id]){
+    timerHandle = setInterval(() => {
+      commitTime();
+      updateTimer();
+      updateStats();
+    },1000);
+  }
+  updateTimer();
+}
+function stopTimer(){
+  commitTime();
+  clearInterval(timerHandle);
+  timerHandle = null;
+  updateTimer();
+}
+function updateTimer(){
+  const q = filtered[currentIndex];
+  if(!q){ document.getElementById("qTimer").textContent = "00:00"; return; }
+  document.getElementById("qTimer").textContent = secondsToMMSS(state.times[q.id] || 0);
+}
+
+function initFilters(){
+  const sections = ["All", ...new Set(QUESTIONS.map(q=>q.section))];
+  const sectionSelect = document.getElementById("sectionFilter");
+  sectionSelect.innerHTML = sections.map(s=>`<option value="${s}">${s}</option>`).join("");
+  refreshTopicFilter();
+}
+function refreshTopicFilter(){
+  const sec = document.getElementById("sectionFilter").value || "All";
+  const topics = ["All", ...new Set(QUESTIONS.filter(q=>sec==="All" || q.section===sec).map(q=>q.topic))];
+  document.getElementById("topicFilter").innerHTML = topics.map(t=>`<option value="${t}">${t}</option>`).join("");
+}
+function applyFilters(){
+  commitTime();
+  const sec = document.getElementById("sectionFilter").value;
+  refreshTopicFilterIfNeeded(sec);
+  const topic = document.getElementById("topicFilter").value;
+  const level = document.getElementById("levelFilter").value;
+  const search = document.getElementById("searchBox").value.trim().toLowerCase();
+
+  filtered = QUESTIONS.filter(q => {
+    const text = `${q.section} ${q.topic} ${q.level} ${q.q} ${q.options.join(" ")} ${q.formula} ${q.solution} ${q.tip}`.toLowerCase();
+    return (sec==="All" || q.section===sec) &&
+           (topic==="All" || q.topic===topic) &&
+           (level==="All" || q.level===level) &&
+           (!search || text.includes(search));
+  });
+
+  currentIndex = 0;
+  renderAll();
+}
+function refreshTopicFilterIfNeeded(sec){
+  const topicSelect = document.getElementById("topicFilter");
+  const current = topicSelect.value;
+  const topics = ["All", ...new Set(QUESTIONS.filter(q=>sec==="All" || q.section===sec).map(q=>q.topic))];
+  if(!topics.includes(current)){
+    topicSelect.innerHTML = topics.map(t=>`<option value="${t}">${t}</option>`).join("");
+  }
+}
+
+function renderAll(){
+  renderNav();
+  renderQuestion();
+  renderFormulaBank();
+  updateStats();
+  renderTopicTable();
+}
+function renderNav(){
+  const nav = document.getElementById("navList");
+  document.getElementById("totalCount").textContent = filtered.length;
+  if(filtered.length===0){
+    nav.innerHTML = "";
+    return;
+  }
+  nav.innerHTML = filtered.map((q,i)=>{
+    let cls = "nav-btn";
+    if(i===currentIndex) cls += " active";
+    else if(state.revealed[q.id]) cls += " done";
+    else if(state.selected[q.id] !== undefined) cls += " picked";
+    return `<button class="${cls}" onclick="goTo(${i})">${q.id}</button>`;
+  }).join("");
+}
+function goTo(i){
+  commitTime();
+  currentIndex = i;
+  renderQuestion();
+  renderNav();
+  updateStats();
+}
+function renderQuestion(){
+  const area = document.getElementById("questionArea");
+  if(filtered.length===0){
+    area.innerHTML = `<div class="question-box"><h2>No question found.</h2><p class="small">Change filters or clear search.</p></div>`;
+    stopTimer();
+    return;
+  }
+  const q = filtered[currentIndex];
+  const revealed = !!state.revealed[q.id];
+  const picked = state.selected[q.id];
+
+  area.innerHTML = `
+    <div class="badge-row">
+      <span class="badge blue">Q${q.id}</span>
+      <span class="badge">${q.section}</span>
+      <span class="badge">${q.topic}</span>
+      <span class="badge amber">${q.level}</span>
+      <span class="badge green">Time: ${secondsToMMSS(state.times[q.id] || 0)}</span>
+    </div>
+
+    <div class="question-box">
+      <div class="small">Representative NET-style review MCQ</div>
+      <div class="qtext">${q.q}</div>
+
+      <div class="options">
+        ${q.options.map((op,i)=>{
+          let cls = "option";
+          if(picked === i) cls += " selected";
+          if(revealed && i === q.answer) cls += " correct";
+          if(revealed && picked === i && picked !== q.answer) cls += " wrong";
+          return `<div class="${cls}" onclick="selectOption(${q.id},${i})">
+            <div class="letter">${String.fromCharCode(65+i)}</div>
+            <div>${op}</div>
+          </div>`;
+        }).join("")}
+      </div>
+
+      <div class="tool-row">
+        <button onclick="toggleHint(${q.id})">Hint</button>
+        <button class="good" onclick="revealAnswer(${q.id})">Reveal Answer</button>
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="hint" id="hint-${q.id}">
+        <b>Hint.</b> ${q.hint}
+      </div>
+
+      <div class="reveal ${revealed ? "show" : ""}" id="reveal-${q.id}">
+        <p><b>Correct Answer:</b> ${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}</p>
+        <p><b>Formula / Rule:</b> ${q.formula}</p>
+        <p><b>Solution:</b> ${q.solution}</p>
+        <p><b>Shortcut / Trap Tip:</b> ${q.tip}</p>
+      </div>
+    </div>
+  `;
+  startTimer(q.id);
+  typeset();
+}
+function selectOption(id, index){
+  if(state.revealed[id]) return;
+  state.selected[id] = index;
+  saveState();
+  renderQuestion();
+  renderNav();
+  updateStats();
+}
+function toggleHint(id){
+  const el = document.getElementById(`hint-${id}`);
+  if(el) el.classList.toggle("show");
+}
+function revealAnswer(id){
+  commitTime();
+  state.revealed[id] = true;
+  saveState();
+  stopTimer();
+  renderQuestion();
+  renderNav();
+  updateStats();
+  renderTopicTable();
+}
+function nextQuestion(){
+  if(currentIndex < filtered.length-1) goTo(currentIndex+1);
+}
+function prevQuestion(){
+  if(currentIndex > 0) goTo(currentIndex-1);
+}
+
+function renderFormulaBank(){
+  const bank = document.getElementById("formulaBank");
+  bank.innerHTML = FORMULAS.map((g,idx)=>`
+    <div class="formula-group">
+      <div class="formula-head" onclick="toggleFormula(${idx})">
+        <span>${g.section}: ${g.title}</span><span>+</span>
+      </div>
+      <div class="formula-body" id="formula-${idx}">
+        ${g.items.map(item=>`
+          <div class="formula-item">
+            <b>${item[0]}</b>
+            <div>${item[1]}</div>
+            <div class="small"><b>Shortcut:</b> ${item[2]}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+  typeset();
+}
+function toggleFormula(idx){
+  document.getElementById(`formula-${idx}`).classList.toggle("open");
+}
+function showFormulaOnly(){
+  document.querySelectorAll(".formula-body").forEach(el=>el.classList.add("open"));
+  document.querySelector(".right").scrollIntoView({behavior:"smooth", block:"start"});
+  typeset();
+}
+function updateStats(){
+  const revealed = QUESTIONS.filter(q=>state.revealed[q.id]).length;
+  const picked = QUESTIONS.filter(q=>state.selected[q.id] !== undefined).length;
+  const totalSec = Object.values(state.times).reduce((a,b)=>a+(b||0),0);
+  document.getElementById("revealedCount").textContent = revealed;
+  document.getElementById("pickedCount").textContent = picked;
+  document.getElementById("totalTime").textContent = secondsToMMSS(totalSec);
+  const pct = QUESTIONS.length ? Math.round((revealed/QUESTIONS.length)*100) : 0;
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("progressText").textContent = `${pct}% complete across ${QUESTIONS.length} MCQs`;
+}
+function renderTopicTable(){
+  const groups = {};
+  QUESTIONS.forEach(q=>{
+    if(!groups[q.topic]) groups[q.topic] = {time:0, seen:0};
+    groups[q.topic].time += state.times[q.id] || 0;
+    if(state.revealed[q.id] || state.selected[q.id] !== undefined) groups[q.topic].seen += 1;
+  });
+  const rows = Object.entries(groups)
+    .sort((a,b)=>b[1].time-a[1].time)
+    .map(([topic,v])=>`<tr><td>${topic}</td><td>${secondsToMMSS(v.time)}</td><td>${v.seen}</td></tr>`)
+    .join("");
+  document.querySelector("#topicTable tbody").innerHTML = rows;
+}
+function exportCSV(){
+  commitTime();
+  const rows = [["ID","Section","Topic","Difficulty","Selected","Correct","Revealed","TimeSeconds","TimeMMSS"]];
+  QUESTIONS.forEach(q=>{
+    const sel = state.selected[q.id] !== undefined ? String.fromCharCode(65+state.selected[q.id]) : "";
+    const correct = String.fromCharCode(65+q.answer);
+    const sec = state.times[q.id] || 0;
+    rows.push([q.id,q.section,q.topic,q.level,sel,correct,!!state.revealed[q.id],sec,secondsToMMSS(sec)]);
+  });
+  const csv = rows.map(r=>r.map(x=>`"${String(x).replaceAll('"','""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv],{type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "NET_review_timing.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function resetProgress(){
+  if(!confirm("Reset all revealed answers, selected options, and timers?")) return;
+  state = {times:{}, revealed:{}, selected:{}};
+  saveState();
+  renderAll();
+}
+function typeset(){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.typesetPromise();
+  }
+}
+document.addEventListener("keydown", e=>{
+  if(e.key==="ArrowRight") nextQuestion();
+  if(e.key==="ArrowLeft") prevQuestion();
+  if(e.key.toLowerCase()==="h"){
+    const q = filtered[currentIndex];
+    if(q) toggleHint(q.id);
+  }
+  if(e.key.toLowerCase()==="r"){
+    const q = filtered[currentIndex];
+    if(q) revealAnswer(q.id);
+  }
+  if(["1","2","3","4"].includes(e.key)){
+    const q = filtered[currentIndex];
+    if(q) selectOption(q.id, Number(e.key)-1);
+  }
+});
+window.addEventListener("beforeunload", commitTime);
+
+initFilters();
+renderAll();
+</script>
+</body>
+</html>
