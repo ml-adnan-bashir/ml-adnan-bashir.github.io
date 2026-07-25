@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AsliKahan.pk — Islamabad Originality Directory</title>
+<title>AsliAndNasli — Pakistan Originality Directory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --primary:#163f36;--primary-2:#245f50;--accent:#c99a3b;--accent-2:#f1d18a;
-  --promo:#d92d20;--bg:#f3f4ef;--surface:#ffffff;--surface-2:#f8f8f4;
-  --text:#18231f;--muted:#68746f;--line:#dfe4df;--success:#147a5c;
+  --primary:#050505;--primary-2:#111114;--accent:#ff2f92;--accent-2:#a855f7;
+  --promo:#ff355d;--bg:#050505;--surface:#0d0d0f;--surface-2:#15151a;
+  --text:#f8f8fa;--muted:#a5a5b0;--line:#292930;--success:#45d7a8;
   --shadow:0 14px 40px rgba(22,63,54,.10);--radius:20px;
-  --font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-family:"Montserrat","DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --card-image-height:238px;
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-family);transition:background .25s,color .25s}button,input,select{font:inherit}a{text-decoration:none;color:inherit}button{cursor:pointer}
@@ -35,61 +35,335 @@ footer{background:#0e2b25;color:#cfe0d8;padding:30px 6%;display:flex;justify-con
 .backdrop{display:none;position:fixed;inset:0;background:rgba(7,20,17,.56);z-index:80}.backdrop.show{display:block}.modal-bg{display:none;position:fixed;inset:0;background:rgba(7,20,17,.7);z-index:100;align-items:center;justify-content:center;padding:18px}.modal-bg.show{display:flex}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:var(--surface);border-radius:22px;padding:24px;box-shadow:0 25px 85px rgba(0,0,0,.3)}.modal h3{margin:0;color:var(--primary)}.modal p{color:var(--muted);line-height:1.58}.proof-list{display:grid;gap:10px;margin:17px 0}.proof-item{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px}.proof-item strong{display:block;color:var(--primary);margin-bottom:4px}.modal textarea{width:100%;min-height:100px;border:1px solid var(--line);border-radius:11px;padding:10px;resize:vertical;background:var(--surface);color:var(--text)}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:15px}.toast{position:fixed;right:18px;bottom:18px;background:var(--primary);color:#fff;padding:13px 16px;border-radius:12px;opacity:0;transform:translateY(14px);transition:.25s;z-index:120;pointer-events:none}.toast.show{opacity:1;transform:none}
 @media(max-width:980px){.hero-inner{grid-template-columns:1fr}.islamabad-art{min-height:auto}.featured-grid{grid-template-columns:1fr 1fr;grid-template-rows:330px 210px 210px}.featured-card:first-child{grid-column:1/3;grid-row:auto}.catalogue-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.islamabad-strip{grid-template-columns:1fr}.strip-art{min-height:240px}}
 @media(max-width:640px){.announcement{display:none}.topbar{padding:11px 15px}.brand small{display:none}.nav-actions .desktop-only{display:none}.hero-inner{padding:55px 17px 65px}.search{grid-template-columns:1fr}.search .btn{min-width:0}.art-card{padding:15px}.hero{min-height:auto}main{padding:28px 15px 60px}.stats,.catalogue-grid{grid-template-columns:1fr}.featured-grid{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,260px)}.featured-card:first-child{grid-column:auto}.section-head{align-items:stretch;flex-direction:column}.card-actions{grid-template-columns:1fr}.islamabad-strip{border-radius:20px}.strip-copy{padding:27px}.strip-art{padding:16px}footer{flex-direction:column;align-items:flex-start}.customizer{width:92vw}}
+
+/* Dark authentication theme inspired by modern luxury-verification platforms */
+:root{
+  --primary:#050505;
+  --primary-2:#111114;
+  --accent:#ff2f92;
+  --accent-2:#a855f7;
+  --promo:#ff355d;
+  --bg:#050505;
+  --surface:#0d0d0f;
+  --surface-2:#15151a;
+  --text:#f8f8fa;
+  --muted:#a5a5b0;
+  --line:#292930;
+  --success:#45d7a8;
+  --shadow:0 22px 60px rgba(0,0,0,.38);
+  --radius:18px;
+  --font-family:"Montserrat","DM Sans",system-ui,sans-serif;
+}
+body{
+  background:
+    radial-gradient(circle at 78% 4%,rgba(124,58,237,.12),transparent 27%),
+    radial-gradient(circle at 13% 18%,rgba(255,47,146,.08),transparent 24%),
+    var(--bg);
+}
+.announcement{
+  background:linear-gradient(90deg,#7c1d72,#ff2f92 52%,#7938f2);
+  color:#fff;
+  min-height:34px;
+  font-size:.69rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.announcement strong{color:#fff}
+.topbar{
+  background:rgba(5,5,5,.91);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(18px);
+  box-shadow:none;
+  padding-top:15px;
+  padding-bottom:15px;
+}
+.brand{letter-spacing:.035em}
+.brand small{color:#8f8f9d;opacity:1;letter-spacing:.12em}
+.logo{
+  background:#050505;
+  color:#fff;
+  border:1px solid #35353c;
+  border-radius:9px;
+  position:relative;
+  box-shadow:none;
+}
+.logo::before,.logo::after{
+  content:"";
+  position:absolute;
+  width:10px;height:10px;
+  border-color:var(--accent);
+}
+.logo::before{left:5px;top:5px;border-left:2px solid var(--accent);border-top:2px solid var(--accent)}
+.logo::after{right:5px;bottom:5px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent)}
+.btn{
+  border-radius:999px;
+  letter-spacing:.055em;
+  font-size:.76rem;
+  text-transform:uppercase;
+}
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(100deg,#ff2f92,#a43cff 58%,#7039ff);
+  box-shadow:0 10px 28px rgba(255,47,146,.25);
+}
+.btn-primary:hover{box-shadow:0 14px 34px rgba(164,60,255,.34)}
+.btn-ghost{
+  background:transparent;
+  border:1px solid #303038;
+  color:#f3f3f6;
+}
+.btn-light{
+  background:#17171c;
+  color:#f4f4f6;
+  border:1px solid #2d2d35;
+}
+.hero{
+  min-height:660px;
+  background:
+    radial-gradient(circle at 70% 12%,rgba(124,58,237,.18),transparent 26%),
+    radial-gradient(circle at 26% 33%,rgba(255,47,146,.09),transparent 30%),
+    #050505;
+  border-bottom:1px solid #202026;
+}
+.hero::after{
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.85),transparent 92%);
+}
+.hero-inner{max-width:1320px;padding-top:86px;padding-bottom:88px;grid-template-columns:.92fr 1.08fr}
+.location-chip{
+  background:#111116;
+  border:1px solid #2a2a31;
+  color:#d6d6dd;
+  border-radius:7px;
+  font-size:.67rem;
+  letter-spacing:.14em;
+}
+.hero h1{
+  font-size:clamp(3.1rem,7vw,6.6rem);
+  margin:17px 0 6px;
+  color:#fff;
+  text-shadow:0 0 50px rgba(255,47,146,.12);
+}
+.hero-subtitle{
+  display:inline-block;
+  margin:3px 0 17px;
+  font-size:clamp(.9rem,1.45vw,1.15rem);
+  font-weight:900;
+  letter-spacing:.14em;
+  background:linear-gradient(90deg,#ff4aa5,#bd5cff,#6b78ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p{color:#a8a8b4;max-width:650px}
+.search{
+  background:#0c0c10;
+  border:1px solid #303038;
+  border-radius:999px;
+  box-shadow:0 22px 60px rgba(0,0,0,.45);
+  padding:6px;
+}
+.search input{
+  background:transparent;
+  color:#fff;
+  font-size:.82rem;
+  letter-spacing:.04em;
+}
+.search input::placeholder{color:#71717c}
+.hero-showcase{
+  min-height:470px;
+  display:grid;
+  grid-template-columns:1.18fr .82fr;
+  grid-template-rows:1fr 1fr;
+  gap:12px;
+  transform:perspective(1200px) rotateY(-2deg);
+}
+.showcase-tile{
+  position:relative;
+  overflow:hidden;
+  background:#0d0d10;
+  border:1px solid #26262d;
+  border-radius:15px;
+  min-height:220px;
+  cursor:pointer;
+  box-shadow:0 24px 70px rgba(0,0,0,.4);
+}
+.showcase-tile:first-child{grid-row:1/3}
+.showcase-tile:nth-child(4){display:none}
+.showcase-tile img{
+  width:100%;height:100%;object-fit:contain;background:#fff;
+  transition:transform .35s ease;
+}
+.showcase-tile:hover img{transform:scale(1.035)}
+.showcase-tile::after{
+  content:"";position:absolute;inset:45% 0 0;
+  background:linear-gradient(transparent,rgba(0,0,0,.93));
+}
+.showcase-tag{
+  position:absolute;z-index:3;left:13px;top:13px;
+  padding:7px 9px;border-radius:5px;
+  background:linear-gradient(90deg,#ff2f92,#a43cff);
+  color:#fff;font-size:.61rem;font-weight:900;letter-spacing:.1em;
+}
+.showcase-check{
+  position:absolute;z-index:3;right:13px;top:13px;
+  width:31px;height:31px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;color:#0a9d70;font-weight:950;
+}
+.showcase-copy{
+  position:absolute;z-index:3;left:16px;right:16px;bottom:16px;color:#fff;
+}
+.showcase-copy small{display:block;color:#b7b7c0;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.showcase-copy strong{display:block;font-size:1rem}
+.showcase-tile:first-child .showcase-copy strong{font-size:1.42rem}
+.wave{display:none}
+main{max-width:1320px;padding-top:44px}
+.scope{
+  background:linear-gradient(100deg,#0e0e12,#15111c);
+  border-color:#2a2532;
+  box-shadow:none;
+}
+.scope-icon{
+  background:linear-gradient(135deg,#ff2f92,#7938f2);
+  color:#fff;
+}
+.scope p{color:#aaaab4}.scope strong{color:#fff}
+.stats{gap:0;border:1px solid #28282f;border-radius:16px;overflow:hidden;background:#0b0b0e}
+.stat{
+  border:0;border-right:1px solid #28282f;border-radius:0;
+  background:transparent;box-shadow:none;padding:23px;
+}
+.stat:last-child{border-right:0}
+.stat strong{
+  color:#fff;
+  font-size:1.85rem;
+  background:linear-gradient(90deg,#fff,#bfc0ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{text-transform:uppercase;letter-spacing:.07em;font-size:.7rem}
+.section-kicker{color:#ff4aa5;letter-spacing:.15em}
+.section-head h2{color:#fff;text-transform:uppercase;font-size:clamp(1.65rem,3vw,2.65rem);letter-spacing:-.045em}
+.section-head p{color:#92929e}
+.featured-grid{gap:12px}
+.featured-card{
+  background:#0c0c0f;border-color:#292930;box-shadow:none;
+  border-radius:15px;
+}
+.featured-card img{background:#fff}
+.featured-overlay{
+  background:linear-gradient(transparent,rgba(0,0,0,.95));
+}
+.ribbon{
+  border-radius:5px;
+  background:linear-gradient(90deg,#ff355d,#ff2f92);
+  box-shadow:0 8px 24px rgba(255,47,146,.28);
+  letter-spacing:.1em;
+}
+.ribbon.gold{background:linear-gradient(90deg,#ff2f92,#8538f6);color:#fff}
+.verified-mini{border:1px solid #d8d8dc}
+.filters select{
+  background:#111116;color:#eee;border-color:#303038;
+  border-radius:999px;text-transform:uppercase;font-size:.68rem;letter-spacing:.06em;
+}
+.catalogue-grid{grid-template-columns:repeat(4,1fr);gap:14px}
+.card{
+  background:#0d0d0f;border-color:#28282f;border-radius:15px;box-shadow:none;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:#4b3057;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.photo{background:#fff}
+.verified{
+  border-radius:5px;
+  background:#0c1714;color:#5ee2b6;border-color:#1f5948;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.body h3{color:#fff}.brand-name,.desc{color:#9898a4}.category{color:#ff4aa5}
+.evidence{background:#141419;border-color:#28282f}
+.row strong{color:#e9e9ed}
+.islamabad-strip{
+  background:
+    radial-gradient(circle at 75% 30%,rgba(164,60,255,.22),transparent 28%),
+    linear-gradient(135deg,#0b0b0e,#15111d);
+  border:1px solid #2b2933;
+  box-shadow:none;
+}
+.strip-copy p{color:#a8a8b4}
+.strip-points span{background:#15151b;border-color:#303038}
+.strip-art{background:radial-gradient(circle at 50% 35%,rgba(255,47,146,.18),transparent 48%)}
+footer{
+  background:#050505;border-top:1px solid #24242b;color:#888894;
+  text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;
+}
+.footer-brand{color:#fff}.footer-brand small{color:#777783}
+.customizer{
+  background:#0d0d0f;border-color:#2b2b32;color:#fff;
+}
+.customizer-head{background:#0d0d0f;border-color:#2b2b32}
+.customizer-head h3,.control-group h4{color:#fff}
+.close-icon,.preset{background:#15151a;color:#fff;border-color:#303038}
+.control-group{border-color:#292930}
+.field label,.color-row label,.control-note{color:#aaaab4}
+.field select{background:#15151a;color:#fff;border:1px solid #303038;border-radius:8px;padding:10px}
+.control-note{background:#15151a;border-color:#303038}
+.backdrop{background:rgba(0,0,0,.78)}
+.modal{background:#0e0e11;color:#fff;border:1px solid #303038}
+.modal h3{color:#fff}.modal p{color:#aaaab4}.proof-item{background:#15151a;border-color:#2e2e35}
+@media(max-width:1080px){.catalogue-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+  .hero-showcase{min-height:430px;transform:none}
+  .catalogue-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid #28282f}
+}
+@media(max-width:640px){
+  .hero h1{font-size:3.3rem}
+  .hero-showcase{grid-template-columns:1fr;grid-template-rows:300px 210px}
+  .showcase-tile:first-child{grid-row:auto}
+  .showcase-tile:nth-child(3){display:none}
+  .catalogue-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid #28282f}.stat:last-child{border-bottom:0}
+}
+
 </style>
 </head>
 <body>
-<div class="announcement"><span>● <strong>Islamabad Edition</strong></span><span>Margalla-inspired design</span><span>Official-source verification only</span></div>
+<div class="announcement"><span>● <strong>PAKISTAN ORIGINALITY DIRECTORY</strong></span><span>REAL PRODUCTS</span><span>OFFICIAL-SOURCE EVIDENCE</span></div>
 <header class="topbar">
-  <div class="brand"><div class="logo">A</div><div>AsliKahan.pk<small>Islamabad, Pakistan</small></div></div>
+  <div class="brand"><div class="logo">A</div><div>ASLIANDNASLI<small>ISLAMABAD · PAKISTAN</small></div></div>
   <div class="nav-actions">
-    <button class="btn btn-ghost desktop-only" onclick="goTo('featured')">Featured</button>
-    <button class="btn btn-ghost" onclick="openCustomizer()">Customize theme</button>
-    <button class="btn btn-primary desktop-only" onclick="openReport('General listing')">Report concern</button>
+    <button class="btn btn-ghost desktop-only" onclick="goTo('featured')">FEATURED</button>
+    <button class="btn btn-ghost" onclick="openCustomizer()">CUSTOMIZE</button>
+    <button class="btn btn-primary desktop-only" onclick="goTo('catalogue')">BROWSE VERIFIED</button>
   </div>
 </header>
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <span class="location-chip">⌖ Islamabad, Pakistan</span>
-      <h1>Original products, with an <em>Islamabad identity.</em></h1>
-      <p>Explore real products through their official Pakistan sources. The visual system is inspired by the Margalla Hills, Islamabad greenery, warm sandstone, and the city’s clean modern architecture.</p>
-      <div class="search"><input id="searchInput" type="search" placeholder="Search product, brand, category, or tag..."><button class="btn btn-primary" onclick="searchNow()">Search catalogue</button></div>
+      <span class="location-chip">ISLAMABAD-BUILT · PAKISTAN-WIDE</span>
+      <h1 lang="ur" dir="rtl" style="font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic',serif;line-height:1.45;letter-spacing:0;">اصلی اور نسلی</h1>
+      <div class="hero-subtitle">PAKISTAN’S ORIGINAL PRODUCT DIRECTORY</div>
+      <p>Discover original products through documented official Pakistan sources. Browse image-led listings, inspect the evidence, and continue to the brand’s own store.</p>
+      <div class="search"><input id="searchInput" type="search" placeholder="SEARCH PRODUCTS, BRANDS OR CATEGORIES..."><button class="btn btn-primary" onclick="searchNow()">SEARCH VERIFIED PRODUCTS</button></div>
     </div>
-    <div class="islamabad-art">
-      <div class="art-card">
-        <svg viewBox="0 0 600 420" role="img" aria-label="Stylized Islamabad skyline with Margalla Hills and Faisal Mosque">
-          <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4d78f" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity=".12"/></linearGradient></defs>
-          <circle cx="485" cy="85" r="42" fill="url(#sky)"/>
-          <path d="M0 235 C75 175 120 185 178 224 C235 158 296 147 365 215 C420 174 500 167 600 232 L600 420 L0 420 Z" fill="#17483d" opacity=".86"/>
-          <path d="M0 282 C90 238 142 243 210 278 C286 227 357 231 425 278 C493 248 548 245 600 276 L600 420 L0 420 Z" fill="#0f352d"/>
-          <g transform="translate(195 182)">
-            <path d="M105 0 L178 118 L32 118 Z" fill="#f5f1df"/>
-            <path d="M105 32 L148 118 L62 118 Z" fill="#d9d1b3"/>
-            <rect x="83" y="82" width="44" height="70" rx="4" fill="#f5f1df"/>
-            <rect x="100" y="105" width="10" height="47" fill="#17483d"/>
-            <g fill="#f5f1df"><rect x="10" y="43" width="10" height="110"/><rect x="190" y="43" width="10" height="110"/><path d="M15 11 L25 43 H5 Z"/><path d="M195 11 L205 43 H185 Z"/></g>
-            <g fill="#c99a3b"><circle cx="15" cy="9" r="4"/><circle cx="195" cy="9" r="4"/></g>
-          </g>
-          <path d="M0 354 C120 340 230 370 350 349 C458 330 520 342 600 326 L600 420 L0 420 Z" fill="#c99a3b" opacity=".3"/>
-          <g fill="#f4d78f" opacity=".8"><circle cx="72" cy="83" r="3"/><circle cx="116" cy="55" r="2"/><circle cx="152" cy="95" r="2.5"/></g>
-        </svg>
-        <div class="art-caption"><span><strong>Margalla palette</strong><br>Green · sandstone · monsoon blue</span><span>Islamabad Edition</span></div>
-      </div>
-    </div>
+    <div class="hero-showcase" id="heroShowcase"></div>
   </div>
   <div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,30 C260,90 500,0 760,40 C1020,80 1220,10 1440,35 L1440,80 L0,80 Z" fill="var(--bg)"/></svg></div>
 </section>
 <main>
-  <div class="scope"><div class="scope-icon">✓</div><p><strong>Originality-first catalogue.</strong> Product cards retain official-source evidence and real product images. Promotional labels are editorial presentation controls and should be synchronized with each brand’s current official promotion before public launch.</p></div>
-  <div class="stats"><div class="stat"><strong id="statProducts">19</strong><span>Real product listings</span></div><div class="stat"><strong>4</strong><span>Official brand channels</span></div><div class="stat"><strong>6</strong><span>Theme controls</span></div><div class="stat"><strong>Islamabad</strong><span>Local visual identity</span></div></div>
+  <div class="scope"><div class="scope-icon">✓</div><p><strong>Originality before promotion.</strong> Every listing links back to a documented official brand channel. Product images, identifiers, source evidence, and review dates remain visible.</p></div>
+  <div class="stats"><div class="stat"><strong id="statProducts">19</strong><span>Real product listings</span></div><div class="stat"><strong>4</strong><span>Official brand channels</span></div><div class="stat"><strong>100%</strong><span>Official-source linked</span></div><div class="stat"><strong>Islamabad</strong><span>Local visual identity</span></div></div>
 
   <section class="featured-shell" id="featured">
-    <div class="section-head"><div><div class="section-kicker">Curated display</div><h2>Featured Islamabad picks</h2><p>Large editorial cards for products you want visitors to notice first.</p></div><button class="btn btn-light" onclick="openCustomizer()">Change colors and font</button></div>
+    <div class="section-head"><div><div class="section-kicker">CURATED & VERIFIED</div><h2>Featured products</h2><p>Image-led selections backed by their official Pakistan product sources.</p></div><button class="btn btn-light" onclick="openCustomizer()">CUSTOMIZE INTERFACE</button></div>
     <div class="featured-grid" id="featuredGrid"></div>
   </section>
 
   <section id="catalogue">
-    <div class="section-head"><div><div class="section-kicker">Verified catalogue</div><h2>Browse original products</h2><p>Real product images, identifiers, evidence, and official-store links.</p></div><div class="filters"><select id="category" onchange="renderCatalogue()"><option value="all">All categories</option><option value="Audio">Audio</option><option value="Fragrances">Fragrances</option><option value="Footwear">Footwear</option><option value="Home Appliances">Home Appliances</option></select><select id="brand" onchange="renderCatalogue()"><option value="all">All brands</option><option value="Audionic">Audionic</option><option value="J. Junaid Jamshed">J. Junaid Jamshed</option><option value="Servis">Servis</option><option value="Dawlance">Dawlance</option></select><select id="tagFilter" onchange="renderCatalogue()"><option value="all">All tags</option><option value="Featured">Featured</option><option value="New">New</option><option value="Trending">Trending</option><option value="Islamabad Pick">Islamabad Pick</option></select></div></div>
+    <div class="section-head"><div><div class="section-kicker">VERIFIED CATALOGUE</div><h2>Browse original products</h2><p>Inspect the product, source evidence, identifier, and official-store destination.</p></div><div class="filters"><select id="category" onchange="renderCatalogue()"><option value="all">All categories</option><option value="Audio">Audio</option><option value="Fragrances">Fragrances</option><option value="Footwear">Footwear</option><option value="Home Appliances">Home Appliances</option></select><select id="brand" onchange="renderCatalogue()"><option value="all">All brands</option><option value="Audionic">Audionic</option><option value="J. Junaid Jamshed">J. Junaid Jamshed</option><option value="Servis">Servis</option><option value="Dawlance">Dawlance</option></select><select id="tagFilter" onchange="renderCatalogue()"><option value="all">All tags</option><option value="Featured">Featured</option><option value="New">New</option><option value="Trending">Trending</option><option value="Islamabad Pick">Islamabad Pick</option></select></div></div>
     <div class="catalogue-grid" id="grid"></div>
   </section>
 
@@ -98,20 +372,20 @@ footer{background:#0e2b25;color:#cfe0d8;padding:30px 6%;display:flex;justify-con
     <div class="strip-art"><svg viewBox="0 0 360 260"><path d="M0 165 C65 105 103 119 145 158 C196 104 248 106 360 166 L360 260 L0 260 Z" fill="#0b2d27"/><g transform="translate(108 80)" fill="#f5f1df"><path d="M72 0 L126 92 L18 92 Z"/><rect x="56" y="66" width="32" height="55"/><rect x="0" y="32" width="8" height="90"/><rect x="136" y="32" width="8" height="90"/><path d="M4 10 L11 32 H-3 Z"/><path d="M140 10 L147 32 H133 Z"/></g><circle cx="280" cy="53" r="30" fill="#c99a3b" opacity=".8"/></svg></div>
   </section>
 </main>
-<footer><div class="footer-brand">AsliKahan.pk<small>Islamabad-inspired originality directory</small></div><div>Official-source evidence · Real product images · Customizable visual system</div></footer>
+<footer><div class="footer-brand">ASLIANDNASLI<small>اصلی اور نسلی · ISLAMABAD, PAKISTAN</small></div><div>ORIGINAL PRODUCTS · OFFICIAL SOURCES · VISIBLE EVIDENCE</div></footer>
 
 <div class="backdrop" id="customizerBackdrop" onclick="closeCustomizer()"></div>
 <aside class="customizer" id="customizer">
   <div class="customizer-head"><h3>Customize appearance</h3><button class="close-icon" onclick="closeCustomizer()">×</button></div>
   <div class="customizer-body">
-    <div class="control-group"><h4>Theme presets</h4><div class="preset-grid">
+    <div class="control-group"><h4>Theme presets</h4><div class="preset-grid"><button class="preset" onclick="applyPreset('legitDark')"><span class="swatches"><i style="background:#050505"></i><i style="background:#ff2f92"></i><i style="background:#7c3aed"></i></span>Authentication Dark</button>
       <button class="preset" onclick="applyPreset('islamabad')"><span class="swatches"><i style="background:#163f36"></i><i style="background:#c99a3b"></i><i style="background:#f3f4ef"></i></span>Islamabad Green</button>
       <button class="preset" onclick="applyPreset('margallaNight')"><span class="swatches"><i style="background:#102a43"></i><i style="background:#36b37e"></i><i style="background:#eef3f8"></i></span>Margalla Night</button>
       <button class="preset" onclick="applyPreset('monsoon')"><span class="swatches"><i style="background:#154c79"></i><i style="background:#e0a12e"></i><i style="background:#f4f8fb"></i></span>Monsoon Blue</button>
       <button class="preset" onclick="applyPreset('blossom')"><span class="swatches"><i style="background:#5c3147"></i><i style="background:#d96c8a"></i><i style="background:#fbf5f6"></i></span>Spring Blossom</button>
     </div></div>
     <div class="control-group"><h4>Typography</h4><div class="field"><label for="fontChoice">Interface font</label><select id="fontChoice" onchange="setFont(this.value)"><option value='"DM Sans",system-ui,sans-serif'>DM Sans</option><option value='"Poppins",system-ui,sans-serif'>Poppins</option><option value='"Manrope",system-ui,sans-serif'>Manrope</option><option value='"Montserrat",system-ui,sans-serif'>Montserrat</option><option value='Georgia,serif'>Georgia</option><option value='"Segoe UI",system-ui,sans-serif'>Segoe UI</option></select></div></div>
-    <div class="control-group"><h4>Colors</h4><div class="color-row"><label>Primary color</label><input id="primaryColor" type="color" value="#163f36" oninput="setColor('--primary',this.value)"></div><div class="color-row"><label>Secondary color</label><input id="secondaryColor" type="color" value="#245f50" oninput="setColor('--primary-2',this.value)"></div><div class="color-row"><label>Accent color</label><input id="accentColor" type="color" value="#c99a3b" oninput="setColor('--accent',this.value)"></div><div class="color-row"><label>Promotional tag</label><input id="promoColor" type="color" value="#d92d20" oninput="setColor('--promo',this.value)"></div><div class="color-row"><label>Page background</label><input id="backgroundColor" type="color" value="#f3f4ef" oninput="setColor('--bg',this.value)"></div></div>
+    <div class="control-group"><h4>Colors</h4><div class="color-row"><label>Primary color</label><input id="primaryColor" type="color" value="#050505" oninput="setColor('--primary',this.value)"></div><div class="color-row"><label>Secondary color</label><input id="secondaryColor" type="color" value="#111114" oninput="setColor('--primary-2',this.value)"></div><div class="color-row"><label>Accent color</label><input id="accentColor" type="color" value="#ff2f92" oninput="setColor('--accent',this.value)"></div><div class="color-row"><label>Promotional tag</label><input id="promoColor" type="color" value="#ff355d" oninput="setColor('--promo',this.value)"></div><div class="color-row"><label>Page background</label><input id="backgroundColor" type="color" value="#050505" oninput="setColor('--bg',this.value)"></div></div>
     <div class="control-group"><h4>Shape and density</h4><div class="field"><label>Corner roundness</label><input id="radiusRange" type="range" min="6" max="32" value="20" oninput="setRadius(this.value)"></div><div class="field"><label>Product image height</label><input id="imageHeightRange" type="range" min="190" max="310" value="238" oninput="setImageHeight(this.value)"></div></div>
     <div class="control-group"><h4>Promotional tags</h4><div class="tag-preview"><span>Featured</span><span>New</span><span>Trending</span><span>Sale</span></div><p class="control-note">The red tag style is available for merchandising. Before publishing a “Sale” label, connect it to verified promotion data from the official brand source.</p></div>
     <button class="btn btn-light" style="width:100%" onclick="resetTheme()">Reset to Islamabad theme</button>
@@ -149,12 +423,23 @@ const merchMeta={
 };
 let query="";
 const presets={
+  legitDark:{primary:"#050505",secondary:"#111114",accent:"#ff2f92",promo:"#ff355d",bg:"#050505",surface:"#0d0d0f",text:"#f8f8fa"},
   islamabad:{primary:"#163f36",secondary:"#245f50",accent:"#c99a3b",promo:"#d92d20",bg:"#f3f4ef",surface:"#ffffff",text:"#18231f"},
   margallaNight:{primary:"#102a43",secondary:"#183f5f",accent:"#36b37e",promo:"#e5484d",bg:"#eef3f8",surface:"#ffffff",text:"#172b4d"},
   monsoon:{primary:"#154c79",secondary:"#246a9a",accent:"#e0a12e",promo:"#cc2f2f",bg:"#f4f8fb",surface:"#ffffff",text:"#172b3a"},
   blossom:{primary:"#5c3147",secondary:"#7a435e",accent:"#d96c8a",promo:"#c62c4d",bg:"#fbf5f6",surface:"#ffffff",text:"#302129"}
 };
 function metaFor(x){return merchMeta[x.id]||{tag:"Official"}}
+function renderHeroShowcase(){
+  const picks=[products[1],products[5],products[14],products[18]].filter(Boolean);
+  document.getElementById("heroShowcase").innerHTML=picks.map((x,i)=>`
+    <article class="showcase-tile tile-${i+1}" onclick="viewEvidence(${x.id})">
+      <img src="${x.image}" alt="${x.name}" loading="eager">
+      <span class="showcase-tag">${i===0?"FEATURED":productTag(x).toUpperCase()}</span>
+      <span class="showcase-check">✓</span>
+      <div class="showcase-copy"><small>${x.brand}</small><strong>${x.name}</strong></div>
+    </article>`).join("");
+}
 function productTag(x){return metaFor(x).tag||"Official"}
 function featuredCard(x,index){const tag=productTag(x);return `<article class="featured-card" onclick="viewEvidence(${x.id})"><img src="${x.image}" alt="${x.name}" loading="lazy"><span class="ribbon ${index===0?'gold':''}">${tag}</span><span class="verified-mini">✓</span><div class="featured-overlay"><small>${x.brand} · ${x.category}</small><strong>${x.name}</strong></div></article>`}
 function renderFeatured(){const selected=products.filter(x=>metaFor(x).featured).slice(0,4);document.getElementById("featuredGrid").innerHTML=selected.map(featuredCard).join("")}
@@ -174,10 +459,10 @@ function setRadius(value){document.documentElement.style.setProperty("--radius",
 function setImageHeight(value){document.documentElement.style.setProperty("--card-image-height",`${value}px`);saveTheme()}
 function applyPreset(name){const p=presets[name];if(!p)return;setColor("--primary",p.primary);setColor("--primary-2",p.secondary);setColor("--accent",p.accent);setColor("--promo",p.promo);setColor("--bg",p.bg);setColor("--surface",p.surface);setColor("--text",p.text);syncControls(p);saveTheme()}
 function syncControls(p){document.getElementById("primaryColor").value=p.primary;document.getElementById("secondaryColor").value=p.secondary;document.getElementById("accentColor").value=p.accent;document.getElementById("promoColor").value=p.promo;document.getElementById("backgroundColor").value=p.bg}
-function saveTheme(){const root=getComputedStyle(document.documentElement);const data={primary:root.getPropertyValue("--primary").trim(),secondary:root.getPropertyValue("--primary-2").trim(),accent:root.getPropertyValue("--accent").trim(),promo:root.getPropertyValue("--promo").trim(),bg:root.getPropertyValue("--bg").trim(),font:root.getPropertyValue("--font-family").trim(),radius:root.getPropertyValue("--radius").trim(),imageHeight:root.getPropertyValue("--card-image-height").trim()};localStorage.setItem("ASAL-theme",JSON.stringify(data))}
-function loadTheme(){try{const data=JSON.parse(localStorage.getItem("ASAL-theme"));if(!data)return;Object.entries({"--primary":data.primary,"--primary-2":data.secondary,"--accent":data.accent,"--promo":data.promo,"--bg":data.bg,"--font-family":data.font,"--radius":data.radius,"--card-image-height":data.imageHeight}).forEach(([k,v])=>{if(v)document.documentElement.style.setProperty(k,v)});if(data.primary)document.getElementById("primaryColor").value=data.primary;if(data.secondary)document.getElementById("secondaryColor").value=data.secondary;if(data.accent)document.getElementById("accentColor").value=data.accent;if(data.promo)document.getElementById("promoColor").value=data.promo;if(data.bg)document.getElementById("backgroundColor").value=data.bg}catch(e){console.warn("Theme settings could not be restored",e)}}
-function resetTheme(){localStorage.removeItem("ASAL-theme");document.documentElement.removeAttribute("style");syncControls(presets.islamabad);document.getElementById("fontChoice").selectedIndex=0;document.getElementById("radiusRange").value=20;document.getElementById("imageHeightRange").value=238}
-document.getElementById("statProducts").textContent=products.length;loadTheme();renderFeatured();renderCatalogue();
+function saveTheme(){const root=getComputedStyle(document.documentElement);const data={primary:root.getPropertyValue("--primary").trim(),secondary:root.getPropertyValue("--primary-2").trim(),accent:root.getPropertyValue("--accent").trim(),promo:root.getPropertyValue("--promo").trim(),bg:root.getPropertyValue("--bg").trim(),font:root.getPropertyValue("--font-family").trim(),radius:root.getPropertyValue("--radius").trim(),imageHeight:root.getPropertyValue("--card-image-height").trim()};localStorage.setItem("asliandnasli-auth-dark-theme",JSON.stringify(data))}
+function loadTheme(){try{const data=JSON.parse(localStorage.getItem("asliandnasli-auth-dark-theme"));if(!data)return;Object.entries({"--primary":data.primary,"--primary-2":data.secondary,"--accent":data.accent,"--promo":data.promo,"--bg":data.bg,"--font-family":data.font,"--radius":data.radius,"--card-image-height":data.imageHeight}).forEach(([k,v])=>{if(v)document.documentElement.style.setProperty(k,v)});if(data.primary)document.getElementById("primaryColor").value=data.primary;if(data.secondary)document.getElementById("secondaryColor").value=data.secondary;if(data.accent)document.getElementById("accentColor").value=data.accent;if(data.promo)document.getElementById("promoColor").value=data.promo;if(data.bg)document.getElementById("backgroundColor").value=data.bg}catch(e){console.warn("Theme settings could not be restored",e)}}
+function resetTheme(){localStorage.removeItem("asliandnasli-auth-dark-theme");document.documentElement.removeAttribute("style");syncControls(presets.legitDark);document.getElementById("fontChoice").selectedIndex=0;document.getElementById("radiusRange").value=20;document.getElementById("imageHeightRange").value=238}
+document.getElementById("statProducts").textContent=products.length;loadTheme();renderHeroShowcase();renderFeatured();renderCatalogue();
 </script>
 </body>
 </html>
